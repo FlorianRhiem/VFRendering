@@ -1,0 +1,7 @@
+.*
+!.gitignore
+build/
+demo
+*.o
+include/shaders
+thirdparty/qhull
