@@ -85,7 +85,7 @@ As an example, to use an isosurface renderer with an isovalue of 0.5, you would 
 ```c++
     VectorfieldRendering::Options options;
     options.set<VectorfieldRendering::View::Option::VISUALIZATION_MODE>(
-        VectorfieldRendering::VisualizationMode::ARROWS
+        VectorfieldRendering::VisualizationMode::ISOSURFACE
     );
     options.set<VectorfieldRendering::IsosurfaceRenderer::Option::ISOVALUE>(
         0.5
@@ -97,8 +97,8 @@ Whether this way of setting options should be replaced by getters/setters will b
 
 ## ToDo
 
-- A **Qt widget** (based on a QOpenGLWidget) for simplified vector field rendering in Qt user interfaces.
 - A **EGS plugin** for combining **libvfrendering** with existing **EGS** plugins.
 - Methods for reading geometry and directions from data files
+- Documentation
 
 See the issues for further information and adding your own requests.
