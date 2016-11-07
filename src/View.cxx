@@ -29,7 +29,7 @@ View::View() {
     auto bounds_min = options().get<Option::BOUNDING_BOX_MIN>();
     auto bounds_max = options().get<Option::BOUNDING_BOX_MAX>();
     setCamera(system_center + glm::vec3(0, 0, glm::length(bounds_max - bounds_min)));
-    updateRenderers();
+    renderers(VisualizationMode::ARROWS, true, true, WidgetLocation::BOTTOM_LEFT, true, WidgetLocation::BOTTOM_RIGHT);
 }
 
 View::~View() {}
@@ -188,14 +188,10 @@ static std::array<float, 4> locationToViewport(WidgetLocation location) {
     };
 }
 
-void View::updateRenderers() {
-    bool show_bounding_box = options().get<View::Option::SHOW_BOUNDING_BOX>();
-    bool show_coordinate_system = options().get<View::Option::SHOW_COORDINATE_SYSTEM>();
-    bool show_miniview = options().get<View::Option::SHOW_MINIVIEW>();
-    VisualizationMode mode = options().get<View::Option::VISUALIZATION_MODE>();
-    WidgetLocation coordinate_system_location = options().get<View::Option::COORDINATE_SYSTEM_LOCATION>();
-    WidgetLocation miniview_location = options().get<View::Option::MINIVIEW_LOCATION>();
-    m_renderers.clear();
+/** Convenience function that creates the std::vector of renderers and viewports the most common use cases */
+void View::renderers(const VisualizationMode& mode, bool show_bounding_box, bool show_miniview, WidgetLocation miniview_location, bool show_coordinate_system, WidgetLocation coordinate_system_location) {
+    std::vector<std::pair<std::shared_ptr<RendererBase>, std::array<float, 4>>> renderers;
+
     std::shared_ptr<RendererBase> main_renderer;
     switch (mode) {
     case VisualizationMode::ARROWS:
@@ -217,14 +213,11 @@ void View::updateRenderers() {
         };
         main_renderer = std::make_shared<CombinedRenderer>(*this, r);
     }
-    m_renderers.push_back({main_renderer, {
-              {0, 0, 1, 1}
-          }
-      });
+    renderers.push_back({main_renderer, {{0, 0, 1, 1}}});
 
     if (show_coordinate_system) {
         std::shared_ptr<RendererBase> renderer = std::make_shared<CoordinateSystemRenderer>(*this);
-        m_renderers.push_back({renderer, locationToViewport(coordinate_system_location)});
+        renderers.push_back({renderer, locationToViewport(coordinate_system_location)});
     }
     if (show_miniview) {
         std::shared_ptr<RendererBase> renderer;
@@ -239,9 +232,14 @@ void View::updateRenderers() {
         } else {
             renderer = std::make_shared<VectorSphereRenderer>(*this);
         }
-        m_renderers.push_back({renderer, locationToViewport(miniview_location)});
+        renderers.push_back({renderer, locationToViewport(miniview_location)});
     }
 
+    this->renderers(renderers);
+}
+
+void View::renderers(const std::vector<std::pair<std::shared_ptr<RendererBase>, std::array<float, 4>>>& renderers) {
+    m_renderers = renderers;
     const auto option_keys = options().keys();
     for (auto it : m_renderers) {
         auto renderer = it.first;
@@ -267,25 +265,13 @@ const Options& View::options() const {
 }
 
 void View::optionsHaveChanged(const std::vector<int>& changed_options) {
-    bool renderers_changed = false;
     bool recenter_camera = false;
     for (int option_index : changed_options) {
         switch (option_index) {
-        case Option::SHOW_MINIVIEW:
-        case Option::SHOW_COORDINATE_SYSTEM:
-        case Option::SHOW_BOUNDING_BOX:
-        case Option::MINIVIEW_LOCATION:
-        case Option::COORDINATE_SYSTEM_LOCATION:
-        case Option::VISUALIZATION_MODE:
-            renderers_changed = true;
-            break;
         case Option::SYSTEM_CENTER:
             recenter_camera = true;
             break;
         }
-    }
-    if (renderers_changed) {
-        updateRenderers();
     }
     if (m_is_centered && recenter_camera) {
         recenterCamera(m_camera, options().get<Option::SYSTEM_CENTER>());

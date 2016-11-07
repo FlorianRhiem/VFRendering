@@ -25,7 +25,6 @@ int main(int argc, char **argv) {
     options.set<VFRendering::View::Option::BOUNDING_BOX_MIN>(geometry.min());
     options.set<VFRendering::View::Option::BOUNDING_BOX_MAX>(geometry.max());
     options.set<VFRendering::View::Option::SYSTEM_CENTER>((geometry.min() + geometry.max()) * 0.5f);
-    options.set<VFRendering::View::Option::VISUALIZATION_MODE>(VFRendering::VisualizationMode::ARROWS);
     options.set<VFRendering::View::Option::COLORMAP_IMPLEMENTATION>(VFRendering::Utilities::getColormapImplementation(VFRendering::Utilities::Colormap::HSV));
     window.updateOptions(options);
 

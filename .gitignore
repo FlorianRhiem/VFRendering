@@ -5,3 +5,5 @@ demo
 *.o
 include/shaders
 thirdparty/qhull
+docs/html
+docs/latex

@@ -59,25 +59,19 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
         break;
     case GLFW_KEY_1:
         if (view_ptr) {
-            VFRendering::Options options;
-            options.set<VFRendering::View::Option::VISUALIZATION_MODE>(VFRendering::VisualizationMode::ARROWS);
-            view_ptr->updateOptions(options);
+            view_ptr->renderers(VFRendering::VisualizationMode::ARROWS, true, true, VFRendering::WidgetLocation::BOTTOM_LEFT, true, VFRendering::WidgetLocation::BOTTOM_RIGHT);
             needs_redraw = true;
         }
         break;
     case GLFW_KEY_2:
         if (view_ptr) {
-            VFRendering::Options options;
-            options.set<VFRendering::View::Option::VISUALIZATION_MODE>(VFRendering::VisualizationMode::SURFACE);
-            view_ptr->updateOptions(options);
+            view_ptr->renderers(VFRendering::VisualizationMode::SURFACE, true, true, VFRendering::WidgetLocation::BOTTOM_LEFT, true, VFRendering::WidgetLocation::BOTTOM_RIGHT);
             needs_redraw = true;
         }
         break;
     case GLFW_KEY_3:
         if (view_ptr) {
-            VFRendering::Options options;
-            options.set<VFRendering::View::Option::VISUALIZATION_MODE>(VFRendering::VisualizationMode::ISOSURFACE);
-            view_ptr->updateOptions(options);
+            view_ptr->renderers(VFRendering::VisualizationMode::ISOSURFACE, true, true, VFRendering::WidgetLocation::BOTTOM_LEFT, true, VFRendering::WidgetLocation::BOTTOM_RIGHT);
             needs_redraw = true;
         }
         break;
@@ -99,6 +93,7 @@ int main(void) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
+    glfwWindowHint(GLFW_SAMPLES, 16);
     window = glfwCreateWindow(800, 800, "Demo", NULL, NULL);
     if (!window) {
         glfwTerminate();
@@ -110,6 +105,7 @@ int main(void) {
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
     glfwSetKeyCallback(window, keyCallback);
     VFRendering::View view;
+    glEnable(GL_MULTISAMPLE);
     view_ptr = &view;
     framebufferSizeCallback(window, 800, 800);
 
@@ -134,7 +130,6 @@ int main(void) {
     options.set<VFRendering::View::Option::BOUNDING_BOX_MIN>(geometry.min());
     options.set<VFRendering::View::Option::BOUNDING_BOX_MAX>(geometry.max());
     options.set<VFRendering::View::Option::SYSTEM_CENTER>((geometry.min() + geometry.max()) * 0.5f);
-    options.set<VFRendering::View::Option::VISUALIZATION_MODE>(VFRendering::VisualizationMode::ARROWS);
     options.set<VFRendering::View::Option::COLORMAP_IMPLEMENTATION>(VFRendering::Utilities::getColormapImplementation(VFRendering::Utilities::Colormap::HSV));
     view.updateOptions(options);
     while (!glfwWindowShouldClose(window)) {

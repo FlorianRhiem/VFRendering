@@ -4,7 +4,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "VFRendering/BoundingBoxRenderer.hxx"
 #include "VFRendering/Utilities.hxx"
 
 #include "shaders/arrows.vert.glsl.generated.hxx"
