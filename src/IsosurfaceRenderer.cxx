@@ -108,6 +108,7 @@ void IsosurfaceRenderer::updateShaderProgram() {
 
 void IsosurfaceRenderer::updateIsosurfaceIndices() {
     float isovalue = options().get<Option::ISOVALUE>();
+    const auto& value_function = options().get<Option::VALUEFUNCTION>();
 
     const auto& volume_indices = volumeIndices();
 
@@ -120,8 +121,10 @@ void IsosurfaceRenderer::updateIsosurfaceIndices() {
     }
 
     std::vector<float> values;
-    for (auto& direction : directions()) {
-        values.push_back(direction.z);
+    for (Geometry::index_type i = 0; i < positions().size(); i++) {
+        const glm::vec3& position = positions()[i];
+        const glm::vec3& direction = directions()[i];
+        values.push_back(value_function(position, direction));
     }
 
     VectorfieldIsosurface isosurface(VectorfieldIsosurface::calculate(positions(), directions(), values, isovalue, volume_indices));
