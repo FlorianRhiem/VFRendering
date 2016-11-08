@@ -21,7 +21,7 @@ add_dependencies(libqhullstatic_r qhullstatic_r)
 
 add_library(libqhullcpp STATIC IMPORTED)
 set_property(TARGET libqhullcpp PROPERTY IMPORTED_LOCATION ${PROJECT_BINARY_DIR}/thirdparty-install/lib/${CMAKE_STATIC_LIBRARY_PREFIX}qhullcpp${CMAKE_STATIC_LIBRARY_SUFFIX})
-set_property(TARGET libqhullcpp PROPERTY INTERFACE_LINK_LIBRARIES qhullstatic_r)
+set_property(TARGET libqhullcpp PROPERTY INTERFACE_LINK_LIBRARIES libqhullstatic_r)
 add_dependencies(libqhullcpp qhullcpp)
 
 set(SOURCE_FILES
