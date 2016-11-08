@@ -40,8 +40,8 @@ struct VFRendering::Option<VFRendering::IsosurfaceRenderer::Option::ISOVALUE> {
 template<>
 struct VFRendering::Option<VFRendering::IsosurfaceRenderer::Option::VALUEFUNCTION> {
     std::function<float(const glm::vec3&, const glm::vec3&)> default_value = [] (const glm::vec3& position, const glm::vec3& direction) {
-        (void)direction;
-        return position.x+position.y;
+        (void)position;
+        return direction.z;
     };
 };
 
