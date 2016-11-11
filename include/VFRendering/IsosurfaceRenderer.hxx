@@ -8,16 +8,19 @@
 namespace VFRendering {
 class IsosurfaceRenderer : public RendererBase {
 public:
-    enum Option {
-        ISOVALUE = 700,
-        VALUEFUNCTION
-    };
 
-    IsosurfaceRenderer(const View& view);
+    typedef float isovalue_type;
+    typedef std::function<isovalue_type(const glm::vec3&, const glm::vec3&)> value_function_type;
+
+    IsosurfaceRenderer(const View& view, const value_function_type& value_function, const isovalue_type& isovalue);
     virtual ~IsosurfaceRenderer();
     virtual void update(bool keep_geometry) override;
-    virtual void draw(float aspect_ratio) const override;
+    virtual void draw(float aspect_ratio) override;
     virtual void optionsHaveChanged(const std::vector<int>& changed_options) override;
+    virtual void valueFunction(const value_function_type& value_function);
+    virtual void isovalue(const isovalue_type& isovalue);
+    virtual const value_function_type& valueFunction();
+    virtual const isovalue_type& isovalue();
 
 private:
     void updateShaderProgram();
@@ -29,21 +32,12 @@ private:
     unsigned int m_position_vbo = 0;
     unsigned int m_direction_vbo = 0;
     unsigned int m_num_indices = 0;
+
+    value_function_type m_value_function;
+    bool m_value_function_changed;
+    isovalue_type m_isovalue;
+    bool m_isovalue_changed;
 };
 }
-
-template<>
-struct VFRendering::Option<VFRendering::IsosurfaceRenderer::Option::ISOVALUE> {
-    double default_value = 0;
-};
-
-template<>
-struct VFRendering::Option<VFRendering::IsosurfaceRenderer::Option::VALUEFUNCTION> {
-    std::function<float(const glm::vec3&, const glm::vec3&)> default_value = [] (const glm::vec3& position, const glm::vec3& direction) {
-        (void)position;
-        return direction.z;
-    };
-};
-
 
 #endif

@@ -65,7 +65,7 @@ void SurfaceRenderer::update(bool keep_geometry) {
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * directions().size(), directions().data(), GL_STREAM_DRAW);
 }
 
-void SurfaceRenderer::draw(float aspect_ratio) const {
+void SurfaceRenderer::draw(float aspect_ratio) {
     if (m_num_indices <= 0) {
         return;
     }

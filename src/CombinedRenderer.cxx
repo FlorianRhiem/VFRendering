@@ -11,7 +11,7 @@ void CombinedRenderer::update(bool keep_geometry) {
     }
 }
 
-void CombinedRenderer::draw(float aspect_ratio) const {
+void CombinedRenderer::draw(float aspect_ratio) {
     for (auto renderer : m_renderers) {
         renderer->draw(aspect_ratio);
     }

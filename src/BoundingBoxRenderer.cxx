@@ -51,7 +51,7 @@ void BoundingBoxRenderer::update(bool keep_geometry) {
     (void)keep_geometry;
 }
 
-void BoundingBoxRenderer::draw(float aspect_ratio) const {
+void BoundingBoxRenderer::draw(float aspect_ratio) {
     glUseProgram(m_program);
     glBindVertexArray(m_vao);
 

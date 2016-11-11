@@ -89,7 +89,7 @@ void ArrowRenderer::update(bool keep_geometry) {
     m_num_instances = std::min(positions().size(), directions().size());
 }
 
-void ArrowRenderer::draw(float aspect_ratio) const {
+void ArrowRenderer::draw(float aspect_ratio) {
     if (m_num_instances <= 0) {
         return;
     }

@@ -131,7 +131,6 @@ Currently, the following options are available:
 | BoundingBoxRenderer::Option::COLOR | glm::vec3 | {1.0, 1.0, 1.0} | BoundingBoxRenderer.hxx | VFRendering::Option< VFRendering::BoundingBoxRenderer::Option::COLOR > |
 | CoordinateSystemRenderer::Option::AXIS_LENGTH | glm::vec3 | {0.5, 0.5, 0.5} | CoordinateSystemRenderer.hxx | VFRendering::Option< VFRendering::CoordinateSystemRenderer::Option::AXIS_LENGTH > |
 | CoordinateSystemRenderer::Option::ORIGIN | glm::vec3 | {0.0, 0.0, 0.0} | CoordinateSystemRenderer.hxx | VFRendering::Option< VFRendering::CoordinateSystemRenderer::Option::ORIGIN > |
-| IsosurfaceRenderer::Option::ISOVALUE | double | 0 | IsosurfaceRenderer.hxx | VFRendering::Option< VFRendering::IsosurfaceRenderer::Option::ISOVALUE > |
 | VectorSphereRenderer::Option::POINT_SIZE_RANGE |  glm::vec2 | {1.0, 4.0} | VectorSphereRenderer.hxx | VFRendering::Option< VFRendering::VectorSphereRenderer::Option::POINT_SIZE_RANGE > |
 | VectorSphereRenderer::Option::INNER_SPHERE_RADIUS | float | 0.95 | VectorSphereRenderer.hxx | VFRendering::Option< VFRendering::VectorSphereRenderer::Option::INNER_SPHERE_RADIUS > |
 | VectorSphereRenderer::Option::USE_SPHERE_FAKE_PERSPECTIVE | bool | true | VectorSphereRenderer.hxx | VFRendering::Option< VFRendering::VectorSphereRenderer::Option::USE_SPHERE_FAKE_PERSPECTIVE > |

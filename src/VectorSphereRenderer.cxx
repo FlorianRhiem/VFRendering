@@ -66,13 +66,12 @@ void VectorSphereRenderer::optionsHaveChanged(const std::vector<int>& changed_op
 
 void VectorSphereRenderer::update(bool keep_geometry) {
     (void)keep_geometry;
-    glBindVertexArray(m_sphere_points_vao);
     glBindBuffer(GL_ARRAY_BUFFER, m_sphere_points_vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * directions().size(), directions().data(), GL_STREAM_DRAW);
     m_num_instances = directions().size();
 }
 
-void VectorSphereRenderer::draw(float aspect_ratio) const {
+void VectorSphereRenderer::draw(float aspect_ratio) {
     float inner_sphere_radius = options().get<VectorSphereRenderer::Option::INNER_SPHERE_RADIUS>();
     if (inner_sphere_radius > 0.0f) {
         if (inner_sphere_radius > 0.99f) {

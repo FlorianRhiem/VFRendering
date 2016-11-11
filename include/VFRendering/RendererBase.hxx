@@ -19,7 +19,7 @@ public:
 
     virtual ~RendererBase() {};
     virtual void update(bool keep_geometry) = 0;
-    virtual void draw(float aspect_ratio) const = 0;
+    virtual void draw(float aspect_ratio) = 0;
     virtual void optionsHaveChanged(const std::vector<int>& changed_options) = 0;
 
 protected:

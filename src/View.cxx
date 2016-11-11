@@ -201,7 +201,11 @@ void View::renderers(const VisualizationMode& mode, bool show_bounding_box, bool
         main_renderer = std::make_shared<SurfaceRenderer>(*this);
         break;
     case VisualizationMode::ISOSURFACE:
-        main_renderer = std::make_shared<IsosurfaceRenderer>(*this);
+            // TODO: make these values configurable
+            main_renderer = std::make_shared<IsosurfaceRenderer>(*this, [] (const glm::vec3& position, const glm::vec3& direction) -> IsosurfaceRenderer::isovalue_type {
+                                                                     (void)position;
+                                                                     return direction.z;
+                                                                 }, 0.0);
         break;
     case VisualizationMode::SPHERE:
         main_renderer = std::make_shared<VectorSphereRenderer>(*this);

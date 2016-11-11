@@ -57,7 +57,7 @@ void CoordinateSystemRenderer::update(bool keep_geometry) {
     (void)keep_geometry;
 }
 
-void CoordinateSystemRenderer::draw(float aspect_ratio) const {
+void CoordinateSystemRenderer::draw(float aspect_ratio) {
     glm::vec3 camera_position = options().get<View::Option::CAMERA_POSITION>();
     glm::vec3 center_position = options().get<View::Option::CENTER_POSITION>();
     glm::vec3 up_vector = options().get<View::Option::UP_VECTOR>();
