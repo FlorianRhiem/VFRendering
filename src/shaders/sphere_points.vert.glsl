@@ -6,10 +6,13 @@ uniform vec2 uPointSizeRange;
 uniform float uAspectRatio;
 uniform float uInnerSphereRadius;
 uniform float uUseFakePerspective;
+in vec3 ivPosition;
 in vec3 ivDirection;
 out vec3 vfDirection;
+out vec3 vfPosition;
 
 void main(void) {
+  vfPosition = ivPosition;
   vfDirection = normalize(ivDirection);
   gl_Position = uProjectionMatrix * uModelviewMatrix * vec4(vfDirection*0.99, 1.0);
   vec2 clipPosition;

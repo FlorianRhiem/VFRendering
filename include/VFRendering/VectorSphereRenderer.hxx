@@ -24,7 +24,8 @@ private:
 
     unsigned int m_sphere_points_program = 0;
     unsigned int m_sphere_points_vao = 0;
-    unsigned int m_sphere_points_vbo = 0;
+    unsigned int m_sphere_points_positions_vbo = 0;
+    unsigned int m_sphere_points_directions_vbo = 0;
     unsigned int m_sphere_background_program = 0;
     unsigned int m_sphere_background_vao = 0;
     unsigned int m_sphere_background_vbo = 0;

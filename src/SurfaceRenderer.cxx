@@ -72,14 +72,6 @@ void SurfaceRenderer::draw(float aspect_ratio) {
     glBindVertexArray(m_vao);
     glUseProgram(m_program);
 
-    glm::vec2 z_range = options().get<View::Option::Z_RANGE>();
-    if (z_range.x <= -1) {
-        z_range.x = -2;
-    }
-    if (z_range.y >= 1) {
-        z_range.y = 2;
-    }
-
     auto matrices = Utilities::getMatrices(options(), aspect_ratio);
     auto model_view_matrix = matrices.first;
     auto projection_matrix = matrices.second;
@@ -89,7 +81,6 @@ void SurfaceRenderer::draw(float aspect_ratio) {
     glUniformMatrix4fv(glGetUniformLocation(m_program, "uProjectionMatrix"), 1, false, glm::value_ptr(projection_matrix));
     glUniformMatrix4fv(glGetUniformLocation(m_program, "uModelviewMatrix"), 1, false, glm::value_ptr(model_view_matrix));
     glUniform3f(glGetUniformLocation(m_program, "uLightPosition"), light_position[0], light_position[1], light_position[2]);
-    glUniform2f(glGetUniformLocation(m_program, "uZRange"), z_range[0], z_range[1]);
 
     glDisable(GL_CULL_FACE);
     glDrawElements(GL_TRIANGLES, m_num_indices, GL_UNSIGNED_INT, nullptr);
@@ -104,6 +95,7 @@ void SurfaceRenderer::updateShaderProgram() {
     vertex_shader_source += options().get<View::Option::COLORMAP_IMPLEMENTATION>();
     std::string fragment_shader_source = SURFACE_FRAG_GLSL;
     fragment_shader_source += options().get<View::Option::COLORMAP_IMPLEMENTATION>();
+    fragment_shader_source += options().get<View::Option::IS_VISIBLE_IMPLEMENTATION>();
     m_program = Utilities::createProgram(vertex_shader_source, fragment_shader_source, {"ivPosition", "ivDirection"});
 }
 

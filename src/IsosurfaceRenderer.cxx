@@ -99,6 +99,7 @@ void IsosurfaceRenderer::updateShaderProgram() {
     vertex_shader_source += options().get<View::Option::COLORMAP_IMPLEMENTATION>();
     std::string fragment_shader_source = SURFACE_FRAG_GLSL;
     fragment_shader_source += options().get<View::Option::COLORMAP_IMPLEMENTATION>();
+    fragment_shader_source += options().get<View::Option::IS_VISIBLE_IMPLEMENTATION>();
     m_program = Utilities::createProgram(vertex_shader_source, fragment_shader_source, {"ivPosition", "ivDirection"});
 }
 

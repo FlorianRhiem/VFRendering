@@ -52,7 +52,7 @@ public:
         VERTICAL_FIELD_OF_VIEW,
         BACKGROUND_COLOR,
         COLORMAP_IMPLEMENTATION,
-        Z_RANGE,
+        IS_VISIBLE_IMPLEMENTATION,
         CAMERA_POSITION,
         CENTER_POSITION,
         UP_VECTOR
@@ -141,10 +141,10 @@ struct VFRendering::Option<VFRendering::View::Option::COLORMAP_IMPLEMENTATION> {
     std::string default_value = VFRendering::Utilities::getColormapImplementation(VFRendering::Utilities::Colormap::DEFAULT);
 };
 
-/** Option to set the range of z values to be shown, values outside this range are filtered out. */
+/** Option to set the GLSL code implementing the is_visible function. */
 template<>
-struct VFRendering::Option<VFRendering::View::Option::Z_RANGE> {
-    glm::vec2 default_value = {-1, 1};
+struct VFRendering::Option<VFRendering::View::Option::IS_VISIBLE_IMPLEMENTATION> {
+    std::string default_value = "bool is_visible(vec3 position, vec3 direction) { return true; }";
 };
 
 /** Option to set the camera position. */

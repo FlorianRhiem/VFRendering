@@ -16,10 +16,14 @@ namespace VFRendering {
 VectorSphereRenderer::VectorSphereRenderer(const View& view) : RendererBase(view) {
     glGenVertexArrays(1, &m_sphere_points_vao);
     glBindVertexArray(m_sphere_points_vao);
-    glGenBuffers(1, &m_sphere_points_vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, m_sphere_points_vbo);
+    glGenBuffers(1, &m_sphere_points_positions_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, m_sphere_points_positions_vbo);
     glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, nullptr);
     glEnableVertexAttribArray(0);
+    glGenBuffers(1, &m_sphere_points_directions_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, m_sphere_points_directions_vbo);
+    glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, nullptr);
+    glEnableVertexAttribArray(1);
 
     glGenVertexArrays(1, &m_sphere_background_vao);
     glBindVertexArray(m_sphere_background_vao);
@@ -45,7 +49,8 @@ VectorSphereRenderer::~VectorSphereRenderer() {
     glDeleteVertexArrays(1, &m_sphere_points_vao);
     glDeleteVertexArrays(1, &m_sphere_background_vao);
     glDeleteBuffers(1, &m_sphere_background_vbo);
-    glDeleteBuffers(1, &m_sphere_points_vbo);
+    glDeleteBuffers(1, &m_sphere_points_positions_vbo);
+    glDeleteBuffers(1, &m_sphere_points_directions_vbo);
     glDeleteProgram(m_sphere_points_program);
     glDeleteProgram(m_sphere_background_program);
 }
@@ -65,8 +70,11 @@ void VectorSphereRenderer::optionsHaveChanged(const std::vector<int>& changed_op
 }
 
 void VectorSphereRenderer::update(bool keep_geometry) {
-    (void)keep_geometry;
-    glBindBuffer(GL_ARRAY_BUFFER, m_sphere_points_vbo);
+    if (!keep_geometry) {
+        glBindBuffer(GL_ARRAY_BUFFER, m_sphere_points_positions_vbo);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * positions().size(), positions().data(), GL_STREAM_DRAW);
+    }
+    glBindBuffer(GL_ARRAY_BUFFER, m_sphere_points_directions_vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * directions().size(), directions().data(), GL_STREAM_DRAW);
     m_num_instances = directions().size();
 }
@@ -96,13 +104,6 @@ void VectorSphereRenderer::draw(float aspect_ratio) {
     glUseProgram(m_sphere_points_program);
     glBindVertexArray(m_sphere_points_vao);
 
-    glm::vec2 z_range = options().get<View::Option::Z_RANGE>();
-    if (z_range.x <= -1) {
-        z_range.x = -2;
-    }
-    if (z_range.y >= 1) {
-        z_range.y = 2;
-    }
     glm::vec3 camera_position = options().get<View::Option::CAMERA_POSITION>();
     glm::vec3 center_position = options().get<View::Option::CENTER_POSITION>();
     glm::vec3 upVector = options().get<View::Option::UP_VECTOR>();
@@ -120,7 +121,6 @@ void VectorSphereRenderer::draw(float aspect_ratio) {
     glUniformMatrix4fv(glGetUniformLocation(m_sphere_points_program, "uProjectionMatrix"), 1, false, glm::value_ptr(projection_matrix));
     glUniformMatrix4fv(glGetUniformLocation(m_sphere_points_program, "uModelviewMatrix"), 1, false, glm::value_ptr(modelview_matrix));
     glUniform3f(glGetUniformLocation(m_sphere_points_program, "uLightPosition"), light_position[0], light_position[1], light_position[2]);
-    glUniform2f(glGetUniformLocation(m_sphere_points_program, "uZRange"), z_range[0], z_range[1]);
     glUniform2f(glGetUniformLocation(m_sphere_points_program, "uPointSizeRange"), point_size_range[0], point_size_range[1]);
 
     glUniform1f(glGetUniformLocation(m_sphere_points_program, "uAspectRatio"), aspect_ratio);
@@ -147,7 +147,8 @@ void VectorSphereRenderer::updateShaderProgram() {
         std::string vertex_shader_source = SPHERE_POINTS_VERT_GLSL;
         std::string fragment_shader_source = SPHERE_POINTS_FRAG_GLSL;
         fragment_shader_source += options().get<View::Option::COLORMAP_IMPLEMENTATION>();
-        m_sphere_points_program = Utilities::createProgram(vertex_shader_source, fragment_shader_source, {"ivDirection"});
+        fragment_shader_source += options().get<View::Option::IS_VISIBLE_IMPLEMENTATION>();
+        m_sphere_points_program = Utilities::createProgram(vertex_shader_source, fragment_shader_source, {"ivPosition", "ivDirection"});
     }
     {
         if (m_sphere_background_program) {

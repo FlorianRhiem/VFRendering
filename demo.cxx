@@ -4,6 +4,9 @@
 #include <GLFW/glfw3.h>
 
 #include "VFRendering/View.hxx"
+#include "VFRendering/CombinedRenderer.hxx"
+#include "VFRendering/ArrowRenderer.hxx"
+#include "VFRendering/IsosurfaceRenderer.hxx"
 
 static bool needs_redraw = false;
 static VFRendering::View* view_ptr = nullptr;
@@ -132,6 +135,19 @@ int main(void) {
     options.set<VFRendering::View::Option::SYSTEM_CENTER>((geometry.min() + geometry.max()) * 0.5f);
     options.set<VFRendering::View::Option::COLORMAP_IMPLEMENTATION>(VFRendering::Utilities::getColormapImplementation(VFRendering::Utilities::Colormap::HSV));
     view.updateOptions(options);
+
+    std::vector<std::shared_ptr<VFRendering::RendererBase>> renderers;
+    renderers.push_back(std::make_shared<VFRendering::IsosurfaceRenderer>(view, [] (const glm::vec3& position, const glm::vec3& direction) -> VFRendering::IsosurfaceRenderer::isovalue_type {
+        (void)position;
+        return direction.z;
+    }, 0.0));
+    renderers.push_back(std::make_shared<VFRendering::IsosurfaceRenderer>(view, [] (const glm::vec3& position, const glm::vec3& direction) -> VFRendering::IsosurfaceRenderer::isovalue_type {
+        (void)direction;
+        return position.x;
+    }, 0.0));
+    renderers.push_back(std::make_shared<VFRendering::ArrowRenderer>(view));
+    view.renderers({{std::make_shared<VFRendering::CombinedRenderer>(view, renderers), {{0, 0, 1, 1}}}});
+
     while (!glfwWindowShouldClose(window)) {
         if (needs_redraw) {
             needs_redraw = false;

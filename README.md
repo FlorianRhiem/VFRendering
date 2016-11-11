@@ -119,7 +119,7 @@ Currently, the following options are available:
 | View::Option::VERTICAL_FIELD_OF_VIEW | float | 45.0 | View.hxx | VFRendering::Option< VFRendering::View::Option::VERTICAL_FIELD_OF_VIEW > |
 | View::Option::BACKGROUND_COLOR |  glm::vec3 | {0, 0, 0} | View.hxx | VFRendering::Option< VFRendering::View::Option::BACKGROUND_COLOR > |
 | View::Option::COLORMAP_IMPLEMENTATION | std::string | VFRendering::Utilities::getColormapImplementation(VFRendering::Utilities::Colormap::DEFAULT) | View.hxx | VFRendering::Option< VFRendering::View::Option::COLORMAP_IMPLEMENTATION > |
-| View::Option::Z_RANGE | glm::vec2 | {-1, 1} | View.hxx | VFRendering::Option< VFRendering::View::Option::Z_RANGE > |
+| View::Option::IS_VISIBLE_IMPLEMENTATION | std::string | bool is_visible(vec3 position, vec3 direction) { return true; } | View.hxx | VFRendering::Option< VFRendering::View::Option::IS_VISIBLE_IMPLEMENTATION > |
 | View::Option::CAMERA_POSITION |  glm::vec3 | {14.5, 14.5, 30} | View.hxx | VFRendering::Option< VFRendering::View::Option::CAMERA_POSITION > |
 | View::Option::CENTER_POSITION |  glm::vec3 | {14.5, 14.5, 0} |  View.hxx | VFRendering::Option< VFRendering::View::Option::CENTER_POSITION > |
 | View::Option::UP_VECTOR | glm::vec3 | {0, 1, 0}  | View.hxx | VFRendering::Option< VFRendering::View::Option::UP_VECTOR > |
