@@ -201,11 +201,7 @@ void View::renderers(const VisualizationMode& mode, bool show_bounding_box, bool
         main_renderer = std::make_shared<SurfaceRenderer>(*this);
         break;
     case VisualizationMode::ISOSURFACE:
-            // TODO: make these values configurable
-            main_renderer = std::make_shared<IsosurfaceRenderer>(*this, [] (const glm::vec3& position, const glm::vec3& direction) -> IsosurfaceRenderer::isovalue_type {
-                                                                     (void)position;
-                                                                     return direction.z;
-                                                                 }, 0.0);
+        main_renderer = std::make_shared<IsosurfaceRenderer>(*this);
         break;
     case VisualizationMode::SPHERE:
         main_renderer = std::make_shared<VectorSphereRenderer>(*this);
@@ -257,11 +253,15 @@ void View::updateOptions(const Options& options) {
         return;
     }
     optionsHaveChanged(changed_options);
+    for (auto it : m_renderers) {
+        auto renderer = it.first;
+        renderer->updateOptions(options);
+    }
 }
 
 void View::options(const Options& options) {
-    m_options = options;
-    updateOptions(Options());
+    m_options = Options();
+    updateOptions(options);
 }
 
 const Options& View::options() const {
@@ -279,10 +279,6 @@ void View::optionsHaveChanged(const std::vector<int>& changed_options) {
     }
     if (m_is_centered && recenter_camera) {
         recenterCamera(m_camera, options().get<Option::SYSTEM_CENTER>());
-    }
-    for (auto it : m_renderers) {
-        auto renderer = it.first;
-        renderer->optionsHaveChanged(changed_options);
     }
 }
 

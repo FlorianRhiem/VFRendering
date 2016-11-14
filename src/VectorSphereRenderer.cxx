@@ -60,6 +60,7 @@ void VectorSphereRenderer::optionsHaveChanged(const std::vector<int>& changed_op
     for (auto option_index : changed_options) {
         switch (option_index) {
         case View::Option::COLORMAP_IMPLEMENTATION:
+        case View::Option::IS_VISIBLE_IMPLEMENTATION:
             update_shader = true;
             break;
         }

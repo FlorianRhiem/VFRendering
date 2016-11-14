@@ -20,7 +20,11 @@ public:
     virtual ~RendererBase() {};
     virtual void update(bool keep_geometry) = 0;
     virtual void draw(float aspect_ratio) = 0;
-    virtual void optionsHaveChanged(const std::vector<int>& changed_options) = 0;
+    virtual void options(const Options& options);
+    virtual void updateOptions(const Options& options);
+    template<int index>
+    void setOption(const decltype(Options().get<index>())& value);
+    virtual void optionsHaveChanged(const std::vector<int>& changed_options);
 
 protected:
     const Options& options() const;
@@ -31,7 +35,13 @@ protected:
 
 private:
     const View& m_view;
+    Options m_options;
 };
+
+template<int index>
+void RendererBase::setOption(const decltype(Options().get<index>())& value) {
+    updateOptions(Options::withOption<index>(value));
+}
 
 }
 

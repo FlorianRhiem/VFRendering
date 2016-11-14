@@ -65,6 +65,7 @@ void ArrowRenderer::optionsHaveChanged(const std::vector<int>& changed_options) 
             update_vertices = true;
             break;
         case View::Option::COLORMAP_IMPLEMENTATION:
+        case View::Option::IS_VISIBLE_IMPLEMENTATION:
             update_shader = true;
             break;
         }

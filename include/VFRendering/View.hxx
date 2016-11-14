@@ -70,6 +70,8 @@ public:
     float getFramerate() const;
 
     void updateOptions(const Options& options);
+    template<int index>
+    void setOption(const decltype(Options().get<index>())& value);
     void options(const Options& options);
     const Options& options() const;
 
@@ -97,6 +99,11 @@ private:
 
     Options m_options;
 };
+
+template<int index>
+void View::setOption(const decltype(Options().get<index>())& value) {
+    updateOptions(Options::withOption<index>(value));
+}
 
 }
 

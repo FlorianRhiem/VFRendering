@@ -28,6 +28,9 @@ public:
     template<int index>
     void set(typename Type<index>::type value);
 
+    template<int index>
+    void clear();
+
     std::vector<int> keys() const;
 
     std::vector<int> update(const Options<T> &other);
@@ -97,6 +100,12 @@ template<typename T>
 template<int index>
 void Options<T>::set(typename Type<index>::type value) {
     m_options[index] = std::make_shared<StorableOption<index>>(value);
+}
+
+template<typename T>
+template<int index>
+void Options<T>::clear() {
+    m_options.erase(index);
 }
 
 template<typename T>

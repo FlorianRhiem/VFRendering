@@ -16,10 +16,15 @@ void CombinedRenderer::draw(float aspect_ratio) {
         renderer->draw(aspect_ratio);
     }
 }
-
 void CombinedRenderer::optionsHaveChanged(const std::vector<int>& changed_options) {
     for (auto renderer : m_renderers) {
         renderer->optionsHaveChanged(changed_options);
+    }
+}
+
+void CombinedRenderer::updateOptions(const Options& options) {
+    for (auto renderer : m_renderers) {
+        renderer->updateOptions(options);
     }
 }
 }

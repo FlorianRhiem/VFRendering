@@ -12,7 +12,7 @@
 #include "shaders/surface.frag.glsl.generated.hxx"
 
 namespace VFRendering {
-IsosurfaceRenderer::IsosurfaceRenderer(const View& view, const value_function_type& value_function, const isovalue_type& isovalue) : RendererBase(view), m_value_function(value_function), m_value_function_changed(true), m_isovalue(isovalue), m_isovalue_changed(true) {
+IsosurfaceRenderer::IsosurfaceRenderer(const View& view) : RendererBase(view), m_value_function_changed(true), m_isovalue_changed(true) {
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
 
@@ -46,7 +46,14 @@ void IsosurfaceRenderer::optionsHaveChanged(const std::vector<int>& changed_opti
     bool update_shader = false;
     for (auto option_index : changed_options) {
         switch (option_index) {
-        case View::Option::COLORMAP_IMPLEMENTATION:
+            case Option::ISOVALUE:
+                m_isovalue_changed = true;
+                break;
+            case Option::VALUE_FUNCTION:
+                m_value_function_changed = true;
+                break;
+            case View::Option::COLORMAP_IMPLEMENTATION:
+            case View::Option::IS_VISIBLE_IMPLEMENTATION:
             update_shader = true;
             break;
         }
@@ -103,27 +110,12 @@ void IsosurfaceRenderer::updateShaderProgram() {
     m_program = Utilities::createProgram(vertex_shader_source, fragment_shader_source, {"ivPosition", "ivDirection"});
 }
 
-void IsosurfaceRenderer::valueFunction(const value_function_type& value_function) {
-    m_value_function = value_function;
-    m_value_function_changed = true;
-}
-
-const IsosurfaceRenderer::value_function_type& IsosurfaceRenderer::valueFunction() {
-    return m_value_function;
-}
-
-void IsosurfaceRenderer::isovalue(const isovalue_type& isovalue) {
-    m_isovalue = isovalue;
-    m_isovalue_changed = true;
-}
-
-const IsosurfaceRenderer::isovalue_type& IsosurfaceRenderer::isovalue() {
-    return m_isovalue;
-}
-
 void IsosurfaceRenderer::updateIsosurfaceIndices() {
     m_value_function_changed = false;
     m_isovalue_changed = false;
+
+    auto value_function = options().get<Option::VALUE_FUNCTION>();
+    auto isovalue = options().get<Option::ISOVALUE>();
 
     const auto& volume_indices = volumeIndices();
 
@@ -133,7 +125,7 @@ void IsosurfaceRenderer::updateIsosurfaceIndices() {
     } else if (positions().size() < 4) {
         m_num_indices = 0;
         return;
-    } else if (!m_value_function) {
+    } else if (!value_function) {
         m_num_indices = 0;
         return;
     }
@@ -142,10 +134,10 @@ void IsosurfaceRenderer::updateIsosurfaceIndices() {
     for (Geometry::index_type i = 0; i < positions().size(); i++) {
         const glm::vec3& position = positions()[i];
         const glm::vec3& direction = directions()[i];
-        values.push_back(m_value_function(position, direction));
+        values.push_back(value_function(position, direction));
     }
 
-    VectorfieldIsosurface isosurface(VectorfieldIsosurface::calculate(positions(), directions(), values, m_isovalue, volume_indices));
+    VectorfieldIsosurface isosurface(VectorfieldIsosurface::calculate(positions(), directions(), values, isovalue, volume_indices));
 
     const std::vector<GLuint> surface_indices(isosurface.triangle_indices.begin(), isosurface.triangle_indices.end());
 
