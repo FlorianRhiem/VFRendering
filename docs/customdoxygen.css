@@ -1,5 +1,14 @@
 /* Custom CSS for Doxygen by Florian Rhiem <florian.rhiem@gmail.com> */
 
+body {
+	display:inline-block;
+	min-width:100%;
+}
+
+#MSearchBox {
+	right:initial;
+}
+
 div.tabs {
 	background-image:none;
 	background-color:#444444;
