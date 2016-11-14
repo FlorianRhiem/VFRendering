@@ -188,7 +188,7 @@ static std::array<float, 4> locationToViewport(WidgetLocation location) {
     };
 }
 
-/** Convenience function that creates the std::vector of renderers and viewports the most common use cases */
+/** Convenience function that creates the std::vector of renderers and viewports for the most common use cases */
 void View::renderers(const VisualizationMode& mode, bool show_bounding_box, bool show_miniview, WidgetLocation miniview_location, bool show_coordinate_system, WidgetLocation coordinate_system_location) {
     std::vector<std::pair<std::shared_ptr<RendererBase>, std::array<float, 4>>> renderers;
 
