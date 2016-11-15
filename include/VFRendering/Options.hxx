@@ -6,6 +6,8 @@
 #include <memory>
 #include <iostream>
 
+namespace VFRendering {
+namespace Utilities {
 
 template<typename T>
 class Options {
@@ -118,6 +120,9 @@ std::vector<int> Options<T>::update(const Options<T> &other) {
         updatedOptions.push_back(index);
     }
     return updatedOptions;
+}
+
+}
 }
 
 #endif

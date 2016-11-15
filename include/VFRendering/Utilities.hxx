@@ -9,7 +9,7 @@
 
 namespace VFRendering {
 class View;
-using Options = ::Options<View>;
+using Options = Utilities::Options<View>;
 
 namespace Utilities {
 

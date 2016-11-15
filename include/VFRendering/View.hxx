@@ -16,7 +16,7 @@ namespace VFRendering {
 class RendererBase;
 class View;
 
-using Options = ::Options<View>;
+using Options = Utilities::Options<View>;
 
 /** Utility template to make specifying options simpler. */
 template<int index>
@@ -110,7 +110,7 @@ void View::setOption(const decltype(Options().get<index>())& value) {
 /** Utility template specialization to make specifying options simpler. */
 template<>
 template<int index>
-struct Options<VFRendering::View>::Option : public VFRendering::Option<index> {};
+struct VFRendering::Utilities::Options<VFRendering::View>::Option : public VFRendering::Option<index> {};
 
 /** Option to set the position of the lower left front corner of the bounding box. */
 template<>
