@@ -89,6 +89,9 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/thirdpar
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/thirdparty/glad/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_BINARY_DIR}/thirdparty-install/include/libqhullcpp)
 
+install(TARGETS ${PROJECT_NAME} DESTINATION lib)
+install(DIRECTORY include/VFRendering DESTINATION include)
+
 # Build demo
 
 add_executable(${PROJECT_NAME}Demo demo.cxx)
