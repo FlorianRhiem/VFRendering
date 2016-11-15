@@ -34,23 +34,6 @@ set(SOURCE_FILES
     src/Geometry.cxx
     src/IsosurfaceRenderer.cxx
     src/RendererBase.cxx
-    src/shaders
-    src/shaders/arrows.frag.glsl
-    src/shaders/arrows.vert.glsl
-    src/shaders/boundingbox.frag.glsl
-    src/shaders/boundingbox.vert.glsl
-    src/shaders/colormap.bluegreenred.glsl
-    src/shaders/colormap.bluered.glsl
-    src/shaders/colormap.bluewhitered.glsl
-    src/shaders/colormap.hsv.glsl
-    src/shaders/coordinatesystem.frag.glsl
-    src/shaders/coordinatesystem.vert.glsl
-    src/shaders/sphere_background.frag.glsl
-    src/shaders/sphere_background.vert.glsl
-    src/shaders/sphere_points.frag.glsl
-    src/shaders/sphere_points.vert.glsl
-    src/shaders/surface.frag.glsl
-    src/shaders/surface.vert.glsl
     src/SurfaceRenderer.cxx
     src/Utilities.cxx
     src/VectorfieldIsosurface.cxx
@@ -75,6 +58,23 @@ set(HEADER_FILES
     include/VFRendering/Utilities.hxx
     include/VFRendering/VectorSphereRenderer.hxx
     include/VFRendering/View.hxx
+    include/shaders
+    include/shaders/arrows.frag.glsl.hxx
+    include/shaders/arrows.vert.glsl.hxx
+    include/shaders/boundingbox.frag.glsl.hxx
+    include/shaders/boundingbox.vert.glsl.hxx
+    include/shaders/colormap.bluegreenred.glsl.hxx
+    include/shaders/colormap.bluered.glsl.hxx
+    include/shaders/colormap.bluewhitered.glsl.hxx
+    include/shaders/colormap.hsv.glsl.hxx
+    include/shaders/coordinatesystem.frag.glsl.hxx
+    include/shaders/coordinatesystem.vert.glsl.hxx
+    include/shaders/sphere_background.frag.glsl.hxx
+    include/shaders/sphere_background.vert.glsl.hxx
+    include/shaders/sphere_points.frag.glsl.hxx
+    include/shaders/sphere_points.vert.glsl.hxx
+    include/shaders/surface.frag.glsl.hxx
+    include/shaders/surface.vert.glsl.hxx
 )
 
 add_library(${PROJECT_NAME} ${SOURCE_FILES})
