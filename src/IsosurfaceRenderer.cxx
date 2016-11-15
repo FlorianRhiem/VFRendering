@@ -8,8 +8,8 @@
 #include "VFRendering/Utilities.hxx"
 
 #include "VectorfieldIsosurface.hxx"
-#include "shaders/surface.vert.glsl.generated.hxx"
-#include "shaders/surface.frag.glsl.generated.hxx"
+#include "shaders/surface.vert.glsl.hxx"
+#include "shaders/surface.frag.glsl.hxx"
 
 namespace VFRendering {
 IsosurfaceRenderer::IsosurfaceRenderer(const View& view) : RendererBase(view), m_value_function_changed(true), m_isovalue_changed(true) {

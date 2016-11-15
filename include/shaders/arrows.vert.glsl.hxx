@@ -1,3 +1,7 @@
+#ifndef ARROWS_VERT_GLSL_HXX
+#define ARROWS_VERT_GLSL_HXX
+
+static const std::string ARROWS_VERT_GLSL = R"LITERAL(
 #version 330
 uniform mat4 uProjectionMatrix;
 uniform mat4 uModelviewMatrix;
@@ -46,3 +50,7 @@ void main(void) {
     gl_Position = vec4(2.0, 2.0, 2.0, 0.0);
   }
 }
+)LITERAL";
+
+#endif
+

@@ -7,8 +7,8 @@
 #include "VFRendering/View.hxx"
 #include "VFRendering/Utilities.hxx"
 
-#include "shaders/boundingbox.vert.glsl.generated.hxx"
-#include "shaders/boundingbox.frag.glsl.generated.hxx"
+#include "shaders/boundingbox.vert.glsl.hxx"
+#include "shaders/boundingbox.frag.glsl.hxx"
 
 namespace VFRendering {
 BoundingBoxRenderer::BoundingBoxRenderer(const View& view) : RendererBase(view) {

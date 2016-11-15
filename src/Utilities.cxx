@@ -6,10 +6,10 @@
 
 #include "VFRendering/View.hxx"
 
-#include "shaders/colormap.hsv.glsl.generated.hxx"
-#include "shaders/colormap.bluered.glsl.generated.hxx"
-#include "shaders/colormap.bluegreenred.glsl.generated.hxx"
-#include "shaders/colormap.bluewhitered.glsl.generated.hxx"
+#include "shaders/colormap.hsv.glsl.hxx"
+#include "shaders/colormap.bluered.glsl.hxx"
+#include "shaders/colormap.bluegreenred.glsl.hxx"
+#include "shaders/colormap.bluewhitered.glsl.hxx"
 
 namespace VFRendering {
 namespace Utilities {

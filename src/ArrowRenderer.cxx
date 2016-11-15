@@ -6,8 +6,8 @@
 
 #include "VFRendering/Utilities.hxx"
 
-#include "shaders/arrows.vert.glsl.generated.hxx"
-#include "shaders/arrows.frag.glsl.generated.hxx"
+#include "shaders/arrows.vert.glsl.hxx"
+#include "shaders/arrows.frag.glsl.hxx"
 
 namespace VFRendering {
 ArrowRenderer::ArrowRenderer(const View& view) : RendererBase(view) {

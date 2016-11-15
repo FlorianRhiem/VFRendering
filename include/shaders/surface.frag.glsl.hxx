@@ -1,3 +1,7 @@
+#ifndef SURFACE_FRAG_GLSL_HXX
+#define SURFACE_FRAG_GLSL_HXX
+
+static const std::string SURFACE_FRAG_GLSL = R"LITERAL(
 #version 330
 
 in vec3 vfPosition;
@@ -15,3 +19,7 @@ void main(void) {
     discard;
   }
 }
+)LITERAL";
+
+#endif
+

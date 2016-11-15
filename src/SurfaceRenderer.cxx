@@ -6,8 +6,8 @@
 
 #include "VFRendering/Utilities.hxx"
 
-#include "shaders/surface.vert.glsl.generated.hxx"
-#include "shaders/surface.frag.glsl.generated.hxx"
+#include "shaders/surface.vert.glsl.hxx"
+#include "shaders/surface.frag.glsl.hxx"
 
 namespace VFRendering {
 SurfaceRenderer::SurfaceRenderer(const View& view) : RendererBase(view) {

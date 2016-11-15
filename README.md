@@ -109,6 +109,14 @@ As an example, to adjust the vertical field of view, you would do the following:
     view.updateOptions(options);
 ```
 
+If you want to set only one option, you can also use **View::setOption**:
+
+``` c++
+	view.setOption<VFRendering::View::Option::VERTICAL_FIELD_OF_VIEW>(30);
+```
+
+If you want to set an option for an individual Renderer, you can use the methods **RendererBase::updateOptions** and **RendererBase::setOption** in the same way.
+
 Whether this way of setting options should be replaced by getters/setters will be evaluated as the API becomes more stable.
 
 Currently, the following options are available:

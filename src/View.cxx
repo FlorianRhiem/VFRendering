@@ -240,10 +240,9 @@ void View::renderers(const VisualizationMode& mode, bool show_bounding_box, bool
 
 void View::renderers(const std::vector<std::pair<std::shared_ptr<RendererBase>, std::array<float, 4>>>& renderers) {
     m_renderers = renderers;
-    const auto option_keys = options().keys();
     for (auto it : m_renderers) {
         auto renderer = it.first;
-        renderer->optionsHaveChanged(option_keys);
+        renderer->updateOptions(options());
     }
 }
 

@@ -1,3 +1,7 @@
+#ifndef SURFACE_VERT_GLSL_HXX
+#define SURFACE_VERT_GLSL_HXX
+
+static const std::string SURFACE_VERT_GLSL = R"LITERAL(
 #version 330
 
 uniform mat4 uProjectionMatrix;
@@ -13,3 +17,7 @@ void main(void) {
   vfDirection = normalize(ivDirection);
   gl_Position = uProjectionMatrix * (uModelviewMatrix * vec4(ivPosition, 1.0));
 }
+)LITERAL";
+
+#endif
+

@@ -1,3 +1,7 @@
+#ifndef SPHERE_POINTS_VERT_GLSL_HXX
+#define SPHERE_POINTS_VERT_GLSL_HXX
+
+static const std::string SPHERE_POINTS_VERT_GLSL = R"LITERAL(
 #version 330
 
 uniform mat4 uProjectionMatrix;
@@ -28,3 +32,7 @@ void main(void) {
   }
   gl_PointSize = uPointSizeRange.x + (uPointSizeRange.y-uPointSizeRange.x) * sqrt(max(0.0, 1.0-clipRadius*clipRadius)) * (5.0-uUseFakePerspective*gl_Position.z) / 5.0;
 }
+)LITERAL";
+
+#endif
+

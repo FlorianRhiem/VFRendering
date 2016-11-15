@@ -1,3 +1,7 @@
+#ifndef ARROWS_FRAG_GLSL_HXX
+#define ARROWS_FRAG_GLSL_HXX
+
+static const std::string ARROWS_FRAG_GLSL = R"LITERAL(
 #version 330
 uniform vec3 uLightPosition;
 in vec3 vfPosition;
@@ -15,4 +19,8 @@ void main(void) {
   float ambient = 0.2;
   fo_FragColor = vec4((ambient+diffuse)*vfColor + specular*vec3(1, 1, 1), 1.0);
 }
+
+)LITERAL";
+
+#endif
 

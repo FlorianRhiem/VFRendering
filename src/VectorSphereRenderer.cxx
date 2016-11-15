@@ -7,10 +7,10 @@
 
 #include "VFRendering/Utilities.hxx"
 
-#include "shaders/sphere_points.vert.glsl.generated.hxx"
-#include "shaders/sphere_points.frag.glsl.generated.hxx"
-#include "shaders/sphere_background.vert.glsl.generated.hxx"
-#include "shaders/sphere_background.frag.glsl.generated.hxx"
+#include "shaders/sphere_points.vert.glsl.hxx"
+#include "shaders/sphere_points.frag.glsl.hxx"
+#include "shaders/sphere_background.vert.glsl.hxx"
+#include "shaders/sphere_background.frag.glsl.hxx"
 
 namespace VFRendering {
 VectorSphereRenderer::VectorSphereRenderer(const View& view) : RendererBase(view) {

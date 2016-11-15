@@ -7,8 +7,8 @@
 
 #include "VFRendering/Utilities.hxx"
 
-#include "shaders/coordinatesystem.vert.glsl.generated.hxx"
-#include "shaders/coordinatesystem.frag.glsl.generated.hxx"
+#include "shaders/coordinatesystem.vert.glsl.hxx"
+#include "shaders/coordinatesystem.frag.glsl.hxx"
 
 namespace VFRendering {
 CoordinateSystemRenderer::CoordinateSystemRenderer(const View& view) : RendererBase(view) {

@@ -1,3 +1,7 @@
+#ifndef SPHERE_BACKGROUND_FRAG_GLSL_HXX
+#define SPHERE_BACKGROUND_FRAG_GLSL_HXX
+
+static const std::string SPHERE_BACKGROUND_FRAG_GLSL = R"LITERAL(
 #version 330
 
 in vec3 vfPosition;
@@ -12,3 +16,7 @@ void main(void) {
     fo_FragColor = vec4(color, 1.0);
   }
 }
+)LITERAL";
+
+#endif
+

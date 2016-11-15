@@ -1,3 +1,7 @@
+#ifndef COORDINATESYSTEM_VERT_GLSL_HXX
+#define COORDINATESYSTEM_VERT_GLSL_HXX
+
+static const std::string COORDINATESYSTEM_VERT_GLSL = R"LITERAL(
 #version 330
 
 uniform mat4 uProjectionMatrix;
@@ -14,3 +18,7 @@ void main(void) {
   vfColor = colormap(normalize(ivDirection));
   gl_Position = uProjectionMatrix * uModelviewMatrix * vec4(uOrigin+ivPosition*uAxisLength, 1.0);
 }
+)LITERAL";
+
+#endif
+
