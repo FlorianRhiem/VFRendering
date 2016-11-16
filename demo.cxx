@@ -134,6 +134,9 @@ int main(void) {
     options.set<VFRendering::View::Option::BOUNDING_BOX_MAX>(geometry.max());
     options.set<VFRendering::View::Option::SYSTEM_CENTER>((geometry.min() + geometry.max()) * 0.5f);
     options.set<VFRendering::View::Option::COLORMAP_IMPLEMENTATION>(VFRendering::Utilities::getColormapImplementation(VFRendering::Utilities::Colormap::HSV));
+    options.set<VFRendering::View::Option::CAMERA_POSITION>({0, 0, 30});
+    options.set<VFRendering::View::Option::CENTER_POSITION>({0, 0, 0});
+    options.set<VFRendering::View::Option::UP_VECTOR>({0, 1, 0});
     view.updateOptions(options);
 
     auto isosurface_renderer_ptr = std::make_shared<VFRendering::IsosurfaceRenderer>(view);

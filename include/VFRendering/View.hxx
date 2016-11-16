@@ -6,7 +6,6 @@
 
 #include <glm/glm.hpp>
 
-#include <VFRendering/Camera.hxx>
 #include <VFRendering/Options.hxx>
 #include <VFRendering/FPSCounter.hxx>
 #include <VFRendering/Utilities.hxx>
@@ -92,7 +91,6 @@ private:
     Geometry m_geometry;
     std::vector<glm::vec3> m_vectors;
     std::vector<std::pair<std::shared_ptr<RendererBase>, std::array<float, 4>>> m_renderers;
-    Utilities::Camera m_camera;
     Utilities::FPSCounter m_fps_counter;
     glm::vec2 m_framebuffer_size;
     bool m_is_centered;

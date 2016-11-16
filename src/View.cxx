@@ -25,10 +25,6 @@ View::View() {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    auto system_center = options().get<Option::SYSTEM_CENTER>();
-    auto bounds_min = options().get<Option::BOUNDING_BOX_MIN>();
-    auto bounds_max = options().get<Option::BOUNDING_BOX_MAX>();
-    setCamera(system_center + glm::vec3(0, 0, glm::length(bounds_max - bounds_min)));
     renderers(VisualizationMode::ARROWS, true, true, WidgetLocation::BOTTOM_LEFT, true, WidgetLocation::BOTTOM_RIGHT);
 }
 
@@ -57,9 +53,6 @@ void View::draw() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     Options options;
-    options.set<View::Option::CAMERA_POSITION>(m_camera.cameraPosition());
-    options.set<View::Option::CENTER_POSITION>(m_camera.centerPosition());
-    options.set<View::Option::UP_VECTOR>(m_camera.upVector());
     auto bounds_max = m_options.get<View::Option::BOUNDING_BOX_MAX>();
     auto center = m_options.get<View::Option::SYSTEM_CENTER>();
     options.set<CoordinateSystemRenderer::Option::AXIS_LENGTH>({
@@ -75,7 +68,7 @@ void View::draw() {
         float height = m_framebuffer_size.y;
         glViewport((GLint)(viewport[0] * width), (GLint)(viewport[1] * height), (GLsizei)(viewport[2] * width), (GLsizei)(viewport[3] * height));
         glClear(GL_DEPTH_BUFFER_BIT);
-        renderer->draw(viewport[2] / viewport[3] * m_camera.aspectRatio());
+        renderer->draw(viewport[2] * width / viewport[3] / height);
     }
     m_fps_counter.tick();
 }
@@ -88,28 +81,33 @@ void View::mouseMove(const glm::vec2& position_before, const glm::vec2& position
     if (position_before == position_after) {
         return;
     }
+    auto camera_position = options().get<Option::CAMERA_POSITION>();
+    auto center_position = options().get<Option::CENTER_POSITION>();
+    auto up_vector = options().get<Option::UP_VECTOR>();
     auto delta = position_after - position_before;
     auto length = glm::length(delta);
-    auto forward = glm::normalize(m_camera.centerPosition() - m_camera.cameraPosition());
-    auto camera_distance = glm::length(m_camera.centerPosition() - m_camera.cameraPosition());
-    auto up = glm::normalize(m_camera.upVector());
-    auto right = glm::normalize(glm::cross(forward, up));
-    up = glm::normalize(glm::cross(right, forward));
+    auto forward = glm::normalize(center_position - camera_position);
+    auto camera_distance = glm::length(center_position - camera_position);
+    up_vector = glm::normalize(up_vector);
+    auto right = glm::normalize(glm::cross(forward, up_vector));
+    up_vector = glm::normalize(glm::cross(right, forward));
     delta = glm::normalize(delta);
     switch (mode) {
     case CameraMovementModes::ROTATE: {
-        auto axis = glm::normalize(delta.x * up + delta.y * right);
+        auto axis = glm::normalize(delta.x * up_vector + delta.y * right);
         float angle = -length * 0.1f / 180 * 3.14f;
         auto rotation_matrix = glm::rotate(angle, axis);
-        up = glm::mat3(rotation_matrix) * up;
+        up_vector = glm::mat3(rotation_matrix) * up_vector;
         forward = glm::mat3(rotation_matrix) * forward;
-        m_camera.lookAt(m_camera.centerPosition() - forward * camera_distance, m_camera.centerPosition(), up);
+        bool was_centered = m_is_centered;
+        setCamera(center_position - forward * camera_distance, center_position, up_vector);
+        m_is_centered = was_centered;
     }
     break;
     case CameraMovementModes::TRANSLATE: {
         float factor = 0.001f * camera_distance * length;
-        auto translation = factor * (delta.y * up - delta.x * right);
-        m_camera.lookAt(m_camera.cameraPosition() + translation, m_camera.centerPosition() + translation, up);
+        auto translation = factor * (delta.y * up_vector - delta.x * right);
+        setCamera(camera_position + translation, center_position + translation, up_vector);
         m_is_centered = false;
     }
     break;
@@ -119,7 +117,10 @@ void View::mouseMove(const glm::vec2& position_before, const glm::vec2& position
 }
 
 void View::mouseScroll(const float& wheel_delta) {
-    auto forward = m_camera.centerPosition() - m_camera.cameraPosition();
+    auto camera_position = options().get<Option::CAMERA_POSITION>();
+    auto center_position = options().get<Option::CENTER_POSITION>();
+    auto up_vector = options().get<Option::UP_VECTOR>();
+    auto forward = center_position - camera_position;
     float camera_distance = glm::length(forward);
     float new_camera_distance = (float)(1 + 0.02 * wheel_delta) * camera_distance;
     float min_camera_distance = 1;
@@ -127,31 +128,28 @@ void View::mouseScroll(const float& wheel_delta) {
         new_camera_distance = min_camera_distance;
     }
 
-    auto camera_position = m_camera.centerPosition() - new_camera_distance / camera_distance * forward;
-    m_camera.lookAt(camera_position, m_camera.centerPosition(), m_camera.upVector());
+    camera_position = center_position - new_camera_distance / camera_distance * forward;
+    setCamera(camera_position, center_position, up_vector);
 }
 
 void View::setFramebufferSize(float width, float height) {
     m_framebuffer_size = glm::vec2(width, height);
-    m_camera.setAspectRatio(width / height);
 }
 
 void View::setCamera(glm::vec3 camera_position) {
     glm::vec3 center_position = options().get<View::Option::SYSTEM_CENTER>();
     glm::vec3 up_vector(0, 1, 0);
-    m_camera.lookAt(camera_position, center_position, up_vector);
+    setCamera(camera_position, center_position, up_vector);
     m_is_centered = true;
 }
 
 void View::setCamera(glm::vec3 camera_position, glm::vec3 center_position, glm::vec3 up_vector) {
-    m_camera.lookAt(camera_position, center_position, up_vector);
+    Options options;
+    options.set<Option::CAMERA_POSITION>(camera_position);
+    options.set<Option::CENTER_POSITION>(center_position);
+    options.set<Option::UP_VECTOR>(up_vector);
+    updateOptions(options);
     m_is_centered = false;
-}
-
-static void recenterCamera(Utilities::Camera& camera, glm::vec3 center_position) {
-    glm::vec3 camera_position = camera.cameraPosition() + center_position - camera.centerPosition();
-    glm::vec3 up_vector = camera.upVector();
-    camera.lookAt(camera_position, center_position, up_vector);
 }
 
 static std::array<float, 4> locationToViewport(WidgetLocation location) {
@@ -277,7 +275,12 @@ void View::optionsHaveChanged(const std::vector<int>& changed_options) {
         }
     }
     if (m_is_centered && recenter_camera) {
-        recenterCamera(m_camera, options().get<Option::SYSTEM_CENTER>());
+        auto camera_position = options().get<Option::CAMERA_POSITION>();
+        auto center_position = options().get<Option::CENTER_POSITION>();
+        auto up_vector = options().get<Option::UP_VECTOR>();
+        camera_position = camera_position + options().get<Option::SYSTEM_CENTER>() - center_position;
+        center_position = options().get<Option::SYSTEM_CENTER>();
+        setCamera(camera_position, center_position, up_vector);
     }
 }
 

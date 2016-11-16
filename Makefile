@@ -11,7 +11,6 @@ OBJS=\
 	build/ArrowRenderer.o\
 	build/RendererBase.o\
 	build/BoundingBoxRenderer.o\
-	build/Camera.o\
 	build/CombinedRenderer.o\
 	build/CoordinateSystemRenderer.o\
 	build/FPSCounter.o\
@@ -69,7 +68,6 @@ build/ArrowRenderer.o: src/ArrowRenderer.cxx \
   include/VFRendering/RendererBase.hxx \
   include/VFRendering/Options.hxx \
   include/VFRendering/View.hxx \
-  include/VFRendering/Camera.hxx \
   include/VFRendering/FPSCounter.hxx \
   include/VFRendering/Utilities.hxx \
   include/VFRendering/Geometry.hxx \
@@ -81,19 +79,16 @@ build/BoundingBoxRenderer.o: src/BoundingBoxRenderer.cxx \
   include/VFRendering/RendererBase.hxx \
   include/VFRendering/Options.hxx \
   include/VFRendering/View.hxx \
-  include/VFRendering/Camera.hxx \
   include/VFRendering/FPSCounter.hxx \
   include/VFRendering/Utilities.hxx \
   include/VFRendering/Geometry.hxx \
   include/shaders/boundingbox.vert.glsl.hxx \
   include/shaders/boundingbox.frag.glsl.hxx
-build/Camera.o: src/Camera.cxx include/VFRendering/Camera.hxx
 build/CombinedRenderer.o: src/CombinedRenderer.cxx \
   include/VFRendering/CombinedRenderer.hxx \
   include/VFRendering/RendererBase.hxx \
   include/VFRendering/Options.hxx \
   include/VFRendering/View.hxx \
-  include/VFRendering/Camera.hxx \
   include/VFRendering/FPSCounter.hxx \
   include/VFRendering/Utilities.hxx \
   include/VFRendering/Geometry.hxx
@@ -102,7 +97,6 @@ build/CoordinateSystemRenderer.o: src/CoordinateSystemRenderer.cxx \
   include/VFRendering/RendererBase.hxx \
   include/VFRendering/Options.hxx \
   include/VFRendering/View.hxx \
-  include/VFRendering/Camera.hxx \
   include/VFRendering/FPSCounter.hxx \
   include/VFRendering/Utilities.hxx \
   include/VFRendering/Geometry.hxx \
@@ -120,7 +114,6 @@ build/IsosurfaceRenderer.o: src/IsosurfaceRenderer.cxx \
   include/VFRendering/RendererBase.hxx \
   include/VFRendering/Options.hxx \
   include/VFRendering/View.hxx \
-  include/VFRendering/Camera.hxx \
   include/VFRendering/FPSCounter.hxx \
   include/VFRendering/Utilities.hxx \
   include/VFRendering/Geometry.hxx \
@@ -131,7 +124,6 @@ build/RendererBase.o: src/RendererBase.cxx \
   include/VFRendering/RendererBase.hxx \
   include/VFRendering/Options.hxx \
   include/VFRendering/View.hxx \
-  include/VFRendering/Camera.hxx \
   include/VFRendering/FPSCounter.hxx \
   include/VFRendering/Utilities.hxx \
   include/VFRendering/Geometry.hxx
@@ -140,7 +132,6 @@ build/SurfaceRenderer.o: src/SurfaceRenderer.cxx \
   include/VFRendering/RendererBase.hxx \
   include/VFRendering/Options.hxx \
   include/VFRendering/View.hxx \
-  include/VFRendering/Camera.hxx \
   include/VFRendering/FPSCounter.hxx \
   include/VFRendering/Utilities.hxx \
   include/VFRendering/Geometry.hxx \
@@ -150,7 +141,6 @@ build/Utilities.o: src/Utilities.cxx \
   include/VFRendering/Utilities.hxx \
   include/VFRendering/Options.hxx \
   include/VFRendering/View.hxx \
-  include/VFRendering/Camera.hxx \
   include/VFRendering/FPSCounter.hxx \
   include/VFRendering/Geometry.hxx \
   include/shaders/colormap.hsv.glsl.hxx \
@@ -164,7 +154,6 @@ build/VectorSphereRenderer.o: src/VectorSphereRenderer.cxx \
   include/VFRendering/RendererBase.hxx \
   include/VFRendering/Options.hxx \
   include/VFRendering/View.hxx \
-  include/VFRendering/Camera.hxx \
   include/VFRendering/FPSCounter.hxx \
   include/VFRendering/Utilities.hxx \
   include/VFRendering/Geometry.hxx \
@@ -173,7 +162,6 @@ build/VectorSphereRenderer.o: src/VectorSphereRenderer.cxx \
   include/shaders/sphere_background.vert.glsl.hxx \
   include/shaders/sphere_background.frag.glsl.hxx
 build/View.o: src/View.cxx include/VFRendering/View.hxx \
-  include/VFRendering/Camera.hxx \
   include/VFRendering/Options.hxx \
   include/VFRendering/FPSCounter.hxx \
   include/VFRendering/Utilities.hxx \
@@ -187,7 +175,6 @@ build/View.o: src/View.cxx include/VFRendering/View.hxx \
   include/VFRendering/CombinedRenderer.hxx \
   include/VFRendering/CoordinateSystemRenderer.hxx \
   include/VFRendering/View.hxx \
-  include/VFRendering/Camera.hxx \
   include/VFRendering/Options.hxx \
   include/VFRendering/FPSCounter.hxx \
   include/VFRendering/Utilities.hxx \
