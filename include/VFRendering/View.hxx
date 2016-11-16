@@ -63,8 +63,6 @@ public:
 
     void mouseMove(const glm::vec2& position_before, const glm::vec2& position_after, CameraMovementModes mode);
     void mouseScroll(const float& wheel_delta);
-    void setCamera(glm::vec3 camera_position);
-    void setCamera(glm::vec3 camera_position, glm::vec3 center_position, glm::vec3 up_vector);
     void setFramebufferSize(float width, float height);
     float getFramerate() const;
 
@@ -86,6 +84,7 @@ public:
     void renderers(const VisualizationMode& mode, bool show_bounding_box, bool show_miniview, WidgetLocation miniview_location, bool show_coordinate_system, WidgetLocation coordinate_system_location);
 
 private:
+    void setCamera(glm::vec3 camera_position, glm::vec3 center_position, glm::vec3 up_vector);
     void optionsHaveChanged(const std::vector<int>& changed_options);
 
     Geometry m_geometry;

@@ -56,7 +56,11 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
     switch (key) {
     case GLFW_KEY_R:
         if (view_ptr) {
-            view_ptr->setCamera(glm::vec3(0, 0, 30), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+            VFRendering::Options options;
+            options.set<VFRendering::View::Option::CAMERA_POSITION>({0, 0, 30});
+            options.set<VFRendering::View::Option::CENTER_POSITION>({0, 0, 0});
+            options.set<VFRendering::View::Option::UP_VECTOR>({0, 1, 0});
+            view_ptr->updateOptions(options);
             needs_redraw = true;
         }
         break;

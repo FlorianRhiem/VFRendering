@@ -136,13 +136,6 @@ void View::setFramebufferSize(float width, float height) {
     m_framebuffer_size = glm::vec2(width, height);
 }
 
-void View::setCamera(glm::vec3 camera_position) {
-    glm::vec3 center_position = options().get<View::Option::SYSTEM_CENTER>();
-    glm::vec3 up_vector(0, 1, 0);
-    setCamera(camera_position, center_position, up_vector);
-    m_is_centered = true;
-}
-
 void View::setCamera(glm::vec3 camera_position, glm::vec3 center_position, glm::vec3 up_vector) {
     Options options;
     options.set<Option::CAMERA_POSITION>(camera_position);
@@ -271,6 +264,11 @@ void View::optionsHaveChanged(const std::vector<int>& changed_options) {
         switch (option_index) {
         case Option::SYSTEM_CENTER:
             recenter_camera = true;
+            break;
+        case Option::CENTER_POSITION:
+            if (options().get<Option::CENTER_POSITION>() == options().get<Option::SYSTEM_CENTER>()) {
+                m_is_centered = true;
+            }
             break;
         }
     }
