@@ -27,7 +27,6 @@ add_dependencies(libqhullcpp qhullcpp)
 set(SOURCE_FILES
     src/ArrowRenderer.cxx
     src/BoundingBoxRenderer.cxx
-    src/Camera.cxx
     src/CombinedRenderer.cxx
     src/CoordinateSystemRenderer.cxx
     src/FPSCounter.cxx
@@ -46,7 +45,6 @@ set(HEADER_FILES
     include/VectorfieldIsosurface.hxx
     include/VFRendering/ArrowRenderer.hxx
     include/VFRendering/BoundingBoxRenderer.hxx
-    include/VFRendering/Camera.hxx
     include/VFRendering/CombinedRenderer.hxx
     include/VFRendering/CoordinateSystemRenderer.hxx
     include/VFRendering/FPSCounter.hxx
