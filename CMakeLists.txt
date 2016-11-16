@@ -1,28 +1,22 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
-project(VFRendering VERSION 0.0.0)
+project(VFRendering VERSION 0.1.0)
 
 include(ExternalProject)
-ExternalProject_add(qhullstatic_r
+ExternalProject_add(qhull
 	GIT_REPOSITORY https://github.com/qhull/qhull.git
-	CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}/thirdparty-install;-Dqhull_TARGETS_INSTALL=qhullstatic_r"
+	CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}/thirdparty-install"
 	PREFIX qhull-prefix
-)
-ExternalProject_add(qhullcpp
-	GIT_REPOSITORY https://github.com/qhull/qhull.git
-	CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}/thirdparty-install;-Dqhull_TARGETS_INSTALL=qhullcpp"
-	PREFIX qhull-prefix
-	DEPENDS qhullstatic_r
 )
 
 add_library(libqhullstatic_r STATIC IMPORTED)
-set_property(TARGET libqhullstatic_r PROPERTY IMPORTED_LOCATION ${PROJECT_BINARY_DIR}/thirdparty-install/lib/${CMAKE_STATIC_LIBRARY_PREFIX}qhullstatic_r${CMAKE_STATIC_LIBRARY_SUFFIX})
-add_dependencies(libqhullstatic_r qhullstatic_r)
+set_property(TARGET libqhullstatic_r PROPERTY IMPORTED_LOCATION ${PROJECT_BINARY_DIR}/qhull-prefix/src/qhull-build/${CMAKE_STATIC_LIBRARY_PREFIX}qhullstatic_r${CMAKE_STATIC_LIBRARY_SUFFIX})
+add_dependencies(libqhullstatic_r qhull)
 
 add_library(libqhullcpp STATIC IMPORTED)
-set_property(TARGET libqhullcpp PROPERTY IMPORTED_LOCATION ${PROJECT_BINARY_DIR}/thirdparty-install/lib/${CMAKE_STATIC_LIBRARY_PREFIX}qhullcpp${CMAKE_STATIC_LIBRARY_SUFFIX})
+set_property(TARGET libqhullcpp PROPERTY IMPORTED_LOCATION ${PROJECT_BINARY_DIR}/qhull-prefix/src/qhull-build/${CMAKE_STATIC_LIBRARY_PREFIX}qhullcpp${CMAKE_STATIC_LIBRARY_SUFFIX})
 set_property(TARGET libqhullcpp PROPERTY INTERFACE_LINK_LIBRARIES libqhullstatic_r)
-add_dependencies(libqhullcpp qhullcpp)
+add_dependencies(libqhullcpp qhull)
 
 set(SOURCE_FILES
     src/ArrowRenderer.cxx
