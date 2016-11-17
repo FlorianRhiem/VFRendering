@@ -21,7 +21,9 @@ public:
 
 private:
     void updateShaderProgram();
-
+    void initialize();
+    
+    bool m_is_initialized = false;
     unsigned int m_sphere_points_program = 0;
     unsigned int m_sphere_points_vao = 0;
     unsigned int m_sphere_points_positions_vbo = 0;

@@ -10,7 +10,14 @@
 #include "shaders/arrows.frag.glsl.hxx"
 
 namespace VFRendering {
-ArrowRenderer::ArrowRenderer(const View& view) : RendererBase(view) {
+ArrowRenderer::ArrowRenderer(const View& view) : RendererBase(view) {}
+
+void ArrowRenderer::initialize() {
+    if (m_is_initialized) {
+        return;
+    }
+    m_is_initialized = true;
+    
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
     glGenBuffers(1, &m_vbo);
@@ -21,23 +28,23 @@ ArrowRenderer::ArrowRenderer(const View& view) : RendererBase(view) {
     glVertexAttribPointer(1, 3, GL_FLOAT, false, 4 * 3 * 2, (void*)(4 * 3));
     glEnableVertexAttribArray(1);
     glVertexAttribDivisor(1, 0);
-
+    
     glGenBuffers(1, &m_ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
     m_num_indices = 0;
-
+    
     glGenBuffers(1, &m_instance_position_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_instance_position_vbo);
     glVertexAttribPointer(2, 3, GL_FLOAT, false, 0, nullptr);
     glEnableVertexAttribArray(2);
     glVertexAttribDivisor(2, 1);
-
+    
     glGenBuffers(1, &m_instance_direction_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_instance_direction_vbo);
     glVertexAttribPointer(3, 3, GL_FLOAT, false, 0, nullptr);
     glEnableVertexAttribArray(3);
     glVertexAttribDivisor(3, 1);
-
+    
     m_num_instances = 0;
     updateShaderProgram();
     updateVertexData();
@@ -45,6 +52,9 @@ ArrowRenderer::ArrowRenderer(const View& view) : RendererBase(view) {
 }
 
 ArrowRenderer::~ArrowRenderer() {
+    if (!m_is_initialized) {
+        return;
+    }
     glDeleteVertexArrays(1, &m_vao);
     glDeleteBuffers(1, &m_vbo);
     glDeleteBuffers(1, &m_ibo);
@@ -54,6 +64,9 @@ ArrowRenderer::~ArrowRenderer() {
 }
 
 void ArrowRenderer::optionsHaveChanged(const std::vector<int>& changed_options) {
+    if (!m_is_initialized) {
+        return;
+    }
     bool update_shader = false;
     bool update_vertices = false;
     for (auto option_index : changed_options) {
@@ -79,6 +92,9 @@ void ArrowRenderer::optionsHaveChanged(const std::vector<int>& changed_options) 
 }
 
 void ArrowRenderer::update(bool keep_geometry) {
+    if (!m_is_initialized) {
+        return;
+    }
     glBindVertexArray(m_vao);
     if (!keep_geometry) {
         glBindBuffer(GL_ARRAY_BUFFER, m_instance_position_vbo);
@@ -91,6 +107,7 @@ void ArrowRenderer::update(bool keep_geometry) {
 }
 
 void ArrowRenderer::draw(float aspect_ratio) {
+    initialize();
     if (m_num_instances <= 0) {
         return;
     }
@@ -113,6 +130,9 @@ void ArrowRenderer::draw(float aspect_ratio) {
 }
 
 void ArrowRenderer::updateShaderProgram() {
+    if (!m_is_initialized) {
+        return;
+    }
     if (m_program) {
         glDeleteProgram(m_program);
     }
@@ -124,6 +144,9 @@ void ArrowRenderer::updateShaderProgram() {
 }
 
 void ArrowRenderer::updateVertexData() {
+    if (!m_is_initialized) {
+        return;
+    }
     auto level_of_detail = options().get<Option::LEVEL_OF_DETAIL>();
     auto cone_height = options().get<Option::CONE_HEIGHT>();
     auto cone_radius = options().get<Option::CONE_RADIUS>();

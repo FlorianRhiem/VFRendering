@@ -12,29 +12,39 @@
 #include "shaders/surface.frag.glsl.hxx"
 
 namespace VFRendering {
-IsosurfaceRenderer::IsosurfaceRenderer(const View& view) : RendererBase(view), m_value_function_changed(true), m_isovalue_changed(true) {
+IsosurfaceRenderer::IsosurfaceRenderer(const View& view) : RendererBase(view), m_value_function_changed(true), m_isovalue_changed(true) {}
+
+void IsosurfaceRenderer::initialize() {
+    if (m_is_initialized) {
+        return;
+    }
+    m_is_initialized = true;
+
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
-
+    
     glGenBuffers(1, &m_ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
     m_num_indices = 0;
-
+    
     glGenBuffers(1, &m_position_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_position_vbo);
     glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, nullptr);
     glEnableVertexAttribArray(0);
-
+    
     glGenBuffers(1, &m_direction_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_direction_vbo);
     glVertexAttribPointer(1, 3, GL_FLOAT, false, 0, nullptr);
     glEnableVertexAttribArray(1);
-
+    
     updateShaderProgram();
     updateIsosurfaceIndices();
 }
 
 IsosurfaceRenderer::~IsosurfaceRenderer() {
+    if (!m_is_initialized) {
+        return;
+    }
     glDeleteVertexArrays(1, &m_vao);
     glDeleteBuffers(1, &m_ibo);
     glDeleteBuffers(1, &m_position_vbo);
@@ -43,6 +53,9 @@ IsosurfaceRenderer::~IsosurfaceRenderer() {
 }
 
 void IsosurfaceRenderer::optionsHaveChanged(const std::vector<int>& changed_options) {
+    if (!m_is_initialized) {
+        return;
+    }
     bool update_shader = false;
     for (auto option_index : changed_options) {
         switch (option_index) {
@@ -64,11 +77,15 @@ void IsosurfaceRenderer::optionsHaveChanged(const std::vector<int>& changed_opti
 }
 
 void IsosurfaceRenderer::update(bool keep_geometry) {
+    if (!m_is_initialized) {
+        return;
+    }
     (void)keep_geometry;
     updateIsosurfaceIndices();
 }
 
 void IsosurfaceRenderer::draw(float aspect_ratio) {
+    initialize();
     if (m_value_function_changed || m_isovalue_changed) {
         updateIsosurfaceIndices();
     }
@@ -99,6 +116,9 @@ void IsosurfaceRenderer::draw(float aspect_ratio) {
 }
 
 void IsosurfaceRenderer::updateShaderProgram() {
+    if (!m_is_initialized) {
+        return;
+    }
     if (m_program) {
         glDeleteProgram(m_program);
     }
@@ -111,6 +131,9 @@ void IsosurfaceRenderer::updateShaderProgram() {
 }
 
 void IsosurfaceRenderer::updateIsosurfaceIndices() {
+    if (!m_is_initialized) {
+        return;
+    }
     m_value_function_changed = false;
     m_isovalue_changed = false;
 

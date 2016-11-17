@@ -26,7 +26,9 @@ public:
 private:
     void updateShaderProgram();
     void updateIsosurfaceIndices();
+    void initialize();
 
+    bool m_is_initialized = false;
     unsigned int m_program = 0;
     unsigned int m_vao = 0;
     unsigned int m_ibo = 0;

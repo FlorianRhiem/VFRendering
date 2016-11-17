@@ -82,11 +82,13 @@ public:
 
     void renderers(const std::vector<std::pair<std::shared_ptr<RendererBase>, std::array<float, 4>>>& renderers);
     void renderers(const VisualizationMode& mode, bool show_bounding_box, bool show_miniview, WidgetLocation miniview_location, bool show_coordinate_system, WidgetLocation coordinate_system_location);
-
+    
 private:
     void setCamera(glm::vec3 camera_position, glm::vec3 center_position, glm::vec3 up_vector);
     void optionsHaveChanged(const std::vector<int>& changed_options);
+    void initialize();
 
+    bool m_is_initialized;
     Geometry m_geometry;
     std::vector<glm::vec3> m_vectors;
     std::vector<std::pair<std::shared_ptr<RendererBase>, std::array<float, 4>>> m_renderers;

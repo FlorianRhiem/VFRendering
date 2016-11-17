@@ -24,9 +24,9 @@ OBJS=\
 
 OBJS += build/glad.o
 
-default: demo
+default: demo build/libVFRendering.so
 
-all: demo
+all: demo build/libVFRendering.so
 
 thirdparty/qhull/Makefile:
 	cd thirdparty && git clone https://github.com/qhull/qhull.git
@@ -54,8 +54,11 @@ build/glad.o: thirdparty/glad/src/glad.c
 build/libVFRendering.a: ${OBJS}
 	ar rcs $@ $^
 	
+build/libVFRendering.so: ${OBJS} thirdparty/qhull/lib/libqhullcpp.a thirdparty/qhull/lib/libqhullstatic_r.a
+	${CXX} ${CXXFLAGS} -shared -o $@ ${OBJS} -lglfw -Lbuild -lVFRendering ${LDFLAGS} -lqhullcpp -lqhullstatic_r
+	
 demo: demo.cxx build/libVFRendering.a thirdparty/qhull/lib/libqhullcpp.a thirdparty/qhull/lib/libqhullstatic_r.a
-	${CXX} ${CXXFLAGS} -o $@ $< -lglfw -Lbuild -lVFRendering ${LDFLAGS} -lqhullcpp -lqhullstatic_r
+	${CXX} ${CXXFLAGS} -o $@ $< -lglfw build/libVFRendering.a ${LDFLAGS} -lqhullcpp -lqhullstatic_r
 
 clean:
 	rm -rf build

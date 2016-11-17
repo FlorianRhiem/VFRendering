@@ -13,7 +13,14 @@
 #include "shaders/sphere_background.frag.glsl.hxx"
 
 namespace VFRendering {
-VectorSphereRenderer::VectorSphereRenderer(const View& view) : RendererBase(view) {
+VectorSphereRenderer::VectorSphereRenderer(const View& view) : RendererBase(view) {}
+
+void VectorSphereRenderer::initialize() {
+    if (m_is_initialized) {
+        return;
+    }
+    m_is_initialized = true;
+
     glGenVertexArrays(1, &m_sphere_points_vao);
     glBindVertexArray(m_sphere_points_vao);
     glGenBuffers(1, &m_sphere_points_positions_vbo);
@@ -46,6 +53,9 @@ VectorSphereRenderer::VectorSphereRenderer(const View& view) : RendererBase(view
 }
 
 VectorSphereRenderer::~VectorSphereRenderer() {
+    if (!m_is_initialized) {
+        return;
+    }
     glDeleteVertexArrays(1, &m_sphere_points_vao);
     glDeleteVertexArrays(1, &m_sphere_background_vao);
     glDeleteBuffers(1, &m_sphere_background_vbo);
@@ -56,6 +66,9 @@ VectorSphereRenderer::~VectorSphereRenderer() {
 }
 
 void VectorSphereRenderer::optionsHaveChanged(const std::vector<int>& changed_options) {
+    if (!m_is_initialized) {
+        return;
+    }
     bool update_shader = false;
     for (auto option_index : changed_options) {
         switch (option_index) {
@@ -71,6 +84,9 @@ void VectorSphereRenderer::optionsHaveChanged(const std::vector<int>& changed_op
 }
 
 void VectorSphereRenderer::update(bool keep_geometry) {
+    if (!m_is_initialized) {
+        return;
+    }
     if (!keep_geometry) {
         glBindBuffer(GL_ARRAY_BUFFER, m_sphere_points_positions_vbo);
         glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * positions().size(), positions().data(), GL_STREAM_DRAW);
@@ -81,6 +97,7 @@ void VectorSphereRenderer::update(bool keep_geometry) {
 }
 
 void VectorSphereRenderer::draw(float aspect_ratio) {
+    initialize();
     float inner_sphere_radius = options().get<VectorSphereRenderer::Option::INNER_SPHERE_RADIUS>();
     if (inner_sphere_radius > 0.0f) {
         if (inner_sphere_radius > 0.99f) {
@@ -141,6 +158,9 @@ void VectorSphereRenderer::draw(float aspect_ratio) {
 }
 
 void VectorSphereRenderer::updateShaderProgram() {
+    if (!m_is_initialized) {
+        return;
+    }
     {
         if (m_sphere_points_program) {
             glDeleteProgram(m_sphere_points_program);

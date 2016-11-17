@@ -11,7 +11,14 @@
 #include "shaders/coordinatesystem.frag.glsl.hxx"
 
 namespace VFRendering {
-CoordinateSystemRenderer::CoordinateSystemRenderer(const View& view) : RendererBase(view) {
+CoordinateSystemRenderer::CoordinateSystemRenderer(const View& view) : RendererBase(view) {}
+
+void CoordinateSystemRenderer::initialize() {
+    if (m_is_initialized) {
+        return;
+    }
+    m_is_initialized = true;
+
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
     glGenBuffers(1, &m_vbo);
@@ -29,17 +36,23 @@ CoordinateSystemRenderer::CoordinateSystemRenderer(const View& view) : RendererB
     glVertexAttribPointer(1, 3, GL_FLOAT, false, 4 * 3 * 2, (void*)(4 * 3));
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
-
+    
     updateShaderProgram();
 }
 
 CoordinateSystemRenderer::~CoordinateSystemRenderer() {
+    if (!m_is_initialized) {
+        return;
+    }
     glDeleteVertexArrays(1, &m_vao);
     glDeleteBuffers(1, &m_vbo);
     glDeleteProgram(m_program);
 }
 
 void CoordinateSystemRenderer::optionsHaveChanged(const std::vector<int>& changed_options) {
+    if (!m_is_initialized) {
+        return;
+    }
     bool update_shader = false;
     for (auto option_index : changed_options) {
         switch (option_index) {
@@ -58,6 +71,9 @@ void CoordinateSystemRenderer::update(bool keep_geometry) {
 }
 
 void CoordinateSystemRenderer::draw(float aspect_ratio) {
+    if (!m_is_initialized) {
+        return;
+    }
     glm::vec3 camera_position = options().get<View::Option::CAMERA_POSITION>();
     glm::vec3 center_position = options().get<View::Option::CENTER_POSITION>();
     glm::vec3 up_vector = options().get<View::Option::UP_VECTOR>();
@@ -83,6 +99,9 @@ void CoordinateSystemRenderer::draw(float aspect_ratio) {
 }
 
 void CoordinateSystemRenderer::updateShaderProgram() {
+    if (!m_is_initialized) {
+        return;
+    }
     if (m_program) {
         glDeleteProgram(m_program);
     }
