@@ -71,9 +71,7 @@ void CoordinateSystemRenderer::update(bool keep_geometry) {
 }
 
 void CoordinateSystemRenderer::draw(float aspect_ratio) {
-    if (!m_is_initialized) {
-        return;
-    }
+    initialize();
     glm::vec3 camera_position = options().get<View::Option::CAMERA_POSITION>();
     glm::vec3 center_position = options().get<View::Option::CENTER_POSITION>();
     glm::vec3 up_vector = options().get<View::Option::UP_VECTOR>();
