@@ -13,14 +13,6 @@
 
 namespace VFRendering {
 class RendererBase;
-class View;
-
-using Options = Utilities::Options<View>;
-
-/** Utility template to make specifying options simpler. */
-template<int index>
-struct Option;
-
 
 enum class CameraMovementModes {
     TRANSLATE,
@@ -68,7 +60,7 @@ public:
 
     void updateOptions(const Options& options);
     template<int index>
-    void setOption(const decltype(Options().get<index>())& value);
+    void setOption(const typename Options::Type<index>::type& value);
     void options(const Options& options);
     const Options& options() const;
 
@@ -100,75 +92,71 @@ private:
 };
 
 template<int index>
-void View::setOption(const decltype(Options().get<index>())& value) {
+void View::setOption(const typename Options::Type<index>::type& value) {
     updateOptions(Options::withOption<index>(value));
 }
 
-}
-
-/** Utility template specialization to make specifying options simpler. */
-template<>
-template<int index>
-struct VFRendering::Utilities::Options<VFRendering::View>::Option : public VFRendering::Option<index> {};
-
+namespace Utilities {
 /** Option to set the position of the lower left front corner of the bounding box. */
 template<>
-struct VFRendering::Option<VFRendering::View::Option::BOUNDING_BOX_MIN> {
+struct Options::Option<View::Option::BOUNDING_BOX_MIN> {
     glm::vec3 default_value = {-1, -1, -1};
 };
 
 /** Option to set the position of the upper right back corner of the bounding box. */
 template<>
-struct VFRendering::Option<VFRendering::View::Option::BOUNDING_BOX_MAX> {
+struct Options::Option<View::Option::BOUNDING_BOX_MAX> {
     glm::vec3 default_value = {1, 1, 1};
 };
 
 /** Option to set the position of the system center. */
 template<>
-struct VFRendering::Option<VFRendering::View::Option::SYSTEM_CENTER> {
+struct Options::Option<View::Option::SYSTEM_CENTER> {
     glm::vec3 default_value = {0, 0, 0};
 };
 
 /** Option to set the vertical field of view for renderers using a perspective projection. */
 template<>
-struct VFRendering::Option<VFRendering::View::Option::VERTICAL_FIELD_OF_VIEW> {
+struct Options::Option<View::Option::VERTICAL_FIELD_OF_VIEW> {
     float default_value = 45.0;
 };
 
 /** Option to set the background color. */
 template<>
-struct VFRendering::Option<VFRendering::View::Option::BACKGROUND_COLOR> {
+struct Options::Option<View::Option::BACKGROUND_COLOR> {
     glm::vec3 default_value = {0, 0, 0};
 };
 
 /** Option to set the GLSL code implementing the colormap function. */
 template<>
-struct VFRendering::Option<VFRendering::View::Option::COLORMAP_IMPLEMENTATION> {
-    std::string default_value = VFRendering::Utilities::getColormapImplementation(VFRendering::Utilities::Colormap::DEFAULT);
+struct Options::Option<View::Option::COLORMAP_IMPLEMENTATION> {
+    std::string default_value = Utilities::getColormapImplementation(VFRendering::Utilities::Colormap::DEFAULT);
 };
 
 /** Option to set the GLSL code implementing the is_visible function. */
 template<>
-struct VFRendering::Option<VFRendering::View::Option::IS_VISIBLE_IMPLEMENTATION> {
+struct Options::Option<View::Option::IS_VISIBLE_IMPLEMENTATION> {
     std::string default_value = "bool is_visible(vec3 position, vec3 direction) { return true; }";
 };
 
 /** Option to set the camera position. */
 template<>
-struct VFRendering::Option<VFRendering::View::Option::CAMERA_POSITION> {
+struct Options::Option<View::Option::CAMERA_POSITION> {
     glm::vec3 default_value = {14.5, 14.5, 30};
 };
 
 /** Option to set the camera focus center position. */
 template<>
-struct VFRendering::Option<VFRendering::View::Option::CENTER_POSITION> {
+struct Options::Option<View::Option::CENTER_POSITION> {
     glm::vec3 default_value = {14.5, 14.5, 0};
 };
 
 /** Option to set the camera up vector. */
 template<>
-struct VFRendering::Option<VFRendering::View::Option::UP_VECTOR> {
+struct Options::Option<View::Option::UP_VECTOR> {
     glm::vec3 default_value = {0, 1, 0};
 };
+}
+}
 
 #endif

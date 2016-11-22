@@ -26,14 +26,13 @@ private:
     unsigned int m_vao = 0;
     unsigned int m_vbo = 0;
 };
-}
 
-// Options
-
+namespace Utilities {
 template<>
-struct VFRendering::Option<VFRendering::BoundingBoxRenderer::Option::COLOR>{
+struct Options::Option<BoundingBoxRenderer::Option::COLOR>{
     glm::vec3 default_value = {1.0, 1.0, 1.0};
 };
-
+}
+}
 
 #endif

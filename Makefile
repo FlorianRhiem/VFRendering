@@ -4,6 +4,7 @@ CXXFLAGS += -Wall -Wextra -Werror -std=c++11 -pedantic
 CXXFLAGS += -Iinclude
 CXXFLAGS += -Ithirdparty/glad/include
 CXXFLAGS += -Ithirdparty/glm/include
+CXXFLAGS += -Ithirdparty/qhull/src
 CXXFLAGS += -Ithirdparty/qhull/src/libqhullcpp
 LDFLAGS += -Lthirdparty/qhull/lib
 
@@ -21,10 +22,11 @@ OBJS=\
 	build/SurfaceRenderer.o\
 	build/VectorfieldIsosurface.o\
 	build/Utilities.o\
+	build/Options.o\
 
 OBJS += build/glad.o
 
-default: demo build/libVFRendering.so
+default: build/libVFRendering.so
 
 all: demo build/libVFRendering.so
 

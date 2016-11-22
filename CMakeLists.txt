@@ -26,6 +26,7 @@ set(SOURCE_FILES
     src/FPSCounter.cxx
     src/Geometry.cxx
     src/IsosurfaceRenderer.cxx
+    src/Options.cxx
     src/RendererBase.cxx
     src/SurfaceRenderer.cxx
     src/Utilities.cxx
