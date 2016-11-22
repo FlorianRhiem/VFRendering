@@ -1,5 +1,4 @@
-CFLAGS += -Wall -Wextra -Werror -std=c89 -pedantic
-CXXFLAGS += -Wall -Wextra -Werror -std=c++11 -pedantic
+CXXFLAGS += -Wall -Wextra -Werror -std=c++11 -pedantic -fPIC
 
 CXXFLAGS += -Iinclude
 CXXFLAGS += -Ithirdparty/glad/include
@@ -34,10 +33,10 @@ thirdparty/qhull/Makefile:
 	cd thirdparty && git clone https://github.com/qhull/qhull.git
 
 thirdparty/qhull/lib/libqhullcpp.a: thirdparty/qhull/Makefile
-	make -C thirdparty/qhull/
+	make -C thirdparty/qhull/ bin-lib lib/libqhullcpp.a "CXX_OPTS1=-Isrc -O3 -fPIC" "CC=${CC}" "CXX=${CXX}"
 
 thirdparty/qhull/lib/libqhullstatic_r.a: thirdparty/qhull/Makefile
-	make -C thirdparty/qhull/
+	make -C thirdparty/qhull/ bin-lib lib/libqhullstatic_r.a "CXX_OPTS1=-Isrc -O3 -fPIC" "CC=${CC}" "CXX=${CXX}"
 
 thirdparty/qhull/src/libqhullcpp/Qhull.h: thirdparty/qhull/Makefile
 thirdparty/qhull/src/libqhullcpp/QhullFacetList.h: thirdparty/qhull/Makefile
@@ -51,16 +50,16 @@ build/%.o: src/%.cxx build/.exists
 	${CXX} -c $< -o $@ ${CXXFLAGS}
 
 build/glad.o: thirdparty/glad/src/glad.c
-	${CC} -c $< -o $@ -Ithirdparty/glad/include
+	${CC} -c $< -o $@ -Ithirdparty/glad/include -fPIC
 
 build/libVFRendering.a: ${OBJS}
 	ar rcs $@ $^
 	
 build/libVFRendering.so: ${OBJS} thirdparty/qhull/lib/libqhullcpp.a thirdparty/qhull/lib/libqhullstatic_r.a
-	${CXX} ${CXXFLAGS} -shared -o $@ ${OBJS} -lglfw -Lbuild -lVFRendering ${LDFLAGS} -lqhullcpp -lqhullstatic_r
+	${CXX} ${CXXFLAGS} -shared -o $@ ${OBJS} ${LDFLAGS} -lqhullcpp -lqhullstatic_r
 	
 demo: demo.cxx build/libVFRendering.a thirdparty/qhull/lib/libqhullcpp.a thirdparty/qhull/lib/libqhullstatic_r.a
-	${CXX} ${CXXFLAGS} -o $@ $< -lglfw build/libVFRendering.a ${LDFLAGS} -lqhullcpp -lqhullstatic_r
+	${CXX} ${CXXFLAGS} -o $@ $< -lglfw build/libVFRendering.a ${LDFLAGS} -lqhullcpp -lqhullstatic_r -ldl
 
 clean:
 	rm -rf build
