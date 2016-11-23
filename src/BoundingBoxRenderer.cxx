@@ -11,28 +11,41 @@
 #include "shaders/boundingbox.frag.glsl.hxx"
 
 namespace VFRendering {
-BoundingBoxRenderer::BoundingBoxRenderer(const View& view) : RendererBase(view) {
+BoundingBoxRenderer::BoundingBoxRenderer(const View& view) : RendererBase(view) {}
+
+void BoundingBoxRenderer::initialize() {
+    if (m_is_initialized) {
+        return;
+    }
+    m_is_initialized = true;
+
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
     glGenBuffers(1, &m_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, nullptr);
     glEnableVertexAttribArray(0);
-
+    
     updateVertexData();
-
+    
     std::string vertex_shader_source = BOUNDINGBOX_VERT_GLSL;
     std::string fragment_shader_source = BOUNDINGBOX_FRAG_GLSL;
     m_program = Utilities::createProgram(vertex_shader_source, fragment_shader_source, {"ivPosition"});
 }
 
 BoundingBoxRenderer::~BoundingBoxRenderer() {
+    if (!m_is_initialized) {
+        return;
+    }
     glDeleteVertexArrays(1, &m_vao);
     glDeleteBuffers(1, &m_vbo);
     glDeleteProgram(m_program);
 }
 
 void BoundingBoxRenderer::optionsHaveChanged(const std::vector<int>& changed_options) {
+    if (!m_is_initialized) {
+        return;
+    }
     bool update_vertices = false;
     for (auto option_index : changed_options) {
         switch (option_index) {
@@ -52,6 +65,8 @@ void BoundingBoxRenderer::update(bool keep_geometry) {
 }
 
 void BoundingBoxRenderer::draw(float aspect_ratio) {
+    initialize();
+    
     glUseProgram(m_program);
     glBindVertexArray(m_vao);
 
@@ -70,6 +85,9 @@ void BoundingBoxRenderer::draw(float aspect_ratio) {
 }
 
 void BoundingBoxRenderer::updateVertexData() {
+    if (!m_is_initialized) {
+        return;
+    }
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     auto min = options().get<View::Option::BOUNDING_BOX_MIN>();
     auto max = options().get<View::Option::BOUNDING_BOX_MAX>();

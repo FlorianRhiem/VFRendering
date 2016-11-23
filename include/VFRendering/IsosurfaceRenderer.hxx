@@ -26,7 +26,9 @@ public:
 private:
     void updateShaderProgram();
     void updateIsosurfaceIndices();
+    void initialize();
 
+    bool m_is_initialized = false;
     unsigned int m_program = 0;
     unsigned int m_vao = 0;
     unsigned int m_ibo = 0;
@@ -37,19 +39,21 @@ private:
     bool m_value_function_changed;
     bool m_isovalue_changed;
 };
-}
 
+namespace Utilities {
 template<>
-struct VFRendering::Option<VFRendering::IsosurfaceRenderer::Option::ISOVALUE> {
+struct Options::Option<IsosurfaceRenderer::Option::ISOVALUE> {
     VFRendering::IsosurfaceRenderer::isovalue_type default_value = 0;
 };
 
 template<>
-struct VFRendering::Option<VFRendering::IsosurfaceRenderer::Option::VALUE_FUNCTION> {
-    VFRendering::IsosurfaceRenderer::value_function_type default_value = [] (const glm::vec3& position, const glm::vec3& direction) {
+struct Options::Option<IsosurfaceRenderer::Option::VALUE_FUNCTION> {
+    IsosurfaceRenderer::value_function_type default_value = [] (const glm::vec3& position, const glm::vec3& direction) {
         (void)position;
         return direction.z;
     };
 };
+}
+}
 
 #endif

@@ -16,6 +16,15 @@
 
 namespace VFRendering {
 View::View() {
+    renderers(VisualizationMode::ARROWS, true, true, WidgetLocation::BOTTOM_LEFT, true, WidgetLocation::BOTTOM_RIGHT);
+}
+
+void View::initialize() {
+    if (m_is_initialized) {
+        return;
+    }
+    m_is_initialized = true;
+
     if (!gladLoadGL()) {
         std::cerr << "Failed to initialize glad" << std::endl;
         return;
@@ -24,8 +33,6 @@ View::View() {
     glGetError();
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
-
-    renderers(VisualizationMode::ARROWS, true, true, WidgetLocation::BOTTOM_LEFT, true, WidgetLocation::BOTTOM_RIGHT);
 }
 
 View::~View() {}
@@ -48,6 +55,7 @@ void View::updateVectors(const std::vector<glm::vec3>& vectors) {
 }
 
 void View::draw() {
+    initialize();
     auto background_color = m_options.get<View::Option::BACKGROUND_COLOR>();
     glClearColor(background_color.x, background_color.y, background_color.z, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

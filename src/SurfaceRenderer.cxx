@@ -10,10 +10,17 @@
 #include "shaders/surface.frag.glsl.hxx"
 
 namespace VFRendering {
-SurfaceRenderer::SurfaceRenderer(const View& view) : RendererBase(view) {
+SurfaceRenderer::SurfaceRenderer(const View& view) : RendererBase(view) {}
+
+void SurfaceRenderer::initialize() {
+    if (m_is_initialized) {
+        return;
+    }
+    m_is_initialized = true;
+
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
-
+    
     glGenBuffers(1, &m_ibo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
     m_num_indices = 0;
@@ -33,6 +40,9 @@ SurfaceRenderer::SurfaceRenderer(const View& view) : RendererBase(view) {
 }
 
 SurfaceRenderer::~SurfaceRenderer() {
+    if (!m_is_initialized) {
+        return;
+    }
     glDeleteVertexArrays(1, &m_vao);
     glDeleteBuffers(1, &m_ibo);
     glDeleteBuffers(1, &m_position_vbo);
@@ -41,6 +51,9 @@ SurfaceRenderer::~SurfaceRenderer() {
 }
 
 void SurfaceRenderer::optionsHaveChanged(const std::vector<int>& changed_options) {
+    if (!m_is_initialized) {
+        return;
+    }
     bool update_shader = false;
     for (auto option_index : changed_options) {
         switch (option_index) {
@@ -56,6 +69,9 @@ void SurfaceRenderer::optionsHaveChanged(const std::vector<int>& changed_options
 }
 
 void SurfaceRenderer::update(bool keep_geometry) {
+    if (!m_is_initialized) {
+        return;
+    }
     glBindVertexArray(m_vao);
     if (!keep_geometry) {
         glBindBuffer(GL_ARRAY_BUFFER, m_position_vbo);
@@ -67,6 +83,7 @@ void SurfaceRenderer::update(bool keep_geometry) {
 }
 
 void SurfaceRenderer::draw(float aspect_ratio) {
+    initialize();
     if (m_num_indices <= 0) {
         return;
     }
@@ -89,6 +106,9 @@ void SurfaceRenderer::draw(float aspect_ratio) {
 }
 
 void SurfaceRenderer::updateShaderProgram() {
+    if (!m_is_initialized) {
+        return;
+    }
     if (m_program) {
         glDeleteProgram(m_program);
     }
@@ -101,6 +121,9 @@ void SurfaceRenderer::updateShaderProgram() {
 }
 
 void SurfaceRenderer::updateSurfaceIndices() {
+    if (!m_is_initialized) {
+        return;
+    }
     const auto& surface_indices = surfaceIndices();
     if (surface_indices.empty()) {
         m_num_indices = 0;

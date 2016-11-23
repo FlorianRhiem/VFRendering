@@ -1,0 +1,27 @@
+image: ubuntu:xenial
+
+Build (clang/make):
+    script:
+        - apt-get update -qq && apt-get install -y -qq git make clang
+        - CC=clang CXX=clang++ make
+
+Build (gcc/make):
+    script:
+        - apt-get update -qq && apt-get install -y -qq git make gcc g++
+        - CC=gcc CXX=g++ make
+
+Build (clang/CMake):
+    script:
+        - apt-get update -qq && apt-get install -y -qq git cmake clang
+        - mkdir build
+        - cd build
+        - cmake .. -DBUILD_DEMO=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang
+        - make
+
+Build (gcc/CMake):
+    script:
+        - apt-get update -qq && apt-get install -y -qq git cmake gcc g++
+        - mkdir build
+        - cd build
+        - cmake .. -DBUILD_DEMO=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc
+        - make

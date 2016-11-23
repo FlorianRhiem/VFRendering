@@ -8,8 +8,7 @@
 #include <VFRendering/Options.hxx>
 
 namespace VFRendering {
-class View;
-using Options = Utilities::Options<View>;
+using Options = Utilities::Options;
 
 namespace Utilities {
 

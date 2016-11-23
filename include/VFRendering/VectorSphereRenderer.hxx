@@ -21,7 +21,9 @@ public:
 
 private:
     void updateShaderProgram();
-
+    void initialize();
+    
+    bool m_is_initialized = false;
     unsigned int m_sphere_points_program = 0;
     unsigned int m_sphere_points_vao = 0;
     unsigned int m_sphere_points_positions_vbo = 0;
@@ -32,21 +34,22 @@ private:
     unsigned int m_num_instances = 0;
 };
 
-}
-
+namespace Utilities {
 template<>
-struct VFRendering::Option<VFRendering::VectorSphereRenderer::Option::POINT_SIZE_RANGE> {
+struct Options::Option<VectorSphereRenderer::Option::POINT_SIZE_RANGE> {
     glm::vec2 default_value = {1.0f, 4.0f};
 };
 
 template<>
-struct VFRendering::Option<VFRendering::VectorSphereRenderer::Option::INNER_SPHERE_RADIUS> {
+struct Options::Option<VectorSphereRenderer::Option::INNER_SPHERE_RADIUS> {
     float default_value = 0.95f;
 };
 
 template<>
-struct VFRendering::Option<VFRendering::VectorSphereRenderer::Option::USE_SPHERE_FAKE_PERSPECTIVE> {
+struct Options::Option<VectorSphereRenderer::Option::USE_SPHERE_FAKE_PERSPECTIVE> {
     bool default_value = true;
 };
+}
+}
 
 #endif

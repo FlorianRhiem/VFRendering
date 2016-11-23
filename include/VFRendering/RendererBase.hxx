@@ -9,9 +9,6 @@
 #include <VFRendering/View.hxx>
 
 namespace VFRendering {
-
-class GLSpins;
-
 class RendererBase {
 public:
 
@@ -23,7 +20,7 @@ public:
     virtual void options(const Options& options);
     virtual void updateOptions(const Options& options);
     template<int index>
-    void setOption(const decltype(Options().get<index>())& value);
+    void setOption(const typename Options::Type<index>::type& value);
     virtual void optionsHaveChanged(const std::vector<int>& changed_options);
 
 protected:
@@ -39,7 +36,7 @@ private:
 };
 
 template<int index>
-void RendererBase::setOption(const decltype(Options().get<index>())& value) {
+void RendererBase::setOption(const typename Options::Type<index>::type& value) {
     updateOptions(Options::withOption<index>(value));
 }
 

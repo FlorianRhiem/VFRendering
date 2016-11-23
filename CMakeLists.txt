@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
-project(VFRendering VERSION 0.1.0)
+project(VFRendering VERSION 0.1.1)
+
+option(BUILD_DEMO "Whether or not a demo executable should be built" OFF)
 
 include(ExternalProject)
 ExternalProject_add(qhull
@@ -26,6 +28,7 @@ set(SOURCE_FILES
     src/FPSCounter.cxx
     src/Geometry.cxx
     src/IsosurfaceRenderer.cxx
+    src/Options.cxx
     src/RendererBase.cxx
     src/SurfaceRenderer.cxx
     src/Utilities.cxx
@@ -79,13 +82,14 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_EXTENSIONS OFF)
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/thirdparty/glm/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/thirdparty/glad/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_BINARY_DIR}/thirdparty-install/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_BINARY_DIR}/thirdparty-install/include/libqhullcpp)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib)
 install(DIRECTORY include/VFRendering DESTINATION include)
 
 # Build demo
-
+if (BUILD_DEMO)
 add_executable(${PROJECT_NAME}Demo demo.cxx)
 target_link_libraries(${PROJECT_NAME}Demo ${PROJECT_NAME})
 
@@ -97,3 +101,4 @@ set_property(TARGET ${PROJECT_NAME}Demo PROPERTY CXX_STANDARD_REQUIRED ON)
 set_property(TARGET ${PROJECT_NAME}Demo PROPERTY CXX_EXTENSIONS OFF)
 
 target_include_directories(${PROJECT_NAME}Demo PRIVATE ${PROJECT_SOURCE_DIR}/thirdparty/glad/include)
+endif()

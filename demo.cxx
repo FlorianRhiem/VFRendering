@@ -9,39 +9,33 @@
 #include "VFRendering/IsosurfaceRenderer.hxx"
 
 static bool needs_redraw = false;
-static VFRendering::View* view_ptr = nullptr;
+VFRendering::View view;
 
 void mouseWheelCallback(GLFWwindow* window, double x_offset, double y_offset) {
     (void)window;
     (void)x_offset;
-    if (view_ptr) {
-        view_ptr->mouseScroll(y_offset);
-        needs_redraw = true;
-    }
+    view.mouseScroll(y_offset);
+    needs_redraw = true;
 }
 
 void mousePositionCallback(GLFWwindow* window, double x_position, double y_position) {
     static glm::vec2 previous_mouse_position(0, 0);
     glm::vec2 current_mouse_position(x_position, y_position);
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-        if (view_ptr) {
-            auto movement_mode = VFRendering::CameraMovementModes::ROTATE;
-            if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
-                movement_mode = VFRendering::CameraMovementModes::TRANSLATE;
-            }
-            view_ptr->mouseMove(previous_mouse_position, current_mouse_position, movement_mode);
-            needs_redraw = true;
+        auto movement_mode = VFRendering::CameraMovementModes::ROTATE;
+        if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
+            movement_mode = VFRendering::CameraMovementModes::TRANSLATE;
         }
+        view.mouseMove(previous_mouse_position, current_mouse_position, movement_mode);
+        needs_redraw = true;
     }
     previous_mouse_position = current_mouse_position;
 }
 
 void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
     (void)window;
-    if (view_ptr) {
-        view_ptr->setFramebufferSize(width, height);
-        needs_redraw = true;
-    }
+    view.setFramebufferSize(width, height);
+    needs_redraw = true;
 }
 
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -55,32 +49,26 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
     }
     switch (key) {
     case GLFW_KEY_R:
-        if (view_ptr) {
+        {
             VFRendering::Options options;
             options.set<VFRendering::View::Option::CAMERA_POSITION>({0, 0, 30});
             options.set<VFRendering::View::Option::CENTER_POSITION>({0, 0, 0});
             options.set<VFRendering::View::Option::UP_VECTOR>({0, 1, 0});
-            view_ptr->updateOptions(options);
-            needs_redraw = true;
+            view.updateOptions(options);
         }
+        needs_redraw = true;
         break;
     case GLFW_KEY_1:
-        if (view_ptr) {
-            view_ptr->renderers(VFRendering::VisualizationMode::ARROWS, true, true, VFRendering::WidgetLocation::BOTTOM_LEFT, true, VFRendering::WidgetLocation::BOTTOM_RIGHT);
-            needs_redraw = true;
-        }
+        view.renderers(VFRendering::VisualizationMode::ARROWS, true, true, VFRendering::WidgetLocation::BOTTOM_LEFT, true, VFRendering::WidgetLocation::BOTTOM_RIGHT);
+        needs_redraw = true;
         break;
     case GLFW_KEY_2:
-        if (view_ptr) {
-            view_ptr->renderers(VFRendering::VisualizationMode::SURFACE, true, true, VFRendering::WidgetLocation::BOTTOM_LEFT, true, VFRendering::WidgetLocation::BOTTOM_RIGHT);
-            needs_redraw = true;
-        }
+        view.renderers(VFRendering::VisualizationMode::SURFACE, true, true, VFRendering::WidgetLocation::BOTTOM_LEFT, true, VFRendering::WidgetLocation::BOTTOM_RIGHT);
+        needs_redraw = true;
         break;
     case GLFW_KEY_3:
-        if (view_ptr) {
-            view_ptr->renderers(VFRendering::VisualizationMode::ISOSURFACE, true, true, VFRendering::WidgetLocation::BOTTOM_LEFT, true, VFRendering::WidgetLocation::BOTTOM_RIGHT);
-            needs_redraw = true;
-        }
+        view.renderers(VFRendering::VisualizationMode::ISOSURFACE, true, true, VFRendering::WidgetLocation::BOTTOM_LEFT, true, VFRendering::WidgetLocation::BOTTOM_RIGHT);
+        needs_redraw = true;
         break;
     }
 }
@@ -111,9 +99,13 @@ int main(void) {
     glfwSetCursorPosCallback(window, mousePositionCallback);
     glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);
     glfwSetKeyCallback(window, keyCallback);
-    VFRendering::View view;
+
+    if (!gladLoadGL()) {
+        std::cerr << "Failed to initialize glad" << std::endl;
+        return 1;
+    }
     glEnable(GL_MULTISAMPLE);
-    view_ptr = &view;
+
     framebufferSizeCallback(window, 800, 800);
 
     std::vector<glm::vec3> positions;

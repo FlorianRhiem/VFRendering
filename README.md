@@ -123,29 +123,29 @@ Currently, the following options are available:
 
 | Index | Type  | Default value | Header file | Documentation |
 |-------|-------|---------------|-------------|---------------|
-| View::Option::BOUNDING_BOX_MIN | glm::vec3 | {-1, -1, -1} | View.hxx | VFRendering::Option< VFRendering::View::Option::BOUNDING_BOX_MIN > |
-| View::Option::BOUNDING_BOX_MAX | glm::vec3 | {1, 1, 1} | View.hxx | VFRendering::Option< VFRendering::View::Option::BOUNDING_BOX_MAX > |
-| View::Option::SYSTEM_CENTER | glm::vec3 | {0, 0, 0} | View.hxx | VFRendering::Option< VFRendering::View::Option::SYSTEM_CENTER > |
-| View::Option::VERTICAL_FIELD_OF_VIEW | float | 45.0 | View.hxx | VFRendering::Option< VFRendering::View::Option::VERTICAL_FIELD_OF_VIEW > |
-| View::Option::BACKGROUND_COLOR |  glm::vec3 | {0, 0, 0} | View.hxx | VFRendering::Option< VFRendering::View::Option::BACKGROUND_COLOR > |
-| View::Option::COLORMAP_IMPLEMENTATION | std::string | VFRendering::Utilities::getColormapImplementation(VFRendering::Utilities::Colormap::DEFAULT) | View.hxx | VFRendering::Option< VFRendering::View::Option::COLORMAP_IMPLEMENTATION > |
-| View::Option::IS_VISIBLE_IMPLEMENTATION | std::string | bool is_visible(vec3 position, vec3 direction) { return true; } | View.hxx | VFRendering::Option< VFRendering::View::Option::IS_VISIBLE_IMPLEMENTATION > |
-| View::Option::CAMERA_POSITION |  glm::vec3 | {14.5, 14.5, 30} | View.hxx | VFRendering::Option< VFRendering::View::Option::CAMERA_POSITION > |
-| View::Option::CENTER_POSITION |  glm::vec3 | {14.5, 14.5, 0} |  View.hxx | VFRendering::Option< VFRendering::View::Option::CENTER_POSITION > |
-| View::Option::UP_VECTOR | glm::vec3 | {0, 1, 0}  | View.hxx | VFRendering::Option< VFRendering::View::Option::UP_VECTOR > |
-| ArrowRenderer::Option::CONE_RADIUS | float | 0.25 | ArrowRenderer.hxx | VFRendering::Option< VFRendering::ArrowRenderer::Option::CONE_RADIUS > |
-| ArrowRenderer::Option::CONE_HEIGHT | float | 0.6 | ArrowRenderer.hxx | VFRendering::Option< VFRendering::ArrowRenderer::Option::CONE_HEIGHT > |
-| ArrowRenderer::Option::CYLINDER_RADIUS | float | 0.125 | ArrowRenderer.hxx | VFRendering::Option< VFRendering::ArrowRenderer::Option::CYLINDER_RADIUS > |
-| ArrowRenderer::Option::CYLINDER_HEIGHT | float | 0.7 | ArrowRenderer.hxx | VFRendering::Option< VFRendering::ArrowRenderer::Option::CYLINDER_HEIGHT > |
-| ArrowRenderer::Option::LEVEL_OF_DETAIL | unsigned int | 20 | ArrowRenderer.hxx | VFRendering::Option< VFRendering::ArrowRenderer::Option::LEVEL_OF_DETAIL > |
-| BoundingBoxRenderer::Option::COLOR | glm::vec3 | {1.0, 1.0, 1.0} | BoundingBoxRenderer.hxx | VFRendering::Option< VFRendering::BoundingBoxRenderer::Option::COLOR > |
-| CoordinateSystemRenderer::Option::AXIS_LENGTH | glm::vec3 | {0.5, 0.5, 0.5} | CoordinateSystemRenderer.hxx | VFRendering::Option< VFRendering::CoordinateSystemRenderer::Option::AXIS_LENGTH > |
-| CoordinateSystemRenderer::Option::ORIGIN | glm::vec3 | {0.0, 0.0, 0.0} | CoordinateSystemRenderer.hxx | VFRendering::Option< VFRendering::CoordinateSystemRenderer::Option::ORIGIN > |
-| IsosurfaceRenderer::Option::ISOVALUE | float | 0.0 | IsosurfaceRenderer.hxx | VFRendering::Option< VFRendering::IsosurfaceRenderer::Option::ISOVALUE > |
-| IsosurfaceRenderer::Option::VALUE_FUNCTION | std::function<isovalue_type(const glm::vec3&, const glm::vec3&)> | [] (const glm::vec3& position, const glm::vec3& direction) { return direction.z; } | IsosurfaceRenderer.hxx | VFRendering::Option< VFRendering::IsosurfaceRenderer::Option::VALUE_FUNCTION > |
-| VectorSphereRenderer::Option::POINT_SIZE_RANGE |  glm::vec2 | {1.0, 4.0} | VectorSphereRenderer.hxx | VFRendering::Option< VFRendering::VectorSphereRenderer::Option::POINT_SIZE_RANGE > |
-| VectorSphereRenderer::Option::INNER_SPHERE_RADIUS | float | 0.95 | VectorSphereRenderer.hxx | VFRendering::Option< VFRendering::VectorSphereRenderer::Option::INNER_SPHERE_RADIUS > |
-| VectorSphereRenderer::Option::USE_SPHERE_FAKE_PERSPECTIVE | bool | true | VectorSphereRenderer.hxx | VFRendering::Option< VFRendering::VectorSphereRenderer::Option::USE_SPHERE_FAKE_PERSPECTIVE > |
+| View::Option::BOUNDING_BOX_MIN | glm::vec3 | {-1, -1, -1} | View.hxx | VFRendering::Utilities::Options::Option< View::Option::BOUNDING_BOX_MIN > |
+| View::Option::BOUNDING_BOX_MAX | glm::vec3 | {1, 1, 1} | View.hxx | VFRendering::Utilities::Options::Option< View::Option::BOUNDING_BOX_MAX > |
+| View::Option::SYSTEM_CENTER | glm::vec3 | {0, 0, 0} | View.hxx | VFRendering::Utilities::Options::Option< View::Option::SYSTEM_CENTER > |
+| View::Option::VERTICAL_FIELD_OF_VIEW | float | 45.0 | View.hxx | VFRendering::Utilities::Options::Option< View::Option::VERTICAL_FIELD_OF_VIEW > |
+| View::Option::BACKGROUND_COLOR |  glm::vec3 | {0, 0, 0} | View.hxx | VFRendering::Utilities::Options::Option< View::Option::BACKGROUND_COLOR > |
+| View::Option::COLORMAP_IMPLEMENTATION | std::string | VFRendering::Utilities::getColormapImplementation(VFRendering::Utilities::Colormap::DEFAULT) | View.hxx | VFRendering::Utilities::Options::Option< View::Option::COLORMAP_IMPLEMENTATION > |
+| View::Option::IS_VISIBLE_IMPLEMENTATION | std::string | bool is_visible(vec3 position, vec3 direction) { return true; } | View.hxx | VFRendering::Utilities::Options::Option< View::Option::IS_VISIBLE_IMPLEMENTATION > |
+| View::Option::CAMERA_POSITION |  glm::vec3 | {14.5, 14.5, 30} | View.hxx | VFRendering::Utilities::Options::Option< View::Option::CAMERA_POSITION > |
+| View::Option::CENTER_POSITION |  glm::vec3 | {14.5, 14.5, 0} |  View.hxx | VFRendering::Utilities::Options::Option< View::Option::CENTER_POSITION > |
+| View::Option::UP_VECTOR | glm::vec3 | {0, 1, 0}  | View.hxx | VFRendering::Utilities::Options::Option< View::Option::UP_VECTOR > |
+| ArrowRenderer::Option::CONE_RADIUS | float | 0.25 | ArrowRenderer.hxx | VFRendering::Utilities::Options::Option< ArrowRenderer::Option::CONE_RADIUS > |
+| ArrowRenderer::Option::CONE_HEIGHT | float | 0.6 | ArrowRenderer.hxx | VFRendering::Utilities::Options::Option< ArrowRenderer::Option::CONE_HEIGHT > |
+| ArrowRenderer::Option::CYLINDER_RADIUS | float | 0.125 | ArrowRenderer.hxx | VFRendering::Utilities::Options::Option< ArrowRenderer::Option::CYLINDER_RADIUS > |
+| ArrowRenderer::Option::CYLINDER_HEIGHT | float | 0.7 | ArrowRenderer.hxx | VFRendering::Utilities::Options::Option< ArrowRenderer::Option::CYLINDER_HEIGHT > |
+| ArrowRenderer::Option::LEVEL_OF_DETAIL | unsigned int | 20 | ArrowRenderer.hxx | VFRendering::Utilities::Options::Option< ArrowRenderer::Option::LEVEL_OF_DETAIL > |
+| BoundingBoxRenderer::Option::COLOR | glm::vec3 | {1.0, 1.0, 1.0} | BoundingBoxRenderer.hxx | VFRendering::Utilities::Options::Option< BoundingBoxRenderer::Option::COLOR > |
+| CoordinateSystemRenderer::Option::AXIS_LENGTH | glm::vec3 | {0.5, 0.5, 0.5} | CoordinateSystemRenderer.hxx | VFRendering::Utilities::Options::Option< CoordinateSystemRenderer::Option::AXIS_LENGTH > |
+| CoordinateSystemRenderer::Option::ORIGIN | glm::vec3 | {0.0, 0.0, 0.0} | CoordinateSystemRenderer.hxx | VFRendering::Utilities::Options::Option< CoordinateSystemRenderer::Option::ORIGIN > |
+| IsosurfaceRenderer::Option::ISOVALUE | float | 0.0 | IsosurfaceRenderer.hxx | VFRendering::Utilities::Options::Option< IsosurfaceRenderer::Option::ISOVALUE > |
+| IsosurfaceRenderer::Option::VALUE_FUNCTION | std::function<isovalue_type(const glm::vec3&, const glm::vec3&)> | [] (const glm::vec3& position, const glm::vec3& direction) { return direction.z; } | IsosurfaceRenderer.hxx | VFRendering::Utilities::Options::Option< IsosurfaceRenderer::Option::VALUE_FUNCTION > |
+| VectorSphereRenderer::Option::POINT_SIZE_RANGE |  glm::vec2 | {1.0, 4.0} | VectorSphereRenderer.hxx | VFRendering::Utilities::Options::Option< VectorSphereRenderer::Option::POINT_SIZE_RANGE > |
+| VectorSphereRenderer::Option::INNER_SPHERE_RADIUS | float | 0.95 | VectorSphereRenderer.hxx | VFRendering::Utilities::Options::Option< VectorSphereRenderer::Option::INNER_SPHERE_RADIUS > |
+| VectorSphereRenderer::Option::USE_SPHERE_FAKE_PERSPECTIVE | bool | true | VectorSphereRenderer.hxx | VFRendering::Utilities::Options::Option< VectorSphereRenderer::Option::USE_SPHERE_FAKE_PERSPECTIVE > |
 
 
 ## ToDo

@@ -9,63 +9,37 @@ VFRenderingWidget::~VFRenderingWidget() {}
 
 void VFRenderingWidget::initializeGL() {
   setMouseTracking(true);
-  m_view = std::unique_ptr<VFRendering::View>(new VFRendering::View());
-  m_view->update(m_geometry, m_vectors);
-  m_view->updateOptions(m_options);
 }
 
 void VFRenderingWidget::resizeGL(int width, int height) {
-  if (m_view) {
-    m_view->setFramebufferSize(width, height);
-  }
+  m_view.setFramebufferSize(width, height);
 }
 
 void VFRenderingWidget::update(const VFRendering::Geometry& geometry, const std::vector<glm::vec3>& vectors) {
-  if (m_view) {
-    m_view->update(geometry, vectors);
-  } else {
-    m_geometry = geometry;
-    m_vectors = vectors;
-  }
+  m_view.update(geometry, vectors);
 }
 
 
 void VFRenderingWidget::updateVectors(const std::vector<glm::vec3>& vectors) {
-  if (m_view) {
-    m_view->updateVectors(vectors);
-  } else {
-    m_vectors = vectors;
-  }
+  m_view.updateVectors(vectors);
 }
 
 void VFRenderingWidget::updateOptions(const VFRendering::Options& options) {
-  if (m_view) {
-    m_view->updateOptions(options);
-  } else {
-    m_options = options;
-  }
+  m_view.updateOptions(options);
 }
 
 void VFRenderingWidget::paintGL() {
-  if (m_view) {
-    m_view->draw();
-  }
+  m_view.draw();
 }
 
 float VFRenderingWidget::getFramerate() const {
-  if (m_view) {
-    return m_view->getFramerate();
-  } else {
-    return 0;
-  }
+  return m_view.getFramerate();
 }
 
 void VFRenderingWidget::wheelEvent(QWheelEvent *event) {
   float delta = event->angleDelta().y()*0.1;
-  if (m_view) {
-    m_view->mouseScroll(delta);
-    ((QWidget *)this)->update();
-  }
+  m_view.mouseScroll(delta);
+  ((QWidget *)this)->update();
 }
 
 void VFRenderingWidget::mousePressEvent(QMouseEvent *event) {
@@ -78,13 +52,11 @@ void VFRenderingWidget::mouseMoveEvent(QMouseEvent *event) {
   m_previous_mouse_position = event->pos();
   
   if (event->buttons() & Qt::LeftButton) {
-    if (m_view) {
-      auto movement_mode = VFRendering::CameraMovementModes::ROTATE;
-      if (event->modifiers() & Qt::AltModifier) {
-        movement_mode = VFRendering::CameraMovementModes::TRANSLATE;
-      }
-      m_view->mouseMove(previous_mouse_position, current_mouse_position, movement_mode);
-      ((QWidget *)this)->update();
+    auto movement_mode = VFRendering::CameraMovementModes::ROTATE;
+    if (event->modifiers() & Qt::AltModifier) {
+      movement_mode = VFRendering::CameraMovementModes::TRANSLATE;
     }
+    m_view.mouseMove(previous_mouse_position, current_mouse_position, movement_mode);
+    ((QWidget *)this)->update();
   }
 }

@@ -18,23 +18,27 @@ public:
 
 private:
     void updateShaderProgram();
+    void initialize();
+
+    bool m_is_initialized = false;
 
     unsigned int m_program = 0;
     unsigned int m_vao = 0;
     unsigned int m_vbo = 0;
 };
-}
 
+namespace Utilities {
 template<>
-struct VFRendering::Option<VFRendering::CoordinateSystemRenderer::Option::AXIS_LENGTH> {
+struct Options::Option<CoordinateSystemRenderer::Option::AXIS_LENGTH> {
     glm::vec3 default_value = {0.5, 0.5, 0.5};
 };
 
 
 template<>
-struct VFRendering::Option<VFRendering::CoordinateSystemRenderer::Option::ORIGIN> {
+struct Options::Option<CoordinateSystemRenderer::Option::ORIGIN> {
     glm::vec3 default_value = {0.0, 0.0, 0.0};
 };
-
+}
+}
 
 #endif

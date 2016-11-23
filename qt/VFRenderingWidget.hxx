@@ -33,11 +33,8 @@ protected:
     void mouseMoveEvent(QMouseEvent *event) override;
 
 private:
-    std::unique_ptr<VFRendering::View> m_view;
+    VFRendering::View m_view;
     QPoint m_previous_mouse_position;
-    VFRendering::Geometry m_geometry;
-    std::vector<glm::vec3> m_vectors;
-    VFRendering::Options m_options;
 };
 
 #endif
