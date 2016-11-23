@@ -1,5 +1,5 @@
-#ifndef VFRENDERING_VIEW_H
-#define VFRENDERING_VIEW_H
+#ifndef VFRENDERING_VIEW_HXX
+#define VFRENDERING_VIEW_HXX
 
 #include <array>
 #include <memory>
