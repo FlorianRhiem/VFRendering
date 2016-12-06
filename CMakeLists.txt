@@ -4,6 +4,7 @@ project(VFRendering VERSION 0.1.2)
 
 option(BUILD_DEMO "Whether or not a demo executable should be built" OFF)
 
+if (NOT qhull_LIBS)
 include(ExternalProject)
 ExternalProject_add(qhull
 	GIT_REPOSITORY https://github.com/qhull/qhull.git
@@ -19,6 +20,9 @@ add_library(libqhullcpp STATIC IMPORTED)
 set_property(TARGET libqhullcpp PROPERTY IMPORTED_LOCATION ${PROJECT_BINARY_DIR}/qhull-prefix/src/qhull-build/${CMAKE_STATIC_LIBRARY_PREFIX}qhullcpp${CMAKE_STATIC_LIBRARY_SUFFIX})
 set_property(TARGET libqhullcpp PROPERTY INTERFACE_LINK_LIBRARIES libqhullstatic_r)
 add_dependencies(libqhullcpp qhull)
+
+set(qhull_LIBS libqhullcpp)
+endif(NOT qhull_LIBS)
 
 set(SOURCE_FILES
     src/ArrowRenderer.cxx
@@ -73,7 +77,7 @@ set(HEADER_FILES
 )
 
 add_library(${PROJECT_NAME} ${SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} libqhullcpp libqhullstatic_r)
+target_link_libraries(${PROJECT_NAME} ${qhull_LIBS})
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
