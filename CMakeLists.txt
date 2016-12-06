@@ -1,8 +1,17 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
-project(VFRendering VERSION 0.1.2)
+project(VFRendering VERSION 0.1.3)
 
 option(BUILD_DEMO "Whether or not a demo executable should be built" OFF)
+
+if((NOT qhull_LIBS) OR (NOT qhull_INCLUDE_DIRS))
+
+if(qhull_LIBS)
+message(WARNING "qhull_LIBS is set, but qhull_INCLUDE_DIRS is missing.")
+endif()
+if(qhull_INCLUDE_DIRS)
+message(WARNING "qhull_INCLUDE_DIRS is set, but qhull_LIBS is missing.")
+endif()
 
 include(ExternalProject)
 ExternalProject_add(qhull
@@ -20,6 +29,11 @@ set_property(TARGET libqhullcpp PROPERTY IMPORTED_LOCATION ${PROJECT_BINARY_DIR}
 set_property(TARGET libqhullcpp PROPERTY INTERFACE_LINK_LIBRARIES libqhullstatic_r)
 add_dependencies(libqhullcpp qhull)
 
+set(qhull_LIBS libqhullcpp)
+set(qhull_INCLUDE_DIRS "${PROJECT_BINARY_DIR}/thirdparty-install/include;${PROJECT_BINARY_DIR}/thirdparty-install/include/libqhullcpp")
+endif()
+
+
 set(SOURCE_FILES
     src/ArrowRenderer.cxx
     src/BoundingBoxRenderer.cxx
@@ -35,7 +49,7 @@ set(SOURCE_FILES
     src/VectorfieldIsosurface.cxx
     src/VectorSphereRenderer.cxx
     src/View.cxx
-    ${CMAKE_SOURCE_DIR}/thirdparty/glad/src/glad.c
+    ${PROJECT_SOURCE_DIR}/thirdparty/glad/src/glad.c
 )
 
 set(HEADER_FILES
@@ -73,7 +87,7 @@ set(HEADER_FILES
 )
 
 add_library(${PROJECT_NAME} ${SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} libqhullcpp libqhullstatic_r)
+target_link_libraries(${PROJECT_NAME} ${qhull_LIBS})
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
@@ -82,8 +96,7 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_EXTENSIONS OFF)
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
 target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/thirdparty/glm/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/thirdparty/glad/include)
-target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_BINARY_DIR}/thirdparty-install/include)
-target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_BINARY_DIR}/thirdparty-install/include/libqhullcpp)
+target_include_directories(${PROJECT_NAME} PRIVATE ${qhull_INCLUDE_DIRS})
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib)
 install(DIRECTORY include/VFRendering DESTINATION include)
