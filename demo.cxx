@@ -4,8 +4,9 @@
 #include <GLFW/glfw3.h>
 
 #include "VFRendering/View.hxx"
-#include "VFRendering/CombinedRenderer.hxx"
 #include "VFRendering/ArrowRenderer.hxx"
+#include "VFRendering/BoundingBoxRenderer.hxx"
+#include "VFRendering/CombinedRenderer.hxx"
 #include "VFRendering/IsosurfaceRenderer.hxx"
 
 static bool needs_redraw = false;
@@ -56,18 +57,6 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
             options.set<VFRendering::View::Option::UP_VECTOR>({0, 1, 0});
             view.updateOptions(options);
         }
-        needs_redraw = true;
-        break;
-    case GLFW_KEY_1:
-        view.renderers(VFRendering::VisualizationMode::ARROWS, true, true, VFRendering::WidgetLocation::BOTTOM_LEFT, true, VFRendering::WidgetLocation::BOTTOM_RIGHT);
-        needs_redraw = true;
-        break;
-    case GLFW_KEY_2:
-        view.renderers(VFRendering::VisualizationMode::SURFACE, true, true, VFRendering::WidgetLocation::BOTTOM_LEFT, true, VFRendering::WidgetLocation::BOTTOM_RIGHT);
-        needs_redraw = true;
-        break;
-    case GLFW_KEY_3:
-        view.renderers(VFRendering::VisualizationMode::ISOSURFACE, true, true, VFRendering::WidgetLocation::BOTTOM_LEFT, true, VFRendering::WidgetLocation::BOTTOM_RIGHT);
         needs_redraw = true;
         break;
     }
@@ -126,8 +115,6 @@ int main(void) {
 
     view.update(geometry, directions);
     VFRendering::Options options;
-    options.set<VFRendering::View::Option::BOUNDING_BOX_MIN>(geometry.min());
-    options.set<VFRendering::View::Option::BOUNDING_BOX_MAX>(geometry.max());
     options.set<VFRendering::View::Option::SYSTEM_CENTER>((geometry.min() + geometry.max()) * 0.5f);
     options.set<VFRendering::View::Option::COLORMAP_IMPLEMENTATION>(VFRendering::Utilities::getColormapImplementation(VFRendering::Utilities::Colormap::HSV));
     options.set<VFRendering::View::Option::CAMERA_POSITION>({0, 0, 30});
@@ -148,11 +135,13 @@ int main(void) {
     });
     yzplane_renderer_ptr->setOption<VFRendering::IsosurfaceRenderer::Option::ISOVALUE>(0.0);
     auto arrow_renderer_ptr = std::make_shared<VFRendering::ArrowRenderer>(view);
+    auto bounding_box_renderer_ptr = std::make_shared<VFRendering::BoundingBoxRenderer>(VFRendering::BoundingBoxRenderer::forCuboid(view, (geometry.min()+geometry.max())*0.5f, geometry.max()-geometry.min()));
 
     std::vector<std::shared_ptr<VFRendering::RendererBase>> renderers = {
         isosurface_renderer_ptr,
         yzplane_renderer_ptr,
-        arrow_renderer_ptr
+        arrow_renderer_ptr,
+        bounding_box_renderer_ptr
     };
     view.renderers({{std::make_shared<VFRendering::CombinedRenderer>(view, renderers), {{0, 0, 1, 1}}}});
     view.setOption<VFRendering::View::Option::IS_VISIBLE_IMPLEMENTATION>("bool is_visible(vec3 position, vec3 direction) { return position.x >= 0; }");
