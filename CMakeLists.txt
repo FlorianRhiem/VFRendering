@@ -76,6 +76,8 @@ set(HEADER_FILES
     include/shaders/colormap.bluered.glsl.hxx
     include/shaders/colormap.bluewhitered.glsl.hxx
     include/shaders/colormap.hsv.glsl.hxx
+    include/shaders/colormap.black.glsl.hxx
+    include/shaders/colormap.white.glsl.hxx
     include/shaders/coordinatesystem.frag.glsl.hxx
     include/shaders/coordinatesystem.vert.glsl.hxx
     include/shaders/sphere_background.frag.glsl.hxx

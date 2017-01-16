@@ -148,6 +148,8 @@ build/Utilities.o: src/Utilities.cxx \
   include/VFRendering/FPSCounter.hxx \
   include/VFRendering/Geometry.hxx \
   include/shaders/colormap.hsv.glsl.hxx \
+  include/shaders/colormap.black.glsl.hxx \
+  include/shaders/colormap.white.glsl.hxx \
   include/shaders/colormap.bluered.glsl.hxx \
   include/shaders/colormap.bluegreenred.glsl.hxx \
   include/shaders/colormap.bluewhitered.glsl.hxx
