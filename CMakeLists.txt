@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
-project(VFRendering VERSION 0.3.3)
+project(VFRendering VERSION 0.4.0)
 
 option(BUILD_DEMO "Whether or not a demo executable should be built" OFF)
 
@@ -76,6 +76,8 @@ set(HEADER_FILES
     include/shaders/colormap.bluered.glsl.hxx
     include/shaders/colormap.bluewhitered.glsl.hxx
     include/shaders/colormap.hsv.glsl.hxx
+    include/shaders/colormap.black.glsl.hxx
+    include/shaders/colormap.white.glsl.hxx
     include/shaders/coordinatesystem.frag.glsl.hxx
     include/shaders/coordinatesystem.vert.glsl.hxx
     include/shaders/sphere_background.frag.glsl.hxx
