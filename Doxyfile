@@ -19,7 +19,7 @@
 
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "libVFRendering"
-PROJECT_NUMBER         = "0.3.3"
+PROJECT_NUMBER         = "0.4.0"
 PROJECT_BRIEF          = "A vector field rendering library"
 PROJECT_LOGO           = 
 
