@@ -122,8 +122,8 @@ build/IsosurfaceRenderer.o: src/IsosurfaceRenderer.cxx \
   include/VFRendering/Utilities.hxx \
   include/VFRendering/Geometry.hxx \
   include/VectorfieldIsosurface.hxx \
-  include/shaders/surface.vert.glsl.hxx \
-  include/shaders/surface.frag.glsl.hxx
+  include/shaders/isosurface.vert.glsl.hxx \
+  include/shaders/isosurface.frag.glsl.hxx
 build/RendererBase.o: src/RendererBase.cxx \
   include/VFRendering/RendererBase.hxx \
   include/VFRendering/Options.hxx \

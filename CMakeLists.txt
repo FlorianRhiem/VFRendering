@@ -86,6 +86,8 @@ set(HEADER_FILES
     include/shaders/sphere_points.vert.glsl.hxx
     include/shaders/surface.frag.glsl.hxx
     include/shaders/surface.vert.glsl.hxx
+    include/shaders/isosurface.frag.glsl.hxx
+    include/shaders/isosurface.vert.glsl.hxx
 )
 
 add_library(${PROJECT_NAME} ${SOURCE_FILES})
