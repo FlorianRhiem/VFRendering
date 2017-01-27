@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
-project(VFRendering VERSION 0.4.0)
+project(VFRendering VERSION 0.5.0)
 
 option(BUILD_DEMO "Whether or not a demo executable should be built" OFF)
 
@@ -86,6 +86,8 @@ set(HEADER_FILES
     include/shaders/sphere_points.vert.glsl.hxx
     include/shaders/surface.frag.glsl.hxx
     include/shaders/surface.vert.glsl.hxx
+    include/shaders/isosurface.frag.glsl.hxx
+    include/shaders/isosurface.vert.glsl.hxx
 )
 
 add_library(${PROJECT_NAME} ${SOURCE_FILES})
