@@ -136,7 +136,7 @@ int main(void) {
     });
     yzplane_renderer_ptr->setOption<VFRendering::IsosurfaceRenderer::Option::ISOVALUE>(0.0);
     auto arrow_renderer_ptr = std::make_shared<VFRendering::ArrowRenderer>(view);
-    auto bounding_box_renderer_ptr = std::make_shared<VFRendering::BoundingBoxRenderer>(VFRendering::BoundingBoxRenderer::forCuboid(view, (geometry.min()+geometry.max())*0.5f, geometry.max()-geometry.min()));
+    auto bounding_box_renderer_ptr = std::make_shared<VFRendering::BoundingBoxRenderer>(VFRendering::BoundingBoxRenderer::forCuboid(view, (geometry.min()+geometry.max())*0.5f, geometry.max()-geometry.min(), (geometry.max()-geometry.min())*0.2f, 0.5f));
     auto coordinate_system_renderer_ptr = std::make_shared<VFRendering::CoordinateSystemRenderer>(view);
     coordinate_system_renderer_ptr->setOption<VFRendering::CoordinateSystemRenderer::Option::AXIS_LENGTH>({0, 20, 20});
     coordinate_system_renderer_ptr->setOption<VFRendering::CoordinateSystemRenderer::Option::NORMALIZE>(false);
