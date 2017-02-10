@@ -110,7 +110,7 @@ std::pair<glm::mat4, glm::mat4> getMatrices(const VFRendering::Options& options,
 
     glm::mat4 projection_matrix;
     if (vertical_field_of_view > 0) {
-        projection_matrix = glm::perspective(vertical_field_of_view, aspect_ratio, 0.1f, 10000.0f);
+        projection_matrix = glm::perspective(glm::radians(vertical_field_of_view), aspect_ratio, 0.1f, 10000.0f);
         if (aspect_ratio < 1) {
             projection_matrix[0][0] *= aspect_ratio;
             projection_matrix[1][1] *= aspect_ratio;
