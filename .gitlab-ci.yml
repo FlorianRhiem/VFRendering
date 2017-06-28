@@ -19,6 +19,15 @@ Build (Ubuntu 16.04 / CMake / clang):
         - cmake .. -DBUILD_DEMO=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang
         - make
 
+Build Demo (Ubuntu 16.04 / CMake / clang):
+    image: ubuntu:16.04
+    script:
+        - apt-get update -qq && apt-get install -y -qq git cmake clang libglfw3-dev
+        - mkdir build
+        - cd build
+        - cmake .. -DBUILD_DEMO=ON -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang
+        - make
+
 Build (Ubuntu 16.04 / CMake / gcc):
     image: ubuntu:16.04
     script:
@@ -26,6 +35,15 @@ Build (Ubuntu 16.04 / CMake / gcc):
         - mkdir build
         - cd build
         - cmake .. -DBUILD_DEMO=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc
+        - make
+
+Build Demo (Ubuntu 16.04 / CMake / gcc):
+    image: ubuntu:16.04
+    script:
+        - apt-get update -qq && apt-get install -y -qq git cmake gcc g++ libglfw3-dev
+        - mkdir build
+        - cd build
+        - cmake .. -DBUILD_DEMO=ON -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc
         - make
 
 Build (Ubuntu 16.10 / make / clang):
@@ -49,6 +67,15 @@ Build (Ubuntu 16.10 / CMake / clang):
         - cmake .. -DBUILD_DEMO=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang
         - make
 
+Build Demo (Ubuntu 16.10 / CMake / clang):
+    image: ubuntu:16.10
+    script:
+        - apt-get update -qq && apt-get install -y -qq git cmake clang libglfw3-dev
+        - mkdir build
+        - cd build
+        - cmake .. -DBUILD_DEMO=ON -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang
+        - make
+
 Build (Ubuntu 16.10 / CMake / gcc):
     image: ubuntu:16.10
     script:
@@ -56,6 +83,15 @@ Build (Ubuntu 16.10 / CMake / gcc):
         - mkdir build
         - cd build
         - cmake .. -DBUILD_DEMO=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc
+        - make
+
+Build Demo (Ubuntu 16.10 / CMake / gcc):
+    image: ubuntu:16.10
+    script:
+        - apt-get update -qq && apt-get install -y -qq git cmake gcc g++ libglfw3-dev
+        - mkdir build
+        - cd build
+        - cmake .. -DBUILD_DEMO=ON -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc
         - make
 
 Build (Debian 8 / make / clang):
