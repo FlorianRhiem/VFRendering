@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 project(VFRendering VERSION 0.7.0)
 
 option(BUILD_DEMO "Whether or not a demo executable should be built" OFF)
+option(BUILD_PYTHON_BINDINGS "Whether or not a binary python module should be built" OFF)
 
 if((NOT qhull_LIBS) OR (NOT qhull_INCLUDE_DIRS))
 
@@ -121,4 +122,18 @@ set_property(TARGET ${PROJECT_NAME}Demo PROPERTY CXX_STANDARD_REQUIRED ON)
 set_property(TARGET ${PROJECT_NAME}Demo PROPERTY CXX_EXTENSIONS OFF)
 
 target_include_directories(${PROJECT_NAME}Demo PRIVATE ${PROJECT_SOURCE_DIR}/thirdparty/glad/include)
+endif()
+
+# Build Python bindings
+if (BUILD_PYTHON_BINDINGS)
+add_subdirectory(thirdparty/pybind11)
+pybind11_add_module(py${PROJECT_NAME} python/vfrendering_bindings.cpp)
+
+target_include_directories(py${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(py${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/thirdparty/pybind11/include)
+target_include_directories(py${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/thirdparty/glm/include)
+target_include_directories(py${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/thirdparty/glad/include)
+target_include_directories(py${PROJECT_NAME} PRIVATE ${qhull_INCLUDE_DIRS})
+
+target_link_libraries(py${PROJECT_NAME} PRIVATE ${PROJECT_NAME})
 endif()
