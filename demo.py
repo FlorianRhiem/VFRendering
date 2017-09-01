@@ -18,7 +18,7 @@ from PyQt5.QtWidgets import (
         QAction
     )
 
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, QTimer
 from PyQt5.QtCore import Qt
 
 import build.pyVFRendering as vfr
@@ -29,25 +29,7 @@ class MainWindow(QMainWindow):
 
         self.widget = glWidget(self)
         self.setCentralWidget(self.widget)
-        self.setWindowTitle('PyVFRendering Demo')
-        # self.initUI()
-    
-    # def initUI(self):
-    #     # Menu Bar
-    #     mainMenu = self.menuBar() 
-    #     fileMenu = mainMenu.addMenu('File')
-    #     editMenu = mainMenu.addMenu('Edit')
-    #     viewMenu = mainMenu.addMenu('View')
-    #     searchMenu = mainMenu.addMenu('Search')
-    #     toolsMenu = mainMenu.addMenu('Tools')
-    #     helpMenu = mainMenu.addMenu('Help')
- 
-    #     exitButton = QAction(QIcon('exit24.png'), 'Exit', self)
-    #     exitButton.setShortcut('Ctrl+Q')
-    #     exitButton.setStatusTip('Exit application')
-    #     exitButton.triggered.connect(self.close)
-    #     fileMenu.addAction(exitButton)
-
+        self.setWindowTitle('pyVFRendering Demo')
 
 class glWidget(QOpenGLWidget):
 
@@ -100,30 +82,22 @@ class glWidget(QOpenGLWidget):
 
     def resizeGL(self, width, height):
         self.view.setFramebufferSize(width*self.window().devicePixelRatio(), height*self.window().devicePixelRatio())
-        # QTimer::singleShot(1, this, SLOT(update()));
-        # self.update()
+        QTimer.singleShot(1, self.update)
+
 
     def mouseMoveEvent(self, event):
-        if event.buttons() == Qt.NoButton:
-            # print("Simple mouse motion")
-            return
-        elif event.buttons() == Qt.LeftButton:
-            # print("Left click drag")
+        if event.buttons() == Qt.LeftButton:
             camera_mode = vfr.CameraMovementModes.rotate
         elif event.buttons() == Qt.RightButton:
-            # print("Right click drag")
             camera_mode = vfr.CameraMovementModes.translate
+        else:
+            return
         
         current_mouse_position = [event.x(), event.y()]
         self.view.mouseMove(self.previous_mouse_position, current_mouse_position, camera_mode)
         self.previous_mouse_position = current_mouse_position
-        self.update()
-
-    # def mousePressEvent(self, event):
-    #     if event.button() == Qt.LeftButton:
-    #         print("Press left")
-    #     if event.button() == Qt.RightButton:
-    #         print("Press right")
+        
+        QTimer.singleShot(1, self.update)
 
 
 if __name__ == '__main__':
