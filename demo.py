@@ -1,15 +1,27 @@
+#!/usr/bin/env python3
+
+import sys
+
 from PyQt5.QtGui import (
         QOpenGLVersionProfile,
         QOpenGLVertexArrayObject,
         QSurfaceFormat,
+        QIcon
     )
 
 from PyQt5.QtWidgets import (
         QApplication,
         QMainWindow,
-        QOpenGLWidget
+        QWidget,
+        QOpenGLWidget,
+        QPushButton,
+        QAction
     )
 
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import Qt
+
+import build.pyVFRendering as vfr
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -17,17 +29,34 @@ class MainWindow(QMainWindow):
 
         self.widget = glWidget(self)
         self.setCentralWidget(self.widget)
+        self.setWindowTitle('PyVFRendering Demo')
+        # self.initUI()
+    
+    # def initUI(self):
+    #     # Menu Bar
+    #     mainMenu = self.menuBar() 
+    #     fileMenu = mainMenu.addMenu('File')
+    #     editMenu = mainMenu.addMenu('Edit')
+    #     viewMenu = mainMenu.addMenu('View')
+    #     searchMenu = mainMenu.addMenu('Search')
+    #     toolsMenu = mainMenu.addMenu('Tools')
+    #     helpMenu = mainMenu.addMenu('Help')
+ 
+    #     exitButton = QAction(QIcon('exit24.png'), 'Exit', self)
+    #     exitButton.setShortcut('Ctrl+Q')
+    #     exitButton.setStatusTip('Exit application')
+    #     exitButton.triggered.connect(self.close)
+    #     fileMenu.addAction(exitButton)
 
 
 class glWidget(QOpenGLWidget):
 
     def __init__(self, parent):
         QOpenGLWidget.__init__(self, parent)
+        self.previous_mouse_position = [0,0]
 
 
     def initializeGL(self):
-        import pyVFRendering as vfr
-        
         # Geometry
         n_cells = [20, 20, 20]
         geometry = vfr.Geometry.cartesianGeometry(n_cells, [-20, -20, -20], [20, 20, 20])
@@ -46,7 +75,13 @@ class glWidget(QOpenGLWidget):
         
         # ArrowRenderer
         renderer_arrows = vfr.ArrowRenderer(self.view)
-        self.renderers = [ (renderer_arrows, [0.0, 0.0, 1.0, 1.0]) ]
+        # BoundingBoxRenderer
+        renderer_boundingbox = vfr.BoundingBoxRenderer.forCuboid(self.view, (geometry.min() + geometry.max())*0.5, [40,40,40], [0, 0, 0], 1)
+        # CoordinateSystemRenderer
+        renderer_cs = vfr.CoordinateSystemRenderer(self.view)
+        renderer_cs.set_axis_length([20, 20, 20])
+        # Add renderers to view
+        self.renderers = [ (renderer_arrows, [0.0, 0.0, 1.0, 1.0]), (renderer_boundingbox, [0.0, 0.0, 1.0, 1.0]), (renderer_cs, [0.0, 0.0, 0.2, 0.2]) ]
         self.view.renderers(self.renderers)
 
         # Options
@@ -68,6 +103,28 @@ class glWidget(QOpenGLWidget):
         # QTimer::singleShot(1, this, SLOT(update()));
         # self.update()
 
+    def mouseMoveEvent(self, event):
+        if event.buttons() == Qt.NoButton:
+            # print("Simple mouse motion")
+            return
+        elif event.buttons() == Qt.LeftButton:
+            # print("Left click drag")
+            camera_mode = vfr.CameraMovementModes.rotate
+        elif event.buttons() == Qt.RightButton:
+            # print("Right click drag")
+            camera_mode = vfr.CameraMovementModes.translate
+        
+        current_mouse_position = [event.x(), event.y()]
+        self.view.mouseMove(self.previous_mouse_position, current_mouse_position, camera_mode)
+        self.previous_mouse_position = current_mouse_position
+        self.update()
+
+    # def mousePressEvent(self, event):
+    #     if event.button() == Qt.LeftButton:
+    #         print("Press left")
+    #     if event.button() == Qt.RightButton:
+    #         print("Press right")
+
 
 if __name__ == '__main__':
     # Set default surface format for OpenGL context
@@ -78,10 +135,10 @@ if __name__ == '__main__':
     QSurfaceFormat.setDefaultFormat(fmt)
 
     # Open the Application Window
-    app = QApplication(['PyVFRendering Demo'])
+    app = QApplication(sys.argv)
     window = MainWindow()
     window.resize(640, 480)
     window.show()
 
     # Return
-    app.exec_()
+    sys.exit(app.exec_())

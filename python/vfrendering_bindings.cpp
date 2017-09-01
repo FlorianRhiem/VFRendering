@@ -6,6 +6,8 @@
 #include <VFRendering/Geometry.hxx>
 #include <VFRendering/RendererBase.hxx>
 #include <VFRendering/ArrowRenderer.hxx>
+#include <VFRendering/BoundingBoxRenderer.hxx>
+#include <VFRendering/CoordinateSystemRenderer.hxx>
 #include <VFRendering/Options.hxx>
 
 #include <memory>
@@ -31,12 +33,18 @@ PYBIND11_MODULE(pyVFRendering, m)
         .def("draw", &View::draw)
         .def("renderers", &View::renderers)
         .def("setFramebufferSize", &View::setFramebufferSize)
-        .def("updateOptions", &View::updateOptions);
+        .def("updateOptions", &View::updateOptions)
+        .def("mouseMove", &View::mouseMove);
 
 
     py::enum_<Utilities::Colormap>(m, "Colormap")
         .value("HSV", Utilities::Colormap::HSV)
         .value("BLUEWHITERED", Utilities::Colormap::BLUEWHITERED)
+        .export_values();
+
+    py::enum_<CameraMovementModes>(m, "CameraMovementModes")
+        .value("rotate", CameraMovementModes::ROTATE)
+        .value("translate", CameraMovementModes::TRANSLATE)
         .export_values();
 
     m.def("getColormapImplementation", &Utilities::getColormapImplementation, "Get a CM implementation from the CM enum");
@@ -45,6 +53,12 @@ PYBIND11_MODULE(pyVFRendering, m)
     py::class_<RendererBase, std::shared_ptr<RendererBase>>(m, "RendererBase");
     py::class_<ArrowRenderer, RendererBase, std::shared_ptr<ArrowRenderer>>(m, "ArrowRenderer")
         .def(py::init<View&>());
+    py::class_<BoundingBoxRenderer, RendererBase, std::shared_ptr<BoundingBoxRenderer>>(m, "BoundingBoxRenderer")
+        .def("forCuboid", &BoundingBoxRenderer::forCuboid);
+    py::class_<CoordinateSystemRenderer, RendererBase, std::shared_ptr<CoordinateSystemRenderer>>(m, "CoordinateSystemRenderer")
+        .def(py::init<View&>())
+        .def("set_axis_length", &CoordinateSystemRenderer::setOption<CoordinateSystemRenderer::Option::AXIS_LENGTH>)
+        .def("set_normalize",   &CoordinateSystemRenderer::setOption<CoordinateSystemRenderer::Option::NORMALIZE>);
     
     
     py::class_<Options>(m, "Options")
