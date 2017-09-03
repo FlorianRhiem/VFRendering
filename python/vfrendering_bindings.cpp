@@ -34,7 +34,8 @@ PYBIND11_MODULE(pyVFRendering, m)
         .def("renderers", &View::renderers)
         .def("setFramebufferSize", &View::setFramebufferSize)
         .def("updateOptions", &View::updateOptions)
-        .def("mouseMove", &View::mouseMove);
+        .def("mouseMove", &View::mouseMove)
+        .def("mouseScroll", &View::mouseScroll);
 
 
     py::enum_<Utilities::Colormap>(m, "Colormap")

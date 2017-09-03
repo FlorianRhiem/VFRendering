@@ -21,7 +21,8 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import pyqtSlot, QTimer
 from PyQt5.QtCore import Qt
 
-import build.pyVFRendering as vfr
+import pyVFRendering as vfr
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -29,7 +30,23 @@ class MainWindow(QMainWindow):
 
         self.widget = glWidget(self)
         self.setCentralWidget(self.widget)
-        self.setWindowTitle('pyVFRendering Demo')
+        self.setWindowTitle("pyVFRendering Demo")
+
+        self.initUI()
+
+    def initUI(self):
+        # Menu bar
+        menu = self.menuBar().addMenu("File")
+        action = menu.addAction("Take Screenshot")
+        action.triggered.connect(self.takeScreenshot)
+        # Status bar
+        self.statusBar().showMessage("Ready", 5000)
+
+    def takeScreenshot(self):
+        filename = "screenshot"
+        self.widget.takeScreenshot(filename)
+        self.statusBar().showMessage("Saved screenshot to file '" + filename + ".bmp'", 5000)
+
 
 class glWidget(QOpenGLWidget):
 
@@ -37,6 +54,9 @@ class glWidget(QOpenGLWidget):
         QOpenGLWidget.__init__(self, parent)
         self.previous_mouse_position = [0,0]
 
+    def takeScreenshot(self, filename):
+        pixmap = self.grab()
+        pixmap.save(filename + ".bmp")
 
     def initializeGL(self):
         # Geometry
@@ -62,6 +82,7 @@ class glWidget(QOpenGLWidget):
         # CoordinateSystemRenderer
         renderer_cs = vfr.CoordinateSystemRenderer(self.view)
         renderer_cs.set_axis_length([20, 20, 20])
+        renderer_cs.set_normalize(True)
         # Add renderers to view
         self.renderers = [ (renderer_arrows, [0.0, 0.0, 1.0, 1.0]), (renderer_boundingbox, [0.0, 0.0, 1.0, 1.0]), (renderer_cs, [0.0, 0.0, 0.2, 0.2]) ]
         self.view.renderers(self.renderers)
@@ -75,15 +96,15 @@ class glWidget(QOpenGLWidget):
         self.options.set_colormap_implementation(vfr.getColormapImplementation(vfr.Colormap.HSV))
         self.view.updateOptions(self.options)
 
-
     def paintGL(self):
         self.view.draw()
-
 
     def resizeGL(self, width, height):
         self.view.setFramebufferSize(width*self.window().devicePixelRatio(), height*self.window().devicePixelRatio())
         QTimer.singleShot(1, self.update)
 
+    def mousePressEvent(self, event):
+        self.previous_mouse_position = [event.x(), event.y()]
 
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.LeftButton:
@@ -96,6 +117,12 @@ class glWidget(QOpenGLWidget):
         current_mouse_position = [event.x(), event.y()]
         self.view.mouseMove(self.previous_mouse_position, current_mouse_position, camera_mode)
         self.previous_mouse_position = current_mouse_position
+        
+        QTimer.singleShot(1, self.update)
+    
+    def wheelEvent(self, event):
+        wheel_delta = event.angleDelta().y()
+        self.view.mouseScroll(-wheel_delta * 0.1)
         
         QTimer.singleShot(1, self.update)
 
