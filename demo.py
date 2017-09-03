@@ -108,7 +108,7 @@ class glWidget(QOpenGLWidget):
 
     def mouseMoveEvent(self, event):
         if event.buttons() == Qt.LeftButton:
-            camera_mode = vfr.CameraMovementModes.rotate
+            camera_mode = vfr.CameraMovementModes.rotate_bounded
         elif event.buttons() == Qt.RightButton:
             camera_mode = vfr.CameraMovementModes.translate
         else:

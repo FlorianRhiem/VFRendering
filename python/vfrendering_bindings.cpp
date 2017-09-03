@@ -44,7 +44,8 @@ PYBIND11_MODULE(pyVFRendering, m)
         .export_values();
 
     py::enum_<CameraMovementModes>(m, "CameraMovementModes")
-        .value("rotate", CameraMovementModes::ROTATE)
+        .value("rotate_bounded", CameraMovementModes::ROTATE_BOUNDED)
+        .value("rotate_free", CameraMovementModes::ROTATE_FREE)
         .value("translate", CameraMovementModes::TRANSLATE)
         .export_values();
 

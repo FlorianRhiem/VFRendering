@@ -16,7 +16,8 @@ class RendererBase;
 
 enum class CameraMovementModes {
     TRANSLATE,
-    ROTATE
+    ROTATE_BOUNDED,
+    ROTATE_FREE
 };
 
 class View {
