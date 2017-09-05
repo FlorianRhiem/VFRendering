@@ -35,7 +35,8 @@ PYBIND11_MODULE(pyVFRendering, m)
         .def("setFramebufferSize", &View::setFramebufferSize)
         .def("updateOptions", &View::updateOptions)
         .def("mouseMove", &View::mouseMove)
-        .def("mouseScroll", &View::mouseScroll);
+        .def("mouseScroll", &View::mouseScroll)
+        .def("getFramerate", &View::getFramerate);
 
 
     py::enum_<Utilities::Colormap>(m, "Colormap")
@@ -68,9 +69,16 @@ PYBIND11_MODULE(pyVFRendering, m)
         .def("set_system_center",             &Options::set<View::Option::SYSTEM_CENTER>)
         .def("set_vertical_fov",              &Options::set<View::Option::VERTICAL_FIELD_OF_VIEW>)
         .def("set_background_color",          &Options::set<View::Option::BACKGROUND_COLOR>)
+        .def("set_boundingbox_color",         &Options::set<BoundingBoxRenderer::Option::COLOR>)
         .def("set_colormap_implementation",   &Options::set<View::Option::COLORMAP_IMPLEMENTATION>)
         .def("set_is_visible_implementation", &Options::set<View::Option::IS_VISIBLE_IMPLEMENTATION>)
         .def("set_camera_position",           &Options::set<View::Option::CAMERA_POSITION>)
         .def("set_center_position",           &Options::set<View::Option::CENTER_POSITION>)
-        .def("set_up_vector",                 &Options::set<View::Option::UP_VECTOR>);
+        .def("set_up_vector",                 &Options::set<View::Option::UP_VECTOR>)
+        .def("get_system_center",             &Options::get<View::Option::SYSTEM_CENTER>)
+        .def("get_background_color",          &Options::get<View::Option::BACKGROUND_COLOR>)
+        .def("get_boundingbox_color",         &Options::get<BoundingBoxRenderer::Option::COLOR>)
+        .def("get_camera_position",           &Options::get<View::Option::CAMERA_POSITION>)
+        .def("get_center_position",           &Options::get<View::Option::CENTER_POSITION>)
+        .def("get_up_vector",                 &Options::get<View::Option::UP_VECTOR>);
 }
