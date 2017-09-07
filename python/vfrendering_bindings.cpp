@@ -5,6 +5,7 @@
 #include <VFRendering/View.hxx>
 #include <VFRendering/Geometry.hxx>
 #include <VFRendering/RendererBase.hxx>
+#include <VFRendering/CombinedRenderer.hxx>
 #include <VFRendering/ArrowRenderer.hxx>
 #include <VFRendering/BoundingBoxRenderer.hxx>
 #include <VFRendering/CoordinateSystemRenderer.hxx>
@@ -135,6 +136,12 @@ PYBIND11_MODULE(pyVFRendering, m)
 
     // Renderer base class
     py::class_<RendererBase, std::shared_ptr<RendererBase>>(m, "RendererBase", "Renderer base class");
+
+
+    // Combined renderer
+    py::class_<CombinedRenderer, RendererBase, std::shared_ptr<CombinedRenderer>>(m, "CombinedRenderer",
+        "Class for using multiple renderers in one")
+        .def(py::init<const View&, const std::vector<std::shared_ptr<RendererBase>>&>());
 
 
     // ArrowRenderer
