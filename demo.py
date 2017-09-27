@@ -81,19 +81,19 @@ class glWidget(QOpenGLWidget):
         renderer_boundingbox = vfr.BoundingBoxRenderer.forCuboid(self.view, (geometry.min() + geometry.max())*0.5, [40,40,40], [0, 0, 0], 1)
         # CoordinateSystemRenderer
         renderer_cs = vfr.CoordinateSystemRenderer(self.view)
-        renderer_cs.set_axis_length([20, 20, 20])
-        renderer_cs.set_normalize(True)
+        renderer_cs.setAxisLength([20, 20, 20])
+        renderer_cs.setNormalize(True)
         # Add renderers to view
         self.renderers = [ (renderer_arrows, [0.0, 0.0, 1.0, 1.0]), (renderer_boundingbox, [0.0, 0.0, 1.0, 1.0]), (renderer_cs, [0.0, 0.0, 0.2, 0.2]) ]
         self.view.renderers(self.renderers)
 
         # Options
         self.options = vfr.Options()
-        self.options.set_system_center((geometry.min() + geometry.max())*0.5)
-        self.options.set_camera_position([0, -80, 20])
-        self.options.set_center_position([0, 0, 0])
-        self.options.set_up_vector([0, 0, 1])
-        self.options.set_colormap_implementation(vfr.getColormapImplementation(vfr.Colormap.HSV))
+        self.options.setSystemCenter((geometry.min() + geometry.max())*0.5)
+        self.options.setCameraPosition([0, -80, 20])
+        self.options.setCenterPosition([0, 0, 0])
+        self.options.setUpVector([0, 0, 1])
+        self.options.setColormapImplementation(vfr.getColormapImplementation(vfr.Colormap.hsv))
         self.view.updateOptions(self.options)
 
     def paintGL(self):
