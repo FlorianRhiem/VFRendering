@@ -39,7 +39,7 @@ struct type_caster<glm::tvec2<T, P>>
 
 	bool load(handle src, bool)
 	{
-		array_t<Scalar> buf(src, true);
+		array_t<Scalar> buf = array_t<Scalar>::ensure(src);
 		if (!buf)
 			return false;
 
@@ -83,7 +83,7 @@ struct type_caster<glm::tvec3<T, P>>
 
 	bool load(handle src, bool)
 	{
-		array_t<Scalar> buf(src, true);
+		array_t<Scalar> buf = array_t<Scalar>::ensure(src);
 		if (!buf)
 			return false;
 
@@ -127,7 +127,7 @@ struct type_caster<glm::tvec4<T, P>>
 
 	bool load(handle src, bool)
 	{
-		array_t<Scalar> buf(src, true);
+		array_t<Scalar> buf = array_t<Scalar>::ensure(src);
 		if (!buf)
 			return false;
 
@@ -172,7 +172,7 @@ struct type_caster<glm::tmat3x3<T, P>>
 
 	bool load(handle src, bool)
 	{
-		array_t<Scalar> buf(src, true);
+		array_t<Scalar> buf = array_t<Scalar>::ensure(src);
 		if (!buf)
 			return false;
 
@@ -220,7 +220,7 @@ struct type_caster<glm::tmat4x3<T, P>>
 
 	bool load(handle src, bool)
 	{
-		array_t<Scalar> buf(src, true);
+		array_t<Scalar> buf = array_t<Scalar>::ensure(src);
 		if (!buf)
 			return false;
 
@@ -268,7 +268,7 @@ struct type_caster<glm::tmat4x4<T, P>>
 
 	bool load(handle src, bool)
 	{
-		array_t<Scalar> buf(src, true);
+		array_t<Scalar> buf = array_t<Scalar>::ensure(src);
 		if (!buf)
 			return false;
 
