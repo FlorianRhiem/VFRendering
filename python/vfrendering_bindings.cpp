@@ -76,12 +76,11 @@ PYBIND11_MODULE(pyVFRendering, m)
             "Influence the camera according to a movement of the mouse")
         .def("mouseScroll", &View::mouseScroll,
             "Influence the camera according to a scrolling of the mouse")
-        // Setters
-        .def("setFramebufferSize", &View::setFramebufferSize,
-            "Set the size of the Framebuffer into which the View should render, i.e. the number of pixels")
         // Getters
         .def("renderers", &View::renderers,
             "Retrieve the renderers currently in use by the View")
+        .def("options", (const Options& (View::*)() const) &View::options,
+            "Retrieve the options currently in use by the View")
         .def("getPositions", &View::positions,
             "Get the positions stored in the View")
         .def("getDirections", &View::directions,
@@ -91,7 +90,29 @@ PYBIND11_MODULE(pyVFRendering, m)
         .def("getVolumeIndices", &View::volumeIndices,
             "Get the volume indices stored in the View")
         .def("getFramerate", &View::getFramerate,
-            "Retrieve the last known framerate of OpenGL draws");
+            "Retrieve the last known framerate of OpenGL draws")
+        // Setters
+        .def("setFramebufferSize", &View::setFramebufferSize,
+            "Set the size of the Framebuffer into which the View should render, i.e. the number of pixels")
+        // Camera set
+        .def("setVerticalFOV",             &View::setOption<View::Option::VERTICAL_FIELD_OF_VIEW>,
+            "Set the vertical field of view (FOV) of the camera")
+        .def("setSystemCenter",            &View::setOption<View::Option::SYSTEM_CENTER>,
+            "Set the system center, i.e. the center point of the system's bounds")
+        .def("setCameraPosition",          &View::setOption<View::Option::CAMERA_POSITION>,
+            "Set the position of the camera")
+        .def("setCenterPosition",          &View::setOption<View::Option::CENTER_POSITION>,
+            "Set the center position, i.e. the focal point of the View")
+        .def("setUpVector",                &View::setOption<View::Option::UP_VECTOR>,
+            "Set the up-vector of the camera")
+        // Colors set
+        .def("setBackgroundColor",         &View::setOption<View::Option::BACKGROUND_COLOR>,
+            "Set the background color of the View")
+        .def("setColormapImplementation",  &View::setOption<View::Option::COLORMAP_IMPLEMENTATION>,
+            "Set the implementation of the colormap")
+        // Filters set
+        .def("setIsVisibleImplementation", &View::setOption<View::Option::IS_VISIBLE_IMPLEMENTATION>,
+            "Set a filter for the visibility of objects");
 
 
     // View Options
@@ -139,8 +160,8 @@ PYBIND11_MODULE(pyVFRendering, m)
         .value("hsv",            Utilities::Colormap::HSV)
         .value("blue_white_red", Utilities::Colormap::BLUEWHITERED)
         .value("blue_green_red", Utilities::Colormap::BLUEGREENRED)
-        .value("black", Utilities::Colormap::BLACK)
-        .value("white", Utilities::Colormap::WHITE)
+        .value("black",          Utilities::Colormap::BLACK)
+        .value("white",          Utilities::Colormap::WHITE)
         .export_values();
 
 
@@ -167,7 +188,15 @@ PYBIND11_MODULE(pyVFRendering, m)
         "This class is used to draw arrows directly corresponding to a vectorfield.")
         .def(py::init<View&>())
         .def("setLevelOfDetail",  &ArrowRenderer::setOption<ArrowRenderer::Option::LEVEL_OF_DETAIL>,
-            "Set the resolution of an arrow");
+            "Set the resolution of an arrow")
+        .def("setConeRadius",  &ArrowRenderer::setOption<ArrowRenderer::Option::CONE_RADIUS>,
+            "Set the cone radius of an arrow")
+        .def("setConeHeight",  &ArrowRenderer::setOption<ArrowRenderer::Option::CONE_HEIGHT>,
+            "Set the cone height of an arrow")
+        .def("setCylinderRadius",  &ArrowRenderer::setOption<ArrowRenderer::Option::CYLINDER_RADIUS>,
+            "Set the cylinder radius of an arrow")
+        .def("setCylinderHeight",  &ArrowRenderer::setOption<ArrowRenderer::Option::CYLINDER_HEIGHT>,
+            "Set the cylinder height of an arrow");
 
 
     // BoundingBoxRenderer
