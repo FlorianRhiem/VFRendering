@@ -47,6 +47,8 @@ public:
     void setOption(const typename Options::Type<index>::type& value);
     void options(const Options& options);
     const Options& options() const;
+    template<int index>
+    const typename Options::Type<index>::type& getOption() const;
 
     void update(const Geometry& geometry, const std::vector<glm::vec3>& vectors);
     void updateVectors(const std::vector<glm::vec3>& vectors);
@@ -82,6 +84,11 @@ private:
 template<int index>
 void View::setOption(const typename Options::Type<index>::type& value) {
     updateOptions(Options::withOption<index>(value));
+}
+
+template<int index>
+const typename Options::Type<index>::type& View::getOption() const {
+    return m_options.get<index>();
 }
 
 namespace Utilities {
