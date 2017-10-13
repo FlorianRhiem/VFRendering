@@ -51,16 +51,20 @@ void View::updateVectors(const std::vector<glm::vec3>& vectors) {
 
 void View::draw() {
     initialize();
-    auto background_color = m_options.get<View::Option::BACKGROUND_COLOR>();
-    glClearColor(background_color.x, background_color.y, background_color.z, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (m_options.get<View::Option::CLEAR>()) {
+        auto background_color = m_options.get<View::Option::BACKGROUND_COLOR>();
+        glClearColor(background_color.x, background_color.y, background_color.z, 1.0);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    }
     for (auto it : m_renderers) {
         auto renderer = it.first;
         auto viewport = it.second;
         float width = m_framebuffer_size.x;
         float height = m_framebuffer_size.y;
         glViewport((GLint)(viewport[0] * width), (GLint)(viewport[1] * height), (GLsizei)(viewport[2] * width), (GLsizei)(viewport[3] * height));
-        glClear(GL_DEPTH_BUFFER_BIT);
+        if (m_options.get<View::Option::CLEAR>()) {
+            glClear(GL_DEPTH_BUFFER_BIT);
+        }
         renderer->updateIfNecessary();
         renderer->draw(viewport[2] * width / viewport[3] / height);
     }
