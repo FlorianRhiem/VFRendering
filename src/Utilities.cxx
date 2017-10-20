@@ -15,7 +15,7 @@
 
 namespace VFRendering {
 namespace Utilities {
-static GLuint createShader(GLenum shader_type, const std::string& shader_source) throw (OpenGLException) {
+static GLuint createShader(GLenum shader_type, const std::string& shader_source) {
     const char* shader_source_c_str = shader_source.c_str();
     GLuint shader = glCreateShader(shader_type);
     glShaderSource(shader, 1, &shader_source_c_str, nullptr);
@@ -44,7 +44,7 @@ static GLuint createShader(GLenum shader_type, const std::string& shader_source)
 
 OpenGLException::OpenGLException(const std::string& message) : std::runtime_error(message) {}
 
-unsigned int createProgram(const std::string& vertex_shader_source, const std::string& fragment_shader_source, const std::vector<std::string>& attributes) throw (OpenGLException) {
+unsigned int createProgram(const std::string& vertex_shader_source, const std::string& fragment_shader_source, const std::vector<std::string>& attributes) {
     GLuint vertex_shader = createShader(GL_VERTEX_SHADER, vertex_shader_source);
     GLuint fragment_shader = createShader(GL_FRAGMENT_SHADER, fragment_shader_source);
 
