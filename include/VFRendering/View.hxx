@@ -30,7 +30,8 @@ public:
         IS_VISIBLE_IMPLEMENTATION,
         CAMERA_POSITION,
         CENTER_POSITION,
-        UP_VECTOR
+        UP_VECTOR,
+        CLEAR
     };
 
     View();
@@ -138,6 +139,12 @@ struct Options::Option<View::Option::CENTER_POSITION> {
 template<>
 struct Options::Option<View::Option::UP_VECTOR> {
     glm::vec3 default_value = {0, 1, 0};
+};
+
+/** Option to set whether or not the background needs to be cleared. */
+template<>
+struct Options::Option<View::Option::CLEAR> {
+    bool default_value = true;
 };
 }
 }
