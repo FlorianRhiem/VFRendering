@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
-project(VFRendering VERSION 0.8.0)
+file(STRINGS "Version.txt" VFRENDERING_VERSION)
+project(VFRendering VERSION ${VFRENDERING_VERSION})
 
 option(BUILD_DEMO "Whether or not a demo executable should be built" OFF)
 option(BUILD_PYTHON_BINDINGS "Whether or not a binary python module should be built" OFF)
@@ -128,14 +129,17 @@ endif()
 
 # Build Python bindings
 if (BUILD_PYTHON_BINDINGS)
+set(MODULE_NAME py${PROJECT_NAME})
 add_subdirectory(thirdparty/pybind11)
-pybind11_add_module(py${PROJECT_NAME} python/vfrendering_bindings.cpp)
+pybind11_add_module(${MODULE_NAME} python/vfrendering_bindings.cpp)
 
-target_include_directories(py${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
-target_include_directories(py${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/thirdparty/pybind11/include)
-target_include_directories(py${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/thirdparty/glm/include)
-target_include_directories(py${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/thirdparty/glad/include)
-target_include_directories(py${PROJECT_NAME} PRIVATE ${qhull_INCLUDE_DIRS})
+target_compile_definitions(${MODULE_NAME} PUBLIC "-D${PROJECT_NAME}_VERSION=\"${${PROJECT_NAME}_VERSION}${MODULE_DEV_TAG}\"")
 
-target_link_libraries(py${PROJECT_NAME} PRIVATE ${PROJECT_NAME})
+target_include_directories(${MODULE_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(${MODULE_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/thirdparty/pybind11/include)
+target_include_directories(${MODULE_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/thirdparty/glm/include)
+target_include_directories(${MODULE_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/thirdparty/glad/include)
+target_include_directories(${MODULE_NAME} PRIVATE ${qhull_INCLUDE_DIRS})
+
+target_link_libraries(${MODULE_NAME} PRIVATE ${PROJECT_NAME})
 endif()

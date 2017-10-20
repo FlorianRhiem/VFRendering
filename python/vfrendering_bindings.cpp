@@ -24,6 +24,13 @@ typedef unsigned int index_type;
 
 PYBIND11_MODULE(pyVFRendering, m)
 {
+    #ifdef VFRendering_VERSION
+        m.attr("__version__") = VFRendering_VERSION;
+    #else
+        m.attr("__version__") = "dev";
+    #endif
+
+
     // Module docstring
     m.doc() = "VFRendering is a C++ library for rendering vectorfields using OpenGL,"
               "wrapped for Python using pybind11.";

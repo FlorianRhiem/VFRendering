@@ -70,7 +70,7 @@ struct type_caster<glm::tvec2<T, P>>
 	}
 
 	// Specifies the doc-string for the type in Python:
-	PYBIND11_TYPE_CASTER(vector_type, _("numpy.ndarray[") + npy_format_descriptor<Scalar>::name() +
+	PYBIND11_TYPE_CASTER(vector_type, _("numpy.ndarray[") + npy_format_descriptor<Scalar>::name +
 		_("[") + _<num_elements>() + _("]]"));
 };
 
@@ -114,7 +114,7 @@ struct type_caster<glm::tvec3<T, P>>
 	}
 
 	// Specifies the doc-string for the type in Python:
-	PYBIND11_TYPE_CASTER(vector_type, _("numpy.ndarray[") + npy_format_descriptor<Scalar>::name() +
+	PYBIND11_TYPE_CASTER(vector_type, _("numpy.ndarray[") + npy_format_descriptor<Scalar>::name +
 		_("[") + _<num_elements>() + _("]]"));
 };
 
@@ -158,7 +158,7 @@ struct type_caster<glm::tvec4<T, P>>
 	}
 
 	// Specifies the doc-string for the type in Python:
-	PYBIND11_TYPE_CASTER(vector_type, _("numpy.ndarray[") + npy_format_descriptor<Scalar>::name() +
+	PYBIND11_TYPE_CASTER(vector_type, _("numpy.ndarray[") + npy_format_descriptor<Scalar>::name +
 		_("[") + _<num_elements>() + _("]]"));
 };
 
@@ -206,7 +206,7 @@ struct type_caster<glm::tmat3x3<T, P>>
 	}
 
 	// Specifies the doc-string for the type in Python:
-	PYBIND11_TYPE_CASTER(matrix_type, _("numpy.ndarray[") + npy_format_descriptor<Scalar>::name() +
+	PYBIND11_TYPE_CASTER(matrix_type, _("numpy.ndarray[") + npy_format_descriptor<Scalar>::name +
 		_("[") + _<num_rows>() + _(", ") + _<num_cols>() + _("]]"));
 };
 
@@ -254,7 +254,7 @@ struct type_caster<glm::tmat4x3<T, P>>
 	}
 
 	// Specifies the doc-string for the type in Python:
-	PYBIND11_TYPE_CASTER(matrix_type, _("numpy.ndarray[") + npy_format_descriptor<Scalar>::name() +
+	PYBIND11_TYPE_CASTER(matrix_type, _("numpy.ndarray[") + npy_format_descriptor<Scalar>::name +
 		_("[") + _<num_rows>() + _(", ") + _<num_cols>() + _("]]"));
 };
 
@@ -302,7 +302,7 @@ struct type_caster<glm::tmat4x4<T, P>>
 	}
 
 	// Specifies the doc-string for the type in Python:
-	PYBIND11_TYPE_CASTER(matrix_type, _("numpy.ndarray[") + npy_format_descriptor<Scalar>::name() +
+	PYBIND11_TYPE_CASTER(matrix_type, _("numpy.ndarray[") + npy_format_descriptor<Scalar>::name +
 		_("[") + _<num_rows>() + _(", ") + _<num_cols>() + _("]]"));
 };
 
