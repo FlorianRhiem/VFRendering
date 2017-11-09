@@ -13,7 +13,7 @@
 #include "shaders/sphere_background.frag.glsl.hxx"
 
 namespace VFRendering {
-VectorSphereRenderer::VectorSphereRenderer(const View& view) : RendererBase(view) {}
+VectorSphereRenderer::VectorSphereRenderer(const View& view, const VectorField& vf) : VectorFieldRenderer(view, vf) {}
 
 void VectorSphereRenderer::initialize() {
     if (m_is_initialized) {

@@ -18,9 +18,11 @@ OBJS=\
 	build/GlyphRenderer.o\
 	build/View.o\
 	build/IsosurfaceRenderer.o\
+	build/VectorFieldRenderer.o\
 	build/VectorSphereRenderer.o\
 	build/SphereRenderer.o\
 	build/SurfaceRenderer.o\
+	build/VectorField.o\
 	build/VectorfieldIsosurface.o\
 	build/Utilities.o\
 	build/Options.o\
@@ -144,6 +146,11 @@ build/RendererBase.o: src/RendererBase.cxx \
   include/VFRendering/FPSCounter.hxx \
   include/VFRendering/Utilities.hxx \
   include/VFRendering/Geometry.hxx
+build/VectorFieldRenderer.o: src/VectorFieldRenderer.cxx \
+  include/VFRendering/VectorFieldRenderer.hxx \
+  include/VFRendering/VectorField.hxx \
+  include/VFRendering/View.hxx \
+  include/VFRendering/RendererBase.hxx
 build/SphereRenderer.o: src/SphereRenderer.cxx \
   include/VFRendering/SphereRenderer.hxx \
   include/VFRendering/RendererBase.hxx \
@@ -177,6 +184,11 @@ build/Utilities.o: src/Utilities.cxx \
   include/shaders/colormap.bluegreenred.glsl.hxx \
   include/shaders/colormap.bluewhitered.glsl.hxx
 build/VectorfieldIsosurface.o: src/VectorfieldIsosurface.cxx \
+  include/VFRendering/Geometry.hxx
+build/VectorField.o: src/VectorField.cxx \
+  include/VFRendering/Options.hxx \
+  include/VFRendering/FPSCounter.hxx \
+  include/VFRendering/Utilities.hxx \
   include/VFRendering/Geometry.hxx
 build/VectorSphereRenderer.o: src/VectorSphereRenderer.cxx \
   include/VFRendering/VectorSphereRenderer.hxx \

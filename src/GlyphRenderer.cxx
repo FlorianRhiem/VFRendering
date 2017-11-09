@@ -10,7 +10,7 @@
 #include "shaders/glyphs.frag.glsl.hxx"
 
 namespace VFRendering {
-GlyphRenderer::GlyphRenderer(const View& view) : RendererBase(view) {}
+GlyphRenderer::GlyphRenderer(const View& view, const VectorField& vf) : VectorFieldRenderer(view, vf) {}
 
 void GlyphRenderer::initialize() {
     if (m_is_initialized) {

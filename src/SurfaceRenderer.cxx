@@ -10,7 +10,7 @@
 #include "shaders/surface.frag.glsl.hxx"
 
 namespace VFRendering {
-SurfaceRenderer::SurfaceRenderer(const View& view) : RendererBase(view) {}
+SurfaceRenderer::SurfaceRenderer(const View& view, const VectorField& vf) : VectorFieldRenderer(view, vf) {}
 
 void SurfaceRenderer::initialize() {
     if (m_is_initialized) {

@@ -1,13 +1,13 @@
 #ifndef VFRENDERING_GLYPH_RENDERER_HXX
 #define VFRENDERING_GLYPH_RENDERER_HXX
 
-#include <VFRendering/RendererBase.hxx>
+#include <VFRendering/VectorFieldRenderer.hxx>
 
 namespace VFRendering {
-class GlyphRenderer : public RendererBase {
+class GlyphRenderer : public VectorFieldRenderer {
 public:
 
-    GlyphRenderer(const View& view);
+    GlyphRenderer(const View& view, const VectorField& vf);
     virtual ~GlyphRenderer();
     virtual void update(bool keep_geometry) override;
     virtual void draw(float aspect_ratio) override;

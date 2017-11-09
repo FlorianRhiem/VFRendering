@@ -11,7 +11,7 @@ public:
         LEVEL_OF_DETAIL
     };
 
-    SphereRenderer(const View& view);
+    SphereRenderer(const View& view, const VectorField& vf);
     virtual void optionsHaveChanged(const std::vector<int>& changed_options) override;
 };
 

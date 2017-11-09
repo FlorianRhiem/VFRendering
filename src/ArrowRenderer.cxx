@@ -4,9 +4,8 @@
 
 namespace VFRendering {
 static void setArrowMeshOptions(GlyphRenderer& renderer, const Options& options);
-
-ArrowRenderer::ArrowRenderer(const View& view) : GlyphRenderer(view) {
-  setArrowMeshOptions(*this, options());
+ArrowRenderer::ArrowRenderer(const View& view, const VectorField& vf) : GlyphRenderer(view, vf) {
+    setArrowMeshOptions(*this, this->options());
 }
 
 void ArrowRenderer::optionsHaveChanged(const std::vector<int>& changed_options) {

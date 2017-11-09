@@ -6,8 +6,8 @@
 namespace VFRendering {
 static void setSphereMeshOptions(GlyphRenderer& renderer, const Options& options);
 
-SphereRenderer::SphereRenderer(const View& view) : GlyphRenderer(view) {
-  setSphereMeshOptions(*this, options());
+SphereRenderer::SphereRenderer(const View& view, const VectorField& vf) : GlyphRenderer(view, vf) {
+  setSphereMeshOptions(*this, this->options());
 }
 
 void SphereRenderer::optionsHaveChanged(const std::vector<int>& changed_options) {
