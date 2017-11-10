@@ -6,7 +6,7 @@
 #include <QWheelEvent>
 
 VFRenderingWidget::VFRenderingWidget(QWidget *parent) : QOpenGLWidget(parent) {
-  m_vf = VFRendering::VectorField();
+  m_vf = VFRendering::VectorField({}, {});
 }
 
 VFRenderingWidget::~VFRenderingWidget() {}

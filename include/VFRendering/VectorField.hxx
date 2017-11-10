@@ -16,7 +16,7 @@ namespace VFRendering {
 class VectorField {
 public:
 
-    VectorField();
+    VectorField(const Geometry& geometry, const std::vector<glm::vec3>& vectors);
     virtual ~VectorField();
 
     void update(const Geometry& geometry, const std::vector<glm::vec3>& vectors);

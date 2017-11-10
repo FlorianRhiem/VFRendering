@@ -3,8 +3,9 @@
 #include <iostream>
 
 namespace VFRendering {
-VectorField::VectorField() {
-    
+VectorField::VectorField(const Geometry& geometry, const std::vector<glm::vec3>& vectors) : m_geometry(geometry), m_vectors(vectors) {
+    m_vectors_update_id++;
+    m_geometry_update_id++;
 }
 
 VectorField::~VectorField() {}

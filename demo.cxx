@@ -114,8 +114,7 @@ int main(void) {
         }
     }
     VFRendering::Geometry geometry = VFRendering::Geometry::cartesianGeometry({21, 21, 21}, {-20, -20, -20}, {20, 20, 20});
-    VFRendering::VectorField vf = VFRendering::VectorField();
-    vf.update(geometry, directions);
+    VFRendering::VectorField vf = VFRendering::VectorField(geometry, directions);
 
     VFRendering::Options options;
     options.set<VFRendering::View::Option::SYSTEM_CENTER>((geometry.min() + geometry.max()) * 0.5f);
