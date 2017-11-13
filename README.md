@@ -55,18 +55,28 @@ This step highly depends on your use case. The **directions are stored as a `std
 
 As shown here, the directions should be in **C order** when using the `VFRendering::Geometry` static methods. If you do not know [glm](http://glm.g-truc.net/), think of a `glm::vec3` as a struct containing three floats x, y and z.
 
-### 4. Pass geometry and directions to a VFRendering::View
+### 4. Create a VFRendering::VectorField
+
+This class simply contains geometry and directions.
+
+``` c++
+    VFRendering::VectorField vf(geometry, directions);
+```
+
+To update the VectorField data, use `VectorField::update`.
+If the directions changed but the geometry is the same, you can use the `VectorField::updateVectors` method or `VectorField::updateGeometry` vice versa.
+
+### 5. Create a VFRendering::View and a Renderer
 
 The view object is what you will interact most with. It provides an interface to the various renderers and includes functions for handling mouse input.
 
-You can **create a new view** and then **pass the geometry and directions by calling the update method**:
+You can **create a new view** and then **initialize the renderer(s)** (as an example, we use the `VFRendering::ArrowRenderer`):
 
 ``` c++
     VFRendering::View view;
-    view.update(geometry, directions);
+    auto arrow_renderer_ptr = std::make_shared<VFRendering::ArrowRenderer>(view, vf);
+    view.renderers( {{ arrow_renderer_ptr, {0, 0, 1, 1} }} );
 ```
-
-If the directions changed but the geometry is the same, you can use the **updateVectors method**.
 
 ### 5. Draw the view in an existing OpenGL context
 
@@ -80,20 +90,21 @@ For a complete example, including an interactive camera, see demo.cxx.
 
 ## Renderers
 
-**libvfrendering** offers several types of renderers, which all inherit from VFRendering::RendererBase. Most important among these are:
+**libvfrendering** offers several types of renderers, which all inherit from `VFRendering::RendererBase`.
+The most relevant are the `VectorFieldRenderer`s:
 
-- VFRendering::ArrowRenderer, which renders the vectors as arrows
+- VFRendering::ArrowRenderer, which renders the vectors as colored arrows
+- VFRendering::SphereRenderer, which renders the vectors as colored spheres
 - VFRendering::SurfaceRenderer, which renders the surface of the geometry using a colormap
 - VFRendering::IsosurfaceRenderer, which renders an isosurface of the vectorfield using a colormap
 - VFRendering::VectorSphereRenderer, which renders the vectors as dots on a sphere, with the position of each dot representing the direction of the vector
 
-In addition to these, there also the following renderers:
+In addition to these, there also the following renderers which do not require a `VectorField`:
 - VFRendering::CombinedRenderer, which can be used to create a combination of several renderers, like an isosurface rendering with arrows
 - VFRendering::BoundingBoxRenderer, which is used for rendering bounding boxes around the geometry rendered by an VFRendering::ArrorRenderer, VFRendering::SurfaceRenderer or VFRendering::IsosurfaceRenderer
 - VFRendering::CoordinateSystemRenderer, which is used for rendering a coordinate system, with the axes colored by using the colormap
 
-To control what renderers are used, you can use `VFRendering::View::renderers`. As a convenience function it uses one main renderer (possibly with a bounding box), one alternative smaller renderer and a coordinate system.  
-Alternatively, you can pass it a `std::vector`s of `std::pair`s of renderers as VFRendering::RendererBase shared pointers and viewports as `glm::vec4`.
+To control what renderers are used, you can use `VFRendering::View::renderers`, where you can pass it a `std::vector`s of `std::pair`s of renderers as `std::shared_ptr<VFRendering::RendererBase>` (i.e. shared pointers) and viewports as `glm::vec4`.
 
 ## Options
 

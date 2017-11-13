@@ -105,3 +105,16 @@ Build (Debian 8 / make / gcc):
     script:
         - apt-get update -qq && apt-get install -y -qq git make gcc g++
         - CC=gcc CXX=g++ make
+
+pages:
+    image: ubuntu:latest
+    only:
+        - master
+    script:
+        - apt-get update -qq && apt-get install -y -qq doxygen
+        - doxygen Doxyfile
+        - mv docs/html public
+    artifacts:
+        paths:
+            - public
+

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
-project(VFRendering VERSION 0.8.0)
+project(VFRendering VERSION 0.9.0)
 
 option(BUILD_DEMO "Whether or not a demo executable should be built" OFF)
 
@@ -43,11 +43,15 @@ set(SOURCE_FILES
     src/CoordinateSystemRenderer.cxx
     src/FPSCounter.cxx
     src/Geometry.cxx
+    src/GlyphRenderer.cxx
     src/IsosurfaceRenderer.cxx
     src/Options.cxx
     src/RendererBase.cxx
+    src/SphereRenderer.cxx
     src/SurfaceRenderer.cxx
     src/Utilities.cxx
+    src/VectorField.cxx
+    src/VectorFieldRenderer.cxx
     src/VectorfieldIsosurface.cxx
     src/VectorSphereRenderer.cxx
     src/View.cxx
@@ -61,17 +65,21 @@ set(HEADER_FILES
     include/VFRendering/CombinedRenderer.hxx
     include/VFRendering/CoordinateSystemRenderer.hxx
     include/VFRendering/FPSCounter.hxx
+    include/VFRendering/GlyphRenderer.hxx
     include/VFRendering/Geometry.hxx
     include/VFRendering/IsosurfaceRenderer.hxx
     include/VFRendering/Options.hxx
     include/VFRendering/RendererBase.hxx
+    include/VFRendering/SphereRenderer.hxx
     include/VFRendering/SurfaceRenderer.hxx
     include/VFRendering/Utilities.hxx
+    include/VFRendering/VectorField.hxx
+    include/VFRendering/VectorFieldRenderer.hxx
     include/VFRendering/VectorSphereRenderer.hxx
     include/VFRendering/View.hxx
     include/shaders
-    include/shaders/arrows.frag.glsl.hxx
-    include/shaders/arrows.vert.glsl.hxx
+    include/shaders/glyphs.frag.glsl.hxx
+    include/shaders/glyphs.vert.glsl.hxx
     include/shaders/boundingbox.frag.glsl.hxx
     include/shaders/boundingbox.vert.glsl.hxx
     include/shaders/colormap.bluegreenred.glsl.hxx

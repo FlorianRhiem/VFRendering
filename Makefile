@@ -15,10 +15,14 @@ OBJS=\
 	build/CoordinateSystemRenderer.o\
 	build/FPSCounter.o\
 	build/Geometry.o\
+	build/GlyphRenderer.o\
 	build/View.o\
 	build/IsosurfaceRenderer.o\
+	build/VectorFieldRenderer.o\
 	build/VectorSphereRenderer.o\
+	build/SphereRenderer.o\
 	build/SurfaceRenderer.o\
+	build/VectorField.o\
 	build/VectorfieldIsosurface.o\
 	build/Utilities.o\
 	build/Options.o\
@@ -75,9 +79,8 @@ build/ArrowRenderer.o: src/ArrowRenderer.cxx \
   include/VFRendering/FPSCounter.hxx \
   include/VFRendering/Utilities.hxx \
   include/VFRendering/Geometry.hxx \
-  include/VFRendering/BoundingBoxRenderer.hxx \
-  include/shaders/arrows.vert.glsl.hxx \
-  include/shaders/arrows.frag.glsl.hxx
+  include/VFRendering/GlyphRenderer.hxx \
+  include/VFRendering/BoundingBoxRenderer.hxx
 build/BoundingBoxRenderer.o: src/BoundingBoxRenderer.cxx \
   include/VFRendering/BoundingBoxRenderer.hxx \
   include/VFRendering/RendererBase.hxx \
@@ -113,6 +116,18 @@ build/Geometry.o: src/Geometry.cxx \
   thirdparty/qhull/src/libqhullcpp/Qhull.h \
   thirdparty/qhull/src/libqhullcpp/QhullFacetList.h \
   thirdparty/qhull/src/libqhullcpp/QhullVertexSet.h
+build/GlyphRenderer.o: src/GlyphRenderer.cxx \
+  include/VFRendering/ArrowRenderer.hxx \
+  include/VFRendering/RendererBase.hxx \
+  include/VFRendering/Options.hxx \
+  include/VFRendering/View.hxx \
+  include/VFRendering/FPSCounter.hxx \
+  include/VFRendering/Utilities.hxx \
+  include/VFRendering/Geometry.hxx \
+  include/VFRendering/GlyphRenderer.hxx \
+  include/VFRendering/BoundingBoxRenderer.hxx \
+  include/shaders/glyphs.vert.glsl.hxx \
+  include/shaders/glyphs.frag.glsl.hxx
 build/IsosurfaceRenderer.o: src/IsosurfaceRenderer.cxx \
   include/VFRendering/IsosurfaceRenderer.hxx \
   include/VFRendering/RendererBase.hxx \
@@ -131,6 +146,21 @@ build/RendererBase.o: src/RendererBase.cxx \
   include/VFRendering/FPSCounter.hxx \
   include/VFRendering/Utilities.hxx \
   include/VFRendering/Geometry.hxx
+build/VectorFieldRenderer.o: src/VectorFieldRenderer.cxx \
+  include/VFRendering/VectorFieldRenderer.hxx \
+  include/VFRendering/VectorField.hxx \
+  include/VFRendering/View.hxx \
+  include/VFRendering/RendererBase.hxx
+build/SphereRenderer.o: src/SphereRenderer.cxx \
+  include/VFRendering/SphereRenderer.hxx \
+  include/VFRendering/RendererBase.hxx \
+  include/VFRendering/Options.hxx \
+  include/VFRendering/View.hxx \
+  include/VFRendering/FPSCounter.hxx \
+  include/VFRendering/Utilities.hxx \
+  include/VFRendering/Geometry.hxx \
+  include/VFRendering/GlyphRenderer.hxx \
+  include/VFRendering/BoundingBoxRenderer.hxx
 build/SurfaceRenderer.o: src/SurfaceRenderer.cxx \
   include/VFRendering/SurfaceRenderer.hxx \
   include/VFRendering/RendererBase.hxx \
@@ -154,6 +184,11 @@ build/Utilities.o: src/Utilities.cxx \
   include/shaders/colormap.bluegreenred.glsl.hxx \
   include/shaders/colormap.bluewhitered.glsl.hxx
 build/VectorfieldIsosurface.o: src/VectorfieldIsosurface.cxx \
+  include/VFRendering/Geometry.hxx
+build/VectorField.o: src/VectorField.cxx \
+  include/VFRendering/Options.hxx \
+  include/VFRendering/FPSCounter.hxx \
+  include/VFRendering/Utilities.hxx \
   include/VFRendering/Geometry.hxx
 build/VectorSphereRenderer.o: src/VectorSphereRenderer.cxx \
   include/VFRendering/VectorSphereRenderer.hxx \

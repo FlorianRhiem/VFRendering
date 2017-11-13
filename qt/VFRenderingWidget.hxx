@@ -7,10 +7,12 @@
 
 #include <glm/vec3.hpp>
 #include <VFRendering/View.hxx>
+#include <VFRendering/VectorField.hxx>
 #include <VFRendering/Geometry.hxx>
 
 namespace VFRendering {
   class View;
+  class VectorField;
 }
 
 class VFRenderingWidget : public QOpenGLWidget {
@@ -34,6 +36,7 @@ protected:
 
 private:
     VFRendering::View m_view;
+    VFRendering::VectorField m_vf;
     QPoint m_previous_mouse_position;
 };
 
