@@ -1,6 +1,8 @@
 .*
 !.gitignore
 !.gitlab-ci.yml
+!.appveyor.yml
+!.travis.yml
 build/
 dist/
 demo
