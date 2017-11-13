@@ -5,9 +5,7 @@
 #include <vector>
 #include <QWheelEvent>
 
-VFRenderingWidget::VFRenderingWidget(QWidget *parent) : QOpenGLWidget(parent) {
-  m_vf = VFRendering::VectorField({}, {});
-}
+VFRenderingWidget::VFRenderingWidget(QWidget *parent) : QOpenGLWidget(parent), m_vf({}, {}) {}
 
 VFRenderingWidget::~VFRenderingWidget() {}
 
