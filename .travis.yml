@@ -48,10 +48,16 @@ before_install:
   # Install a recent CMake and Python3 (unless already installed on OS X)
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+      sudo apt-get purge cmake
       DEPS_DIR="${TRAVIS_BUILD_DIR}/deps"
       mkdir -p ${DEPS_DIR} && cd ${DEPS_DIR}
-      CMAKE_URL="http://www.cmake.org/files/v3.5/cmake-3.5.2-Linux-x86_64.tar.gz"
+      CMAKE_URL="https://cmake.org/files/v3.9/cmake-3.9.6.tar.gz"
       mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
+      cd cmake
+      ./bootstrap
+      make -j4
+      sudo make install
+      cmake --version
       export PATH=${DEPS_DIR}/cmake/bin:${PATH}
       export CC=${COMPILER_C} CXX=${COMPILER_CXX}
     else
