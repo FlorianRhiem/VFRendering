@@ -102,6 +102,10 @@ set(HEADER_FILES
     include/shaders/isosurface.vert.glsl.hxx
 )
 
+if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNOMINMAX")
+endif()
+
 add_library(${PROJECT_NAME} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} ${qhull_LIBS})
 
