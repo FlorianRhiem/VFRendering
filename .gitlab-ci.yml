@@ -162,3 +162,16 @@ Build (Deploy from Ubuntu 17.10 / CMake / gcc / python-3.6):
         - twine upload -r testpypi --skip-existing dist/*
         # If on master branch upload to pypi as well
         - if [ "$CI_COMMIT_REF_NAME" == "master" ]; then twine upload -r pypi --skip-existing dist/*; fi
+
+pages:
+    image: ubuntu:latest
+    only:
+        - master
+    script:
+        - apt-get update -qq && apt-get install -y -qq doxygen
+        - doxygen Doxyfile
+        - mv docs/html public
+    artifacts:
+        paths:
+            - public
+

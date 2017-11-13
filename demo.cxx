@@ -5,6 +5,7 @@
 
 #include "VFRendering/View.hxx"
 #include "VFRendering/ArrowRenderer.hxx"
+#include "VFRendering/SphereRenderer.hxx"
 #include "VFRendering/CoordinateSystemRenderer.hxx"
 #include "VFRendering/BoundingBoxRenderer.hxx"
 #include "VFRendering/CombinedRenderer.hxx"
@@ -113,8 +114,8 @@ int main(void) {
         }
     }
     VFRendering::Geometry geometry = VFRendering::Geometry::cartesianGeometry({21, 21, 21}, {-20, -20, -20}, {20, 20, 20});
+    VFRendering::VectorField vf = VFRendering::VectorField(geometry, directions);
 
-    view.update(geometry, directions);
     VFRendering::Options options;
     options.set<VFRendering::View::Option::SYSTEM_CENTER>((geometry.min() + geometry.max()) * 0.5f);
     options.set<VFRendering::View::Option::COLORMAP_IMPLEMENTATION>(VFRendering::Utilities::getColormapImplementation(VFRendering::Utilities::Colormap::HSV));
@@ -123,19 +124,20 @@ int main(void) {
     options.set<VFRendering::View::Option::UP_VECTOR>({0, 1, 0});
     view.updateOptions(options);
 
-    auto isosurface_renderer_ptr = std::make_shared<VFRendering::IsosurfaceRenderer>(view);
+    auto isosurface_renderer_ptr = std::make_shared<VFRendering::IsosurfaceRenderer>(view, vf);
     isosurface_renderer_ptr->setOption<VFRendering::IsosurfaceRenderer::Option::VALUE_FUNCTION>([] (const glm::vec3& position, const glm::vec3& direction) -> VFRendering::IsosurfaceRenderer::isovalue_type {
         (void)position;
         return direction.z;
     });
     isosurface_renderer_ptr->setOption<VFRendering::IsosurfaceRenderer::Option::ISOVALUE>(0.0);
-    auto yzplane_renderer_ptr = std::make_shared<VFRendering::IsosurfaceRenderer>(view);
+    auto yzplane_renderer_ptr = std::make_shared<VFRendering::IsosurfaceRenderer>(view, vf);
     yzplane_renderer_ptr->setOption<VFRendering::IsosurfaceRenderer::Option::VALUE_FUNCTION>([] (const glm::vec3& position, const glm::vec3& direction) -> VFRendering::IsosurfaceRenderer::isovalue_type {
         (void)direction;
         return position.x;
     });
     yzplane_renderer_ptr->setOption<VFRendering::IsosurfaceRenderer::Option::ISOVALUE>(0.0);
-    auto arrow_renderer_ptr = std::make_shared<VFRendering::ArrowRenderer>(view);
+    auto arrow_renderer_ptr = std::make_shared<VFRendering::ArrowRenderer>(view, vf);
+    auto sphere_renderer_ptr = std::make_shared<VFRendering::SphereRenderer>(view, vf);
     auto bounding_box_renderer_ptr = std::make_shared<VFRendering::BoundingBoxRenderer>(VFRendering::BoundingBoxRenderer::forCuboid(view, (geometry.min()+geometry.max())*0.5f, geometry.max()-geometry.min(), (geometry.max()-geometry.min())*0.2f, 0.5f));
     auto coordinate_system_renderer_ptr = std::make_shared<VFRendering::CoordinateSystemRenderer>(view);
     coordinate_system_renderer_ptr->setOption<VFRendering::CoordinateSystemRenderer::Option::AXIS_LENGTH>({0, 20, 20});
@@ -145,12 +147,14 @@ int main(void) {
         isosurface_renderer_ptr,
         yzplane_renderer_ptr,
         arrow_renderer_ptr,
+        sphere_renderer_ptr,
         bounding_box_renderer_ptr,
         coordinate_system_renderer_ptr
     };
     view.renderers({{std::make_shared<VFRendering::CombinedRenderer>(view, renderers), {{0, 0, 1, 1}}}});
     view.setOption<VFRendering::View::Option::IS_VISIBLE_IMPLEMENTATION>("bool is_visible(vec3 position, vec3 direction) { return position.x >= 0; }");
     arrow_renderer_ptr->setOption<VFRendering::View::Option::IS_VISIBLE_IMPLEMENTATION>("bool is_visible(vec3 position, vec3 direction) { return position.x <= 0; }");
+    sphere_renderer_ptr->setOption<VFRendering::View::Option::IS_VISIBLE_IMPLEMENTATION>("bool is_visible(vec3 position, vec3 direction) { return position.x <= 0; }");
     isosurface_renderer_ptr->setOption<VFRendering::IsosurfaceRenderer::Option::LIGHTING_IMPLEMENTATION>("float lighting(vec3 position, vec3 normal) { return -normal.z; }");
 
     while (!glfwWindowShouldClose(window)) {

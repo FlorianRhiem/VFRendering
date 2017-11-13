@@ -4,10 +4,12 @@
 #include "pybind11_glm.hpp"
 
 #include <VFRendering/View.hxx>
+#include <VFRendering/VectorField.hxx>
 #include <VFRendering/Geometry.hxx>
 #include <VFRendering/RendererBase.hxx>
 #include <VFRendering/CombinedRenderer.hxx>
 #include <VFRendering/ArrowRenderer.hxx>
+#include <VFRendering/SphereRenderer.hxx>
 #include <VFRendering/BoundingBoxRenderer.hxx>
 #include <VFRendering/CoordinateSystemRenderer.hxx>
 #include <VFRendering/SurfaceRenderer.hxx>
@@ -65,19 +67,33 @@ PYBIND11_MODULE(pyVFRendering, m)
         .def("is2d", &Geometry::is2d,
             "Returns true if the geometry is planar");
 
+    // VectorField
+    py::class_<VectorField>(m, "VectorField",
+        "This class holds Geometry- and Vector-data which can be used by one or multiple Renderers.")
+        .def(py::init<const Geometry&,const std::vector<glm::vec3>&>())
+        .def("update", &VectorField::update,
+            "Update the geometry and directions of this VectorField")
+        .def("updateGeometry", &VectorField::updateGeometry,
+            "Update the geometry")
+        .def("updateVectors", &VectorField::updateVectors,
+            "Update the direction vectors")
+        .def("getPositions", &VectorField::positions,
+            "Get the positions stored in the VectorField")
+        .def("getDirections", &VectorField::directions,
+            "Get the directions stored in the VectorField")
+        .def("getSurfaceIndices", &VectorField::surfaceIndices,
+            "Get the surface indices stored in the VectorField")
+        .def("getVolumeIndices", &VectorField::volumeIndices,
+            "Get the volume indices stored in the VectorField");
 
     // View
     py::class_<View>(m, "View",
-        "This class holds the Renderers and defines what is drawn into the current OpenGL context.")
+        "This class holds the Renderers and global Options and is used to draw into the current OpenGL context.")
         // Constructor
         .def(py::init<>())
         // Actions
         .def("draw", &View::draw,
             "Draw into current OpenGL context")
-        .def("update", &View::update,
-            "Update the View with geometry and directions and redraw OpenGL")
-        .def("updateVectors", &View::updateVectors,
-            "Update the View's direction vectors")
         .def("updateOptions", &View::updateOptions,
             "Update the set of options given to the View")
         .def("mouseMove", &View::mouseMove,
@@ -89,14 +105,6 @@ PYBIND11_MODULE(pyVFRendering, m)
             "Retrieve the renderers currently in use by the View")
         .def("options", (const Options& (View::*)() const) &View::options,
             "Retrieve the options currently in use by the View")
-        .def("getPositions", &View::positions,
-            "Get the positions stored in the View")
-        .def("getDirections", &View::directions,
-            "Get the directions stored in the View")
-        .def("getSurfaceIndices", &View::surfaceIndices,
-            "Get the surface indices stored in the View")
-        .def("getVolumeIndices", &View::volumeIndices,
-            "Get the volume indices stored in the View")
         .def("getFramerate", &View::getFramerate,
             "Retrieve the last known framerate of OpenGL draws")
         // Setters
@@ -194,7 +202,7 @@ PYBIND11_MODULE(pyVFRendering, m)
     // ArrowRenderer
     py::class_<ArrowRenderer, RendererBase, std::shared_ptr<ArrowRenderer>>(m, "ArrowRenderer",
         "This class is used to draw arrows directly corresponding to a vectorfield.")
-        .def(py::init<View&>())
+        .def(py::init<View&, VectorField&>())
         .def("setLevelOfDetail",  &ArrowRenderer::setOption<ArrowRenderer::Option::LEVEL_OF_DETAIL>,
             "Set the resolution of an arrow")
         .def("setConeRadius",  &ArrowRenderer::setOption<ArrowRenderer::Option::CONE_RADIUS>,
@@ -206,6 +214,14 @@ PYBIND11_MODULE(pyVFRendering, m)
         .def("setCylinderHeight",  &ArrowRenderer::setOption<ArrowRenderer::Option::CYLINDER_HEIGHT>,
             "Set the cylinder height of an arrow");
 
+    // SphereRenderer
+    py::class_<SphereRenderer, RendererBase, std::shared_ptr<SphereRenderer>>(m, "SphereRenderer",
+        "This class is used to draw spheres at the positions of vectorfield, with colors corresponding to direction.")
+        .def(py::init<View&, VectorField&>())
+        .def("setLevelOfDetail",  &SphereRenderer::setOption<SphereRenderer::Option::LEVEL_OF_DETAIL>,
+            "Set the resolution of a sphere")
+        .def("setSphereRadius",  &SphereRenderer::setOption<SphereRenderer::Option::SPHERE_RADIUS>,
+            "Set the radius of a sphere");
 
     // BoundingBoxRenderer
     py::class_<BoundingBoxRenderer, RendererBase, std::shared_ptr<BoundingBoxRenderer>>(m, "BoundingBoxRenderer",
@@ -227,13 +243,13 @@ PYBIND11_MODULE(pyVFRendering, m)
     // SurfaceRenderer
     py::class_<SurfaceRenderer, RendererBase, std::shared_ptr<SurfaceRenderer>>(m, "SurfaceRenderer",
         "This class is used to draw a 2D surface.")
-        .def(py::init<View&>());
+        .def(py::init<View&, VectorField&>());
 
 
     // IsosurfaceRenderer
     py::class_<IsosurfaceRenderer, RendererBase, std::shared_ptr<IsosurfaceRenderer>>(m, "IsosurfaceRenderer",
         "This class is used to draw isosurfaces based on a set function and colormap.")
-        .def(py::init<View&>())
+        .def(py::init<View&, VectorField&>())
         .def("setIsoValue",               &IsosurfaceRenderer::setOption<IsosurfaceRenderer::Option::ISOVALUE>)
         .def("setLightingImplementation", &IsosurfaceRenderer::setOption<IsosurfaceRenderer::Option::LIGHTING_IMPLEMENTATION>)
         .def("setValueFunction",          &IsosurfaceRenderer::setOption<IsosurfaceRenderer::Option::VALUE_FUNCTION>)
@@ -244,7 +260,7 @@ PYBIND11_MODULE(pyVFRendering, m)
     py::class_<VectorSphereRenderer, RendererBase, std::shared_ptr<VectorSphereRenderer>>(m, "VectorSphereRenderer",
         "This class is used to draw a sphere with points around it, each point representing the direction of one of"
         " the vectors in the vector field.")
-        .def(py::init<View&>())
+        .def(py::init<View&, VectorField&>())
         .def("setPointSizeRange",           &VectorSphereRenderer::setOption<VectorSphereRenderer::Option::POINT_SIZE_RANGE>)
         .def("setInnerSphereRadius",        &VectorSphereRenderer::setOption<VectorSphereRenderer::Option::INNER_SPHERE_RADIUS>)
         .def("setUseSphereFakePerspective", &VectorSphereRenderer::setOption<VectorSphereRenderer::Option::USE_SPHERE_FAKE_PERSPECTIVE>);

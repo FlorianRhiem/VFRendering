@@ -15,9 +15,7 @@
 #include "VFRendering/CoordinateSystemRenderer.hxx"
 
 namespace VFRendering {
-View::View() {
-    renderers({{std::make_shared<ArrowRenderer>(*this), {{0, 0, 1, 1}}}});
-}
+View::View() { }
 
 void View::initialize() {
     if (m_is_initialized) {
@@ -36,18 +34,6 @@ void View::initialize() {
 }
 
 View::~View() {}
-
-void View::update(const Geometry& geometry, const std::vector<glm::vec3>& vectors) {
-    m_geometry = geometry;
-    m_vectors = vectors;
-    m_vectors_update_id++;
-    m_geometry_update_id++;
-}
-
-void View::updateVectors(const std::vector<glm::vec3>& vectors) {
-    m_vectors = vectors;
-    m_vectors_update_id++;
-}
 
 void View::draw() {
     initialize();
@@ -216,29 +202,5 @@ void View::optionsHaveChanged(const std::vector<int>& changed_options) {
         center_position = options().get<Option::SYSTEM_CENTER>();
         setCamera(camera_position, center_position, up_vector);
     }
-}
-
-unsigned long View::geometryUpdateId() const {
-    return m_geometry_update_id;
-}
-
-unsigned long View::vectorsUpdateId() const {
-    return m_vectors_update_id;
-}
-
-const std::vector<glm::vec3>& View::positions() const {
-    return m_geometry.positions();
-}
-
-const std::vector<glm::vec3>& View::directions() const {
-    return m_vectors;
-}
-
-const std::vector<std::array<Geometry::index_type, 3>>& View::surfaceIndices() const {
-    return m_geometry.surfaceIndices();
-}
-
-const std::vector<std::array<Geometry::index_type, 4>>& View::volumeIndices() const {
-    return m_geometry.volumeIndices();
 }
 }

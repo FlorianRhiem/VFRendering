@@ -1,14 +1,17 @@
 #include "VFRenderingWidget.hxx"
 
+#include <VFRendering/ArrowRenderer.hxx>
+
 #include <vector>
 #include <QWheelEvent>
 
-VFRenderingWidget::VFRenderingWidget(QWidget *parent) : QOpenGLWidget(parent) {}
+VFRenderingWidget::VFRenderingWidget(QWidget *parent) : QOpenGLWidget(parent), m_vf({}, {}) {}
 
 VFRenderingWidget::~VFRenderingWidget() {}
 
 void VFRenderingWidget::initializeGL() {
   setMouseTracking(true);
+  m_view.renderers({{ std::make_shared<VFRendering::ArrowRenderer>(m_view, m_vf), {{0, 0, 1, 1}} }});
 }
 
 void VFRenderingWidget::resizeGL(int width, int height) {
@@ -16,12 +19,12 @@ void VFRenderingWidget::resizeGL(int width, int height) {
 }
 
 void VFRenderingWidget::update(const VFRendering::Geometry& geometry, const std::vector<glm::vec3>& vectors) {
-  m_view.update(geometry, vectors);
+  m_vf.update(geometry, vectors);
 }
 
 
 void VFRenderingWidget::updateVectors(const std::vector<glm::vec3>& vectors) {
-  m_view.updateVectors(vectors);
+  m_vf.updateVectors(vectors);
 }
 
 void VFRenderingWidget::updateOptions(const VFRendering::Options& options) {
