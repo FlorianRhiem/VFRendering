@@ -1,16 +1,23 @@
+stages:
+    - build
+    - pages
+
 Build (Ubuntu 16.04 / make / clang):
+    stage: build
     image: ubuntu:16.04
     script:
         - apt-get update -qq && apt-get install -y -qq git make clang
         - CC=clang CXX=clang++ make
 
 Build (Ubuntu 16.04 / make / gcc):
+    stage: build
     image: ubuntu:16.04
     script:
         - apt-get update -qq && apt-get install -y -qq git make gcc g++
         - CC=gcc CXX=g++ make
 
 Build (Ubuntu 16.04 / CMake / clang):
+    stage: build
     image: ubuntu:16.04
     script:
         - apt-get update -qq && apt-get install -y -qq git cmake clang
@@ -20,6 +27,7 @@ Build (Ubuntu 16.04 / CMake / clang):
         - make
 
 Build Demo (Ubuntu 16.04 / CMake / clang):
+    stage: build
     image: ubuntu:16.04
     script:
         - apt-get update -qq && apt-get install -y -qq git cmake clang libglfw3-dev
@@ -29,6 +37,7 @@ Build Demo (Ubuntu 16.04 / CMake / clang):
         - make
 
 Build (Ubuntu 16.04 / CMake / gcc):
+    stage: build
     image: ubuntu:16.04
     script:
         - apt-get update -qq && apt-get install -y -qq git cmake gcc g++
@@ -38,6 +47,7 @@ Build (Ubuntu 16.04 / CMake / gcc):
         - make
 
 Build Demo (Ubuntu 16.04 / CMake / gcc):
+    stage: build
     image: ubuntu:16.04
     script:
         - apt-get update -qq && apt-get install -y -qq git cmake gcc g++ libglfw3-dev
@@ -47,18 +57,21 @@ Build Demo (Ubuntu 16.04 / CMake / gcc):
         - make
 
 Build (Ubuntu 16.10 / make / clang):
+    stage: build
     image: ubuntu:16.10
     script:
         - apt-get update -qq && apt-get install -y -qq git make clang
         - CC=clang CXX=clang++ make
 
 Build (Ubuntu 16.10 / make / gcc):
+    stage: build
     image: ubuntu:16.10
     script:
         - apt-get update -qq && apt-get install -y -qq git make gcc g++
         - CC=gcc CXX=g++ make
 
 Build (Ubuntu 16.10 / CMake / clang):
+    stage: build
     image: ubuntu:16.10
     script:
         - apt-get update -qq && apt-get install -y -qq git cmake clang
@@ -68,6 +81,7 @@ Build (Ubuntu 16.10 / CMake / clang):
         - make
 
 Build Demo (Ubuntu 16.10 / CMake / clang):
+    stage: build
     image: ubuntu:16.10
     script:
         - apt-get update -qq && apt-get install -y -qq git cmake clang libglfw3-dev
@@ -77,6 +91,7 @@ Build Demo (Ubuntu 16.10 / CMake / clang):
         - make
 
 Build (Ubuntu 16.10 / CMake / gcc):
+    stage: build
     image: ubuntu:16.10
     script:
         - apt-get update -qq && apt-get install -y -qq git cmake gcc g++
@@ -86,6 +101,7 @@ Build (Ubuntu 16.10 / CMake / gcc):
         - make
 
 Build Demo (Ubuntu 16.10 / CMake / gcc):
+    stage: build
     image: ubuntu:16.10
     script:
         - apt-get update -qq && apt-get install -y -qq git cmake gcc g++ libglfw3-dev
@@ -95,18 +111,21 @@ Build Demo (Ubuntu 16.10 / CMake / gcc):
         - make
 
 Build (Debian 8 / make / clang):
+    stage: build
     image: debian:8
     script:
         - apt-get update -qq && apt-get install -y -qq git make clang
         - CC=clang CXX=clang++ make
 
 Build (Debian 8 / make / gcc):
+    stage: build
     image: debian:8
     script:
         - apt-get update -qq && apt-get install -y -qq git make gcc g++
         - CC=gcc CXX=g++ make
 
 pages:
+    stage: pages
     image: ubuntu:latest
     only:
         - master
