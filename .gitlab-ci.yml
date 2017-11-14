@@ -124,27 +124,6 @@ Build (Debian 8 / make / gcc):
         - apt-get update -qq && apt-get install -y -qq git make gcc g++
         - CC=gcc CXX=g++ make
 
-Build (Deploy from Ubuntu 16.04 / CMake / gcc / python-3.5):
-    image: ubuntu:16.04
-    script:
-        # Install build tools
-        - apt-get update -qq && apt-get install -y -qq git cmake gcc g++ python3 python3-pip ca-certificates
-        - pip3 install setuptools twine
-        # Pull submodules
-        - git submodule update --init
-
-        # If on non-master branch, we add a dev-version tag
-        - if [ "$CI_COMMIT_REF_NAME" != "master" ]; then export VFRENDERING_ADD_VERSION_EXTENSION=true; fi
-
-        # Build the package
-        - python3 setup.py sdist bdist_wheel 
-
-        # Upload to testpypi using twine
-        # TODO: if [ "$MERGE_REQUEST" == "false" ]; then ...; fi
-        - twine upload -r testpypi --skip-existing dist/*
-        # If on master branch upload to pypi as well
-        - if [ "$CI_COMMIT_REF_NAME" == "master" ]; then twine upload -r pypi --skip-existing dist/*; fi
-
 pages:
     stage: pages
     image: ubuntu:latest
