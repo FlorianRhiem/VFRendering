@@ -92,7 +92,7 @@ class bdist_wheel(bdist_wheel_):
 
 
 # Read version from file
-vfrendering_version = open('Version.txt').read()
+vfrendering_version = open('Version.txt').read().strip()
 
 
 # Set extra version tag for dev builds if corresponding env variable is set
