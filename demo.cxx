@@ -25,7 +25,7 @@ void mousePositionCallback(GLFWwindow* window, double x_position, double y_posit
     static glm::vec2 previous_mouse_position(0, 0);
     glm::vec2 current_mouse_position(x_position, y_position);
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
-        auto movement_mode = VFRendering::CameraMovementModes::ROTATE;
+        auto movement_mode = VFRendering::CameraMovementModes::ROTATE_BOUNDED;
         if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
             movement_mode = VFRendering::CameraMovementModes::TRANSLATE;
         }

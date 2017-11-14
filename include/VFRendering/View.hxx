@@ -16,7 +16,8 @@ class RendererBase;
 
 enum class CameraMovementModes {
     TRANSLATE,
-    ROTATE
+    ROTATE_BOUNDED,
+    ROTATE_FREE
 };
 
 class View {
@@ -47,6 +48,8 @@ public:
     void setOption(const typename Options::Type<index>::type& value);
     void options(const Options& options);
     const Options& options() const;
+    template<int index>
+    const typename Options::Type<index>::type& getOption() const;
 
     void renderers(const std::vector<std::pair<std::shared_ptr<RendererBase>, std::array<float, 4>>>& renderers);
     
@@ -67,6 +70,11 @@ private:
 template<int index>
 void View::setOption(const typename Options::Type<index>::type& value) {
     updateOptions(Options::withOption<index>(value));
+}
+
+template<int index>
+const typename Options::Type<index>::type& View::getOption() const {
+    return m_options.get<index>();
 }
 
 namespace Utilities {
