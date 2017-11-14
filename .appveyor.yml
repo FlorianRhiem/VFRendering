@@ -8,12 +8,6 @@ platform:
 
 
 environment:
-  # The (encrypted) user and password for the PyPI account
-  PYPIUSER:
-    secure: 0z1Nt84PxQXTkXhWZke+og==
-  PYPIPASSWORD:
-    secure: Vmy9aWfEwUqymqF3QindkQ==
-
 
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
