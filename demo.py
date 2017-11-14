@@ -21,7 +21,7 @@ from PyQt5.QtWidgets import (
 from PyQt5.QtCore import pyqtSlot, QTimer
 from PyQt5.QtCore import Qt
 
-import pyVFRendering as vfr
+import build.pyVFRendering as vfr
 
 
 class MainWindow(QMainWindow):
@@ -73,10 +73,10 @@ class glWidget(QOpenGLWidget):
 
         # View
         self.view = vfr.View()
-        self.view.update(geometry, directions)
+        self.vf   = vfr.VectorField(geometry, directions)
         
         # ArrowRenderer
-        renderer_arrows = vfr.ArrowRenderer(self.view)
+        renderer_arrows = vfr.ArrowRenderer(self.view, self.vf)
         # BoundingBoxRenderer
         renderer_boundingbox = vfr.BoundingBoxRenderer.forCuboid(self.view, (geometry.min() + geometry.max())*0.5, [40,40,40], [0, 0, 0], 1)
         # CoordinateSystemRenderer
