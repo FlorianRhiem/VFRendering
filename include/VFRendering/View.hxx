@@ -51,7 +51,7 @@ public:
     template<int index>
     const typename Options::Type<index>::type& getOption() const;
 
-    void renderers(const std::vector<std::pair<std::shared_ptr<RendererBase>, std::array<float, 4>>>& renderers);
+    void renderers(const std::vector<std::pair<std::shared_ptr<RendererBase>, std::array<float, 4>>>& renderers, bool update_renderer_options=true);
     
 private:
     void setCamera(glm::vec3 camera_position, glm::vec3 center_position, glm::vec3 up_vector);
