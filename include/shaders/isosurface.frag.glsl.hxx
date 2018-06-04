@@ -4,6 +4,8 @@
 static const std::string ISOSURFACE_FRAG_GLSL = R"LITERAL(
 #version 330
 
+uniform float uOpacity;
+
 in vec3 vfPosition;
 in vec3 vfDirection;
 in vec3 vfNormal;
@@ -16,7 +18,7 @@ float lighting(vec3 position, vec3 normal);
 void main(void) {
   if (is_visible(vfPosition, vfDirection)) {
     vec3 color = colormap(normalize(vfDirection));
-    fo_FragColor = vec4(color * lighting(vfPosition, normalize(vfNormal)), 1.0);
+    fo_FragColor = vec4(color * lighting(vfPosition, normalize(vfNormal)), uOpacity);
   } else {
     discard;
   }

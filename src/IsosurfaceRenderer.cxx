@@ -110,6 +110,8 @@ void IsosurfaceRenderer::draw(float aspect_ratio) {
 
     glm::vec3 camera_position = options().get<View::Option::CAMERA_POSITION>();
     glm::vec4 light_position = model_view_matrix * glm::vec4(camera_position, 1.0f);
+    auto opacity = options().get<IsosurfaceRenderer::Option::OPACITY>();
+    glUniform1f(glGetUniformLocation(m_program, "uOpacity"), opacity);
 
     glUniformMatrix4fv(glGetUniformLocation(m_program, "uProjectionMatrix"), 1, false, glm::value_ptr(projection_matrix));
     glUniformMatrix4fv(glGetUniformLocation(m_program, "uModelviewMatrix"), 1, false, glm::value_ptr(model_view_matrix));
@@ -121,8 +123,21 @@ void IsosurfaceRenderer::draw(float aspect_ratio) {
         glUniform1f(glGetUniformLocation(m_program, "uFlipNormals"), 1.0);
     }
 
-    glDisable(GL_CULL_FACE);
+    if (options().get<IsosurfaceRenderer::Option::FACE_CULLING>()) {
+        glEnable(GL_CULL_FACE);
+        if (options().get<IsosurfaceRenderer::Option::FLIP_NORMALS>()) {
+            glCullFace(GL_FRONT);
+        } else {
+            glCullFace(GL_BACK);
+        }
+    } else {
+        glDisable(GL_CULL_FACE);
+    }
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDrawElements(GL_TRIANGLES, m_num_indices, GL_UNSIGNED_INT, nullptr);
+    glDisable(GL_BLEND);
+    glCullFace(GL_BACK);
     glEnable(GL_CULL_FACE);
 }
 

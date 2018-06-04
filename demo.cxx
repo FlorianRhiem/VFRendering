@@ -130,6 +130,12 @@ int main(void) {
         return direction.z;
     });
     isosurface_renderer_ptr->setOption<VFRendering::IsosurfaceRenderer::Option::ISOVALUE>(0.0);
+    auto isosurface_renderer_ptr2 = std::make_shared<VFRendering::IsosurfaceRenderer>(view, vf);
+    isosurface_renderer_ptr2->setOption<VFRendering::IsosurfaceRenderer::Option::VALUE_FUNCTION>([] (const glm::vec3& position, const glm::vec3& direction) -> VFRendering::IsosurfaceRenderer::isovalue_type {
+        (void)position;
+        return direction.z;
+    });
+    isosurface_renderer_ptr2->setOption<VFRendering::IsosurfaceRenderer::Option::ISOVALUE>(0.15);
     auto yzplane_renderer_ptr = std::make_shared<VFRendering::IsosurfaceRenderer>(view, vf);
     yzplane_renderer_ptr->setOption<VFRendering::IsosurfaceRenderer::Option::VALUE_FUNCTION>([] (const glm::vec3& position, const glm::vec3& direction) -> VFRendering::IsosurfaceRenderer::isovalue_type {
         (void)direction;
@@ -144,18 +150,23 @@ int main(void) {
     coordinate_system_renderer_ptr->setOption<VFRendering::CoordinateSystemRenderer::Option::NORMALIZE>(false);
 
     std::vector<std::shared_ptr<VFRendering::RendererBase>> renderers = {
-        isosurface_renderer_ptr,
-        yzplane_renderer_ptr,
         arrow_renderer_ptr,
         sphere_renderer_ptr,
         bounding_box_renderer_ptr,
-        coordinate_system_renderer_ptr
+        coordinate_system_renderer_ptr,
+        yzplane_renderer_ptr,
+        isosurface_renderer_ptr,
+        isosurface_renderer_ptr2,
     };
     view.renderers({{std::make_shared<VFRendering::CombinedRenderer>(view, renderers), {{0, 0, 1, 1}}}});
     view.setOption<VFRendering::View::Option::IS_VISIBLE_IMPLEMENTATION>("bool is_visible(vec3 position, vec3 direction) { return position.x >= 0; }");
     arrow_renderer_ptr->setOption<VFRendering::View::Option::IS_VISIBLE_IMPLEMENTATION>("bool is_visible(vec3 position, vec3 direction) { return position.x <= 0; }");
     sphere_renderer_ptr->setOption<VFRendering::View::Option::IS_VISIBLE_IMPLEMENTATION>("bool is_visible(vec3 position, vec3 direction) { return position.x <= 0; }");
     isosurface_renderer_ptr->setOption<VFRendering::IsosurfaceRenderer::Option::LIGHTING_IMPLEMENTATION>("float lighting(vec3 position, vec3 normal) { return -normal.z; }");
+    isosurface_renderer_ptr2->setOption<VFRendering::IsosurfaceRenderer::Option::LIGHTING_IMPLEMENTATION>("float lighting(vec3 position, vec3 normal) { return normal.z; }");
+    isosurface_renderer_ptr2->setOption<VFRendering::IsosurfaceRenderer::Option::FACE_CULLING>(true);
+    isosurface_renderer_ptr2->setOption<VFRendering::IsosurfaceRenderer::Option::FLIP_NORMALS>(true);
+    isosurface_renderer_ptr2->setOption<VFRendering::IsosurfaceRenderer::Option::OPACITY>(0.75);
 
     while (!glfwWindowShouldClose(window)) {
         if (needs_redraw) {

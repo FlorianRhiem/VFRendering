@@ -16,7 +16,9 @@ public:
         ISOVALUE = 700,
         LIGHTING_IMPLEMENTATION,
         VALUE_FUNCTION,
-        FLIP_NORMALS
+        FLIP_NORMALS,
+        FACE_CULLING,
+        OPACITY
     };
 
     IsosurfaceRenderer(const View& view, const VectorField& vf);
@@ -62,6 +64,16 @@ struct Options::Option<IsosurfaceRenderer::Option::VALUE_FUNCTION> {
         (void)position;
         return direction.z;
     };
+};
+
+template<>
+struct Options::Option<IsosurfaceRenderer::Option::OPACITY> {
+  double default_value = 1.0;
+};
+
+template<>
+struct Options::Option<IsosurfaceRenderer::Option::FACE_CULLING> {
+  bool default_value = false;
 };
 
 template<>
