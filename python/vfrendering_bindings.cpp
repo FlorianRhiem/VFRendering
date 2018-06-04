@@ -10,6 +10,7 @@
 #include <VFRendering/CombinedRenderer.hxx>
 #include <VFRendering/ArrowRenderer.hxx>
 #include <VFRendering/SphereRenderer.hxx>
+#include <VFRendering/ParallelepipedRenderer.hxx>
 #include <VFRendering/BoundingBoxRenderer.hxx>
 #include <VFRendering/CoordinateSystemRenderer.hxx>
 #include <VFRendering/SurfaceRenderer.hxx>
@@ -222,6 +223,17 @@ PYBIND11_MODULE(pyVFRendering, m)
             "Set the resolution of a sphere")
         .def("setSphereRadius",  &SphereRenderer::setOption<SphereRenderer::Option::SPHERE_RADIUS>,
             "Set the radius of a sphere");
+
+    // ParallelepipedRenderer
+    py::class_<ParallelepipedRenderer, RendererBase, std::shared_ptr<ParallelepipedRenderer>>(m, "ParallelepipedRenderer",
+        "This class is used to draw parallelepiped at the positions of vectorfield, with colors corresponding to direction.")
+        .def(py::init<View&, VectorField&>())
+        .def("setParallelepipedLengthX",  &ParallelepipedRenderer::setOption<ParallelepipedRenderer::Option::X_LENGTH>,
+            "Set the x length of the parallelepiped")
+        .def("setParallelepipedLengthY",  &ParallelepipedRenderer::setOption<ParallelepipedRenderer::Option::Y_LENGTH>,
+            "Set the y length of the parallelepiped")
+        .def("setParallelepipedLengthZ",  &ParallelepipedRenderer::setOption<ParallelepipedRenderer::Option::Z_LENGTH>,
+            "Set the z length of the parallelepiped");
 
     // BoundingBoxRenderer
     py::class_<BoundingBoxRenderer, RendererBase, std::shared_ptr<BoundingBoxRenderer>>(m, "BoundingBoxRenderer",
