@@ -17,13 +17,9 @@ void ParallelepipedRenderer::optionsHaveChanged(const std::vector<int>& changed_
     bool update_vertices = false;
     for (auto option_index : changed_options) {
         switch (option_index) {
-            case Option::X_LENGTH:
-                update_vertices = true;
-                break;
-            case Option::Y_LENGTH:
-                update_vertices = true;
-                break;
-            case Option::Z_LENGTH:
+            case Option::LENGTH_A:
+            case Option::LENGTH_B:
+            case Option::LENGTH_C:
                 update_vertices = true;
                 break;
         }
@@ -35,14 +31,14 @@ void ParallelepipedRenderer::optionsHaveChanged(const std::vector<int>& changed_
 }
 
 static void setParallelepipedMeshOptions(GlyphRenderer& renderer, const Options& options) {
-    auto x_length = options.get<ParallelepipedRenderer::Option::X_LENGTH>();
-    auto y_length = options.get<ParallelepipedRenderer::Option::Y_LENGTH>();
-    auto z_length = options.get<ParallelepipedRenderer::Option::Z_LENGTH>();
+    auto length_a = options.get<ParallelepipedRenderer::Option::LENGTH_A>();
+    auto length_b = options.get<ParallelepipedRenderer::Option::LENGTH_B>();
+    auto length_z = options.get<ParallelepipedRenderer::Option::LENGTH_C>();
     
     // Enforce valid range
-    if (x_length < 0) x_length = 0;
-    if (y_length < 0) y_length = 0;
-    if (z_length < 0) z_length = 0;
+    if (length_a < 0) length_a = 0;
+    if (length_b < 0) length_b = 0;
+    if (length_z < 0) length_z = 0;
     
     std::vector<std::uint16_t> cube_indices = 
         {0,3,1,1,3,2,
@@ -62,9 +58,9 @@ static void setParallelepipedMeshOptions(GlyphRenderer& renderer, const Options&
     };
     
     for (auto& vertex : cube_vertices) {
-        vertex.x *= x_length;
-        vertex.y *= y_length;
-        vertex.z *= z_length;
+        vertex.x *= length_a;
+        vertex.y *= length_b;
+        vertex.z *= length_z;
     }
 
     std::vector<glm::vec3> normals = {

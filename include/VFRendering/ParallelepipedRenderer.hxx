@@ -8,9 +8,9 @@ namespace VFRendering {
 class ParallelepipedRenderer : public GlyphRenderer {
 public:
     enum Option {
-        X_LENGTH = 100,
-        Y_LENGTH,
-        Z_LENGTH
+        LENGTH_A = 100,
+        LENGTH_B,
+        LENGTH_C
     };
 
     ParallelepipedRenderer(const View& view, const VectorField& vf);
@@ -20,17 +20,17 @@ public:
 namespace Utilities {
 
 template<>
-struct Options::Option<ParallelepipedRenderer::Option::X_LENGTH> {
+struct Options::Option<ParallelepipedRenderer::Option::LENGTH_A> {
     float default_value = 1.f;
 };
 
 template<>
-struct Options::Option<ParallelepipedRenderer::Option::Y_LENGTH> {
+struct Options::Option<ParallelepipedRenderer::Option::LENGTH_B> {
     float default_value = 1.f;
 };
 
 template<>
-struct Options::Option<ParallelepipedRenderer::Option::Z_LENGTH> {
+struct Options::Option<ParallelepipedRenderer::Option::LENGTH_C> {
     float default_value = 1.f;
 };
 

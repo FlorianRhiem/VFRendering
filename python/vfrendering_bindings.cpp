@@ -236,12 +236,12 @@ PYBIND11_MODULE(pyVFRendering, m)
     py::class_<ParallelepipedRenderer, RendererBase, std::shared_ptr<ParallelepipedRenderer>>(m, "ParallelepipedRenderer",
         "This class is used to draw parallelepiped at the positions of vectorfield, with colors corresponding to direction.")
         .def(py::init<View&, VectorField&>())
-        .def("setParallelepipedLengthX",  &ParallelepipedRenderer::setOption<ParallelepipedRenderer::Option::X_LENGTH>,
-            "Set the x length of the parallelepiped")
-        .def("setParallelepipedLengthY",  &ParallelepipedRenderer::setOption<ParallelepipedRenderer::Option::Y_LENGTH>,
-            "Set the y length of the parallelepiped")
-        .def("setParallelepipedLengthZ",  &ParallelepipedRenderer::setOption<ParallelepipedRenderer::Option::Z_LENGTH>,
-            "Set the z length of the parallelepiped");
+        .def("setParallelepipedLengthA",  &ParallelepipedRenderer::setOption<ParallelepipedRenderer::Option::LENGTH_A>,
+            "Set the length a of the parallelepiped")
+        .def("setParallelepipedLengthB",  &ParallelepipedRenderer::setOption<ParallelepipedRenderer::Option::LENGTH_B>,
+            "Set the length b of the parallelepiped")
+        .def("setParallelepipedLengthC",  &ParallelepipedRenderer::setOption<ParallelepipedRenderer::Option::LENGTH_C>,
+            "Set the length c of the parallelepiped");
 
     // BoundingBoxRenderer
     py::class_<BoundingBoxRenderer, RendererBase, std::shared_ptr<BoundingBoxRenderer>>(m, "BoundingBoxRenderer",
