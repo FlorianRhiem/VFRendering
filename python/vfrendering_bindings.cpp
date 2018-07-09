@@ -9,6 +9,7 @@
 #include <VFRendering/RendererBase.hxx>
 #include <VFRendering/CombinedRenderer.hxx>
 #include <VFRendering/ArrowRenderer.hxx>
+#include <VFRendering/DotRenderer.hxx>
 #include <VFRendering/SphereRenderer.hxx>
 #include <VFRendering/ParallelepipedRenderer.hxx>
 #include <VFRendering/BoundingBoxRenderer.hxx>
@@ -276,4 +277,11 @@ PYBIND11_MODULE(pyVFRendering, m)
         .def("setPointSizeRange",           &VectorSphereRenderer::setOption<VectorSphereRenderer::Option::POINT_SIZE_RANGE>)
         .def("setInnerSphereRadius",        &VectorSphereRenderer::setOption<VectorSphereRenderer::Option::INNER_SPHERE_RADIUS>)
         .def("setUseSphereFakePerspective", &VectorSphereRenderer::setOption<VectorSphereRenderer::Option::USE_SPHERE_FAKE_PERSPECTIVE>);
+
+    // DotRenderer
+    py::class_<DotRenderer, RendererBase, std::shared_ptr<DotRenderer>>(m, "DotRenderer",
+        "This class is used to draw dots at the positions of vectorfield, with colors corresponding to direction.")
+        .def(py::init<View&, VectorField&>())
+        .def("setDotRadius",  &DotRenderer::setOption<DotRenderer::Option::DOT_RADIUS>,
+             "Set the radius of a dot");
 }
