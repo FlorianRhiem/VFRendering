@@ -190,6 +190,13 @@ PYBIND11_MODULE(pyVFRendering, m)
         .value("translate",      CameraMovementModes::TRANSLATE)
         .export_values();
 
+    
+    // Styles of the dot drawn by the DotRenderer
+    py::enum_<DotRenderer::DotStyle>(m, "DotRendererStyle")
+        .value("circle", DotRenderer::DotStyle::CIRCLE)
+        .value("square", DotRenderer::DotStyle::SQUARE)
+        .export_values();
+
 
     // Renderer base class
     py::class_<RendererBase, std::shared_ptr<RendererBase>>(m, "RendererBase", "Renderer base class");
@@ -283,5 +290,7 @@ PYBIND11_MODULE(pyVFRendering, m)
         "This class is used to draw dots at the positions of vectorfield, with colors corresponding to direction.")
         .def(py::init<View&, VectorField&>())
         .def("setDotRadius",  &DotRenderer::setOption<DotRenderer::Option::DOT_RADIUS>,
-             "Set the radius of a dot");
+             "Set the radius of a dot")
+        .def("setDotStyle",  &DotRenderer::setOption<DotRenderer::Option::DOT_STYLE>,
+             "Set the style of a dot");
 }

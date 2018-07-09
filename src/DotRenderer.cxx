@@ -7,7 +7,8 @@
 #include "VFRendering/Utilities.hxx"
 
 #include "shaders/dots.vert.glsl.hxx"
-#include "shaders/dots.frag.glsl.hxx"
+#include "shaders/dots_circle.frag.glsl.hxx"
+#include "shaders/dots_square.frag.glsl.hxx"
 
 namespace VFRendering {
 
@@ -62,6 +63,7 @@ void DotRenderer::optionsHaveChanged( const std::vector<int>& changed_options )
         switch (option_index) {
         case View::Option::COLORMAP_IMPLEMENTATION:
         case View::Option::IS_VISIBLE_IMPLEMENTATION:
+        case DotRenderer::Option::DOT_STYLE: 
             update_shader = true;
             break;
         }
@@ -127,19 +129,32 @@ void DotRenderer::updateShaderProgram()
     if ( m_program ) glDeleteProgram( m_program );
 
     // Vertex shader options
-    std::string vertex_shader_source = DOT_VERT_GLSL;
+    std::string vertex_shader_source = DOT_VERT_GLSL; 
     vertex_shader_source += 
         options().get<View::Option::COLORMAP_IMPLEMENTATION>();
     vertex_shader_source +=
         options().get<View::Option::IS_VISIBLE_IMPLEMENTATION>();
 
     // Fragment shader options 
-    std::string fragment_shader_source = DOT_FRAG_GLSL;
-
+    std::string fragment_shader_source =
+        getDotStyle( (const DotStyle)options().get<DotRenderer::Option::DOT_STYLE>() );
+    
     // Compile & link shader Program. Pass uniforms. 
     m_program = Utilities::createProgram( vertex_shader_source, 
         fragment_shader_source, { "ivInstanceOffset",
         "ivInstanceDirection" } );
+}
+
+std::string DotRenderer::getDotStyle(const DotStyle& dotstyle)
+{
+    switch(dotstyle) {
+    case DotStyle::CIRCLE:
+        return DOT_CIRCLE_FRAG_GLSL;
+    case DotStyle::SQUARE:
+        return DOT_SQUARE_FRAG_GLSL;
+    default:
+        return DOT_CIRCLE_FRAG_GLSL;
+    }
 }
 
 } // namespace VFRendering

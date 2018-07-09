@@ -1,7 +1,7 @@
-#ifndef DOTS_FRAG_GLSL_HXX
-#define DOTS_FRAG_GLSL_HXX
+#ifndef DOTS_CIRCLE_FRAG_GLSL_HXX
+#define DOTS_CIRCLE_FRAG_GLSL_HXX
 
-static const std::string DOT_FRAG_GLSL = R"LITERAL(
+static const std::string DOT_CIRCLE_FRAG_GLSL = R"LITERAL(
 #version 330
 
 in vec3 vfColor;
