@@ -104,7 +104,6 @@ void DotRenderer::draw( float aspect_ratio )
     auto model_view_matrix = matrices.first;
     auto projection_matrix = matrices.second;
     
-    glm::vec3 camera_position = options().get<View::Option::CAMERA_POSITION>();
     float dot_radius = options().get<DotRenderer::Option::DOT_RADIUS>();
     glm::vec2 frame_size = m_view.getFramebufferSize();
     dot_radius *= std::min( frame_size[0], frame_size[1] ) / 1000;
