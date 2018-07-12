@@ -56,23 +56,23 @@ Build Demo (Ubuntu 16.04 / CMake / gcc):
         - cmake .. -DBUILD_DEMO=ON -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc
         - make
 
-Build (Ubuntu 16.10 / make / clang):
+Build (Ubuntu 18.04 / make / clang):
     stage: build
-    image: ubuntu:16.10
+    image: ubuntu:18.04
     script:
         - apt-get update -qq && apt-get install -y -qq git make clang
         - CC=clang CXX=clang++ make
 
-Build (Ubuntu 16.10 / make / gcc):
+Build (Ubuntu 18.04 / make / gcc):
     stage: build
-    image: ubuntu:16.10
+    image: ubuntu:18.04
     script:
         - apt-get update -qq && apt-get install -y -qq git make gcc g++
         - CC=gcc CXX=g++ make
 
-Build (Ubuntu 16.10 / CMake / clang):
+Build (Ubuntu 18.04 / CMake / clang):
     stage: build
-    image: ubuntu:16.10
+    image: ubuntu:18.04
     script:
         - apt-get update -qq && apt-get install -y -qq git cmake clang
         - mkdir build
@@ -80,9 +80,9 @@ Build (Ubuntu 16.10 / CMake / clang):
         - cmake .. -DBUILD_DEMO=OFF -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang
         - make
 
-Build Demo (Ubuntu 16.10 / CMake / clang):
+Build Demo (Ubuntu 18.04 / CMake / clang):
     stage: build
-    image: ubuntu:16.10
+    image: ubuntu:18.04
     script:
         - apt-get update -qq && apt-get install -y -qq git cmake clang libglfw3-dev
         - mkdir build
@@ -90,9 +90,9 @@ Build Demo (Ubuntu 16.10 / CMake / clang):
         - cmake .. -DBUILD_DEMO=ON -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang
         - make
 
-Build (Ubuntu 16.10 / CMake / gcc):
+Build (Ubuntu 18.04 / CMake / gcc):
     stage: build
-    image: ubuntu:16.10
+    image: ubuntu:18.04
     script:
         - apt-get update -qq && apt-get install -y -qq git cmake gcc g++
         - mkdir build
@@ -100,9 +100,9 @@ Build (Ubuntu 16.10 / CMake / gcc):
         - cmake .. -DBUILD_DEMO=OFF -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc
         - make
 
-Build Demo (Ubuntu 16.10 / CMake / gcc):
+Build Demo (Ubuntu 18.04 / CMake / gcc):
     stage: build
-    image: ubuntu:16.10
+    image: ubuntu:18.04
     script:
         - apt-get update -qq && apt-get install -y -qq git cmake gcc g++ libglfw3-dev
         - mkdir build
