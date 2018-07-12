@@ -8,8 +8,8 @@ uniform mat4 uProjectionMatrix;
 uniform mat4 uModelviewMatrix;
 uniform float uDotRadius;
 
-in vec3 ivInstanceOffset;
-in vec3 ivInstanceDirection;
+in vec3 ivDotCoordinates;
+in vec3 ivDotDirection;
 out vec3 vfColor;
 
 vec3 colormap(vec3 direction);
@@ -17,11 +17,11 @@ vec3 colormap(vec3 direction);
 bool is_visible(vec3 position, vec3 direction);
 
 void main(void) {
-  float direction_length = length( ivInstanceDirection );
+  float direction_length = length( ivDotDirection );
   
-  if ( is_visible( ivInstanceOffset, ivInstanceDirection ) && direction_length > 0) {
-    vfColor = colormap( normalize( ivInstanceDirection ) );
-    vec3 vfPosition = ( uModelviewMatrix * vec4( ivInstanceOffset, 1.0 ) ).xyz;
+  if ( is_visible( ivDotCoordinates, ivDotDirection ) && direction_length > 0) {
+    vfColor = colormap( normalize( ivDotDirection ) );
+    vec3 vfPosition = ( uModelviewMatrix * vec4( ivDotCoordinates, 1.0 ) ).xyz;
     gl_Position = uProjectionMatrix * vec4( vfPosition, 1.0 );
   } else {
     gl_Position = vec4(2.0, 2.0, 2.0, 0.0);

@@ -141,8 +141,7 @@ void DotRenderer::updateShaderProgram()
     
     // Compile & link shader Program. Pass uniforms. 
     m_program = Utilities::createProgram( vertex_shader_source, 
-        fragment_shader_source, { "ivInstanceOffset",
-        "ivInstanceDirection" } );
+        fragment_shader_source, { "ivDotCoordinates", "ivDotDirection" } );
 }
 
 std::string DotRenderer::getDotStyle(const DotStyle& dotstyle)
