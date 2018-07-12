@@ -104,7 +104,6 @@ void DotRenderer::draw( float aspect_ratio )
     auto model_view_matrix = matrices.first;
     auto projection_matrix = matrices.second;
     
-    glm::vec3 camera_position = options().get<View::Option::CAMERA_POSITION>();
     float dot_radius = options().get<DotRenderer::Option::DOT_RADIUS>();
     glm::vec2 frame_size = m_view.getFramebufferSize();
     dot_radius *= std::min( frame_size[0], frame_size[1] ) / 1000;
@@ -141,8 +140,7 @@ void DotRenderer::updateShaderProgram()
     
     // Compile & link shader Program. Pass uniforms. 
     m_program = Utilities::createProgram( vertex_shader_source, 
-        fragment_shader_source, { "ivInstanceOffset",
-        "ivInstanceDirection" } );
+        fragment_shader_source, { "ivDotCoordinates", "ivDotDirection" } );
 }
 
 std::string DotRenderer::getDotStyle(const DotStyle& dotstyle)

@@ -13,11 +13,13 @@ OBJS=\
 	build/BoundingBoxRenderer.o\
 	build/CombinedRenderer.o\
 	build/CoordinateSystemRenderer.o\
+	build/DotRenderer.o\
 	build/FPSCounter.o\
 	build/Geometry.o\
 	build/GlyphRenderer.o\
 	build/View.o\
 	build/IsosurfaceRenderer.o\
+	build/ParallelepipedRenderer.o\
 	build/VectorFieldRenderer.o\
 	build/VectorSphereRenderer.o\
 	build/SphereRenderer.o\
@@ -111,6 +113,16 @@ build/CoordinateSystemRenderer.o: src/CoordinateSystemRenderer.cxx \
   include/shaders/coordinatesystem.frag.glsl.hxx
 build/FPSCounter.o: src/FPSCounter.cxx \
   include/VFRendering/FPSCounter.hxx
+build/DotRenderer.o: src/DotRenderer.cxx \
+  include/VFRendering/DotRenderer.hxx \
+  include/VFRendering/RendererBase.hxx \
+  include/VFRendering/Options.hxx \
+  include/VFRendering/FPSCounter.hxx \
+  include/VFRendering/Utilities.hxx \
+  include/VFRendering/Geometry.hxx \
+  include/shaders/dots.vert.glsl.hxx \
+  include/shaders/dots_circle.frag.glsl.hxx \
+  include/shaders/dots_square.frag.glsl.hxx
 build/Geometry.o: src/Geometry.cxx \
   include/VFRendering/Geometry.hxx \
   thirdparty/qhull/src/libqhullcpp/Qhull.h \
@@ -139,6 +151,16 @@ build/IsosurfaceRenderer.o: src/IsosurfaceRenderer.cxx \
   include/VectorfieldIsosurface.hxx \
   include/shaders/isosurface.vert.glsl.hxx \
   include/shaders/isosurface.frag.glsl.hxx
+build/Parallelepiped.o: src/ParallelepipedRenderer.cxx \
+  include/VFRendering/ParallelepipedRenderer.hxx \
+  include/VFRendering/RendererBase.hxx \
+  include/VFRendering/Options.hxx \
+  include/VFRendering/View.hxx \
+  include/VFRendering/FPSCounter.hxx \
+  include/VFRendering/Utilities.hxx \
+  include/VFRendering/Geometry.hxx \
+  include/VFRendering/GlyphRenderer.hxx \
+  include/VFRendering/BoundingBoxRenderer.hxx
 build/RendererBase.o: src/RendererBase.cxx \
   include/VFRendering/RendererBase.hxx \
   include/VFRendering/Options.hxx \
