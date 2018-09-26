@@ -2,15 +2,6 @@ sudo: required
 dist: trusty
 language: cpp
 
-
-cache:
-  directories:
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.6.2
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.7.1
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.8.0
-    - ${TRAVIS_BUILD_DIR}/deps/llvm-3.9.0
-
-
 matrix:
   include:
     # OSX, xcode 8
@@ -37,8 +28,6 @@ matrix:
 before_install:
   # Run homebrew on osx
   - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew update; fi
-  # Setup default versions and override compiler if needed
-  - if [[ "${LLVM_VERSION}" == "default" ]]; then LLVM_VERSION=3.9.0; fi
   # Install a recent CMake and Python3 (unless already installed on OS X)
   - |
     if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
@@ -56,10 +45,10 @@ before_install:
       export CC=${COMPILER_C} CXX=${COMPILER_CXX}
     else
       if ! brew ls --version cmake &>/dev/null; then brew install cmake; fi
-      if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew list python3 &>/dev/null || brew install python3 && brew postinstall python3; fi
+      if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew upgrade python; fi
     fi
   # Install needed Python packages
-  - sudo pip3 install --upgrade six
+  - sudo python3 -m pip install --upgrade six
   - sudo pip3 install numpy wheel twine
 
 
