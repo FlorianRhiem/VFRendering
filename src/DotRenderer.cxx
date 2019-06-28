@@ -1,6 +1,11 @@
 #include "VFRendering/DotRenderer.hxx"
 
+#ifndef __EMSCRIPTEN__
 #include <glad/glad.h>
+#else
+#include <GLES3/gl3.h>
+#endif
+
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -116,7 +121,9 @@ void DotRenderer::draw( float aspect_ratio )
     glUniform1f( glGetUniformLocation( m_program, "uDotRadius" ), dot_radius);
 
     glDisable( GL_CULL_FACE );
-    glEnable( GL_PROGRAM_POINT_SIZE ); 
+#ifndef __EMSCRIPTEN__
+    glEnable( GL_PROGRAM_POINT_SIZE );
+#endif
     glDrawArrays( GL_POINTS, 0, m_num_instances ); 
     glEnable( GL_CULL_FACE );
 }

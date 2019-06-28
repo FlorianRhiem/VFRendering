@@ -1,8 +1,9 @@
 #ifndef DOTS_VERT_GLSL_HXX
 #define DOTS_VERT_GLSL_HXX
 
-static const std::string DOT_VERT_GLSL = R"LITERAL(
-#version 330
+#include "shader_header.hxx"
+
+static const std::string DOT_VERT_GLSL = SHADER_HEADER + R"LITERAL(
 
 uniform mat4 uProjectionMatrix;
 uniform mat4 uModelviewMatrix;
@@ -19,7 +20,7 @@ bool is_visible(vec3 position, vec3 direction);
 void main(void) {
   float direction_length = length( ivDotDirection );
   
-  if ( is_visible( ivDotCoordinates, ivDotDirection ) && direction_length > 0) {
+  if ( is_visible( ivDotCoordinates, ivDotDirection ) && direction_length > 0.0) {
     vfColor = colormap( normalize( ivDotDirection ) );
     vec3 vfPosition = ( uModelviewMatrix * vec4( ivDotCoordinates, 1.0 ) ).xyz;
     gl_Position = uProjectionMatrix * vec4( vfPosition, 1.0 );

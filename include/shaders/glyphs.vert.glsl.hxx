@@ -1,8 +1,9 @@
 #ifndef GLYPHS_VERT_GLSL_HXX
 #define GLYPHS_VERT_GLSL_HXX
 
-static const std::string GLYPHS_ROTATED_VERT_GLSL = R"LITERAL(
-#version 330
+#include "shader_header.hxx"
+
+static const std::string GLYPHS_ROTATED_VERT_GLSL = SHADER_HEADER + R"LITERAL(
 uniform mat4 uProjectionMatrix;
 uniform mat4 uModelviewMatrix;
 uniform vec2 uZRange;
@@ -41,7 +42,7 @@ bool is_visible(vec3 position, vec3 direction);
 
 void main(void) {
   float direction_length = length(ivInstanceDirection);
-  if (is_visible(ivInstanceOffset, ivInstanceDirection) && direction_length > 0) {
+  if (is_visible(ivInstanceOffset, ivInstanceDirection) && direction_length > 0.0) {
     vfColor = colormap(normalize(ivInstanceDirection));
     mat3 instanceMatrix = direction_length * matrixFromDirection(ivInstanceDirection/direction_length);
     vfNormal = (uModelviewMatrix * vec4(instanceMatrix*ivNormal, 0.0)).xyz;
@@ -53,8 +54,7 @@ void main(void) {
 }
 )LITERAL";
 
-static const std::string GLYPHS_UNROTATED_VERT_GLSL = R"LITERAL(
-#version 330
+static const std::string GLYPHS_UNROTATED_VERT_GLSL = SHADER_HEADER + R"LITERAL(
 uniform mat4 uProjectionMatrix;
 uniform mat4 uModelviewMatrix;
 uniform vec2 uZRange;
@@ -72,7 +72,7 @@ bool is_visible(vec3 position, vec3 direction);
 
 void main(void) {
   float direction_length = length(ivInstanceDirection);
-  if (is_visible(ivInstanceOffset, ivInstanceDirection) && direction_length > 0) {
+  if (is_visible(ivInstanceOffset, ivInstanceDirection) && direction_length > 0.0) {
     vfColor = colormap(normalize(ivInstanceDirection));
     mat3 instanceMatrix = mat3(direction_length);
     vfNormal = (uModelviewMatrix * vec4(instanceMatrix*ivNormal, 0.0)).xyz;

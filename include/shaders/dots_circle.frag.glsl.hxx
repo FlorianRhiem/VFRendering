@@ -1,8 +1,9 @@
 #ifndef DOTS_CIRCLE_FRAG_GLSL_HXX
 #define DOTS_CIRCLE_FRAG_GLSL_HXX
 
-static const std::string DOT_CIRCLE_FRAG_GLSL = R"LITERAL(
-#version 330
+#include "shader_header.hxx"
+
+static const std::string DOT_CIRCLE_FRAG_GLSL = SHADER_HEADER + R"LITERAL(
 
 in vec3 vfColor;
 out vec4 fo_FragColor;

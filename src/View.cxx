@@ -3,7 +3,11 @@
 #include <iostream>
 
 #include <glm/gtx/transform.hpp>
+#ifndef __EMSCRIPTEN__
 #include <glad/glad.h>
+#else
+#include <GLES3/gl3.h>
+#endif
 
 #include "VFRendering/RendererBase.hxx"
 #include "VFRendering/ArrowRenderer.hxx"
@@ -23,10 +27,12 @@ void View::initialize() {
     }
     m_is_initialized = true;
 
+#ifndef EMSCRIPTEN
     if (!gladLoadGL()) {
         std::cerr << "Failed to initialize glad" << std::endl;
         return;
     }
+#endif
     // Reset any errors potentially caused by the extension loader
     glGetError();
     glEnable(GL_DEPTH_TEST);

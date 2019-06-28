@@ -1,5 +1,7 @@
 CXXFLAGS += -Wall -Wextra -Werror -std=c++11 -pedantic -fPIC
 
+CXXFLAGS += -s USE_WEBGL2=1 -s DISABLE_DEPRECATED_FIND_EVENT_TARGET_BEHAVIOR=1 -s "EXPORTED_FUNCTIONS=['_display']" -s ASSERTIONS=1 -s DISABLE_EXCEPTION_CATCHING=0 -g
+
 CXXFLAGS += -Iinclude
 CXXFLAGS += -Ithirdparty/glad/include
 CXXFLAGS += -Ithirdparty/glm/include
@@ -63,6 +65,9 @@ build/libVFRendering.a: ${OBJS}
 	
 build/libVFRendering.so: ${OBJS} thirdparty/qhull/lib/libqhullcpp.a thirdparty/qhull/lib/libqhullstatic_r.a
 	${CXX} ${CXXFLAGS} -shared -o $@ ${OBJS} ${LDFLAGS} -lqhullcpp -lqhullstatic_r
+
+build/libVFRendering.js: webdemo.cxx ${OBJS} thirdparty/qhull/lib/libqhullcpp.a thirdparty/qhull/lib/libqhullstatic_r.a
+	${CXX} webdemo.cxx ${CXXFLAGS} -o $@ ${OBJS} ${LDFLAGS} -lqhullcpp -lqhullstatic_r
 	
 demo: demo.cxx build/libVFRendering.a thirdparty/qhull/lib/libqhullcpp.a thirdparty/qhull/lib/libqhullstatic_r.a
 	${CXX} ${CXXFLAGS} -o $@ $< -lglfw build/libVFRendering.a ${LDFLAGS} -lqhullcpp -lqhullstatic_r -ldl
