@@ -50,7 +50,7 @@ after_test:
   - ps: echo "Add suffix to VFRendering version tag for python package $env:VFRENDERING_ADD_VERSION_EXTENSION"
 
   # Build source distro and wheel
-  - "%PYTHON%/python setup.py sdist bdist_wheel"
+  - "%PYTHON%/python setup.py bdist_wheel"
 
   # Specify account details for PyPI
   - echo [distutils]                                  > %USERPROFILE%\\.pypirc
