@@ -20,6 +20,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 include(ExternalProject)
 ExternalProject_add(qhull
     GIT_REPOSITORY https://github.com/qhull/qhull.git
+    GIT_TAG v7.3.1
     CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${PROJECT_BINARY_DIR}/thirdparty-install;-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     PREFIX qhull-prefix
 )

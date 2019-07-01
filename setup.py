@@ -116,9 +116,5 @@ setup(
     description='VFRendering python bindings',
     long_description='',
     ext_modules=[CMakeExtension('pyVFRendering')],
-    cmdclass = {'build_ext': CMakeBuild, 'bdist_wheel': bdist_wheel},
-    package_data = {
-        '': ['Version.txt'],
-        'pyVFRendering': ['libpyVFRendering.so', 'libpyVFRendering.dylib', 'libpyVFRendering.dll']
-    }
+    cmdclass={'build_ext': CMakeBuild, 'bdist_wheel': bdist_wheel}
 )

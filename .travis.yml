@@ -59,7 +59,7 @@ install:
 
   # Build the python package
   - cd ${TRAVIS_BUILD_DIR}
-  - python3 setup.py sdist bdist_wheel;
+  - python3 setup.py bdist_wheel;
 
 
 script:
