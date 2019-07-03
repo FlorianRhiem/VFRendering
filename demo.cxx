@@ -113,6 +113,12 @@ int main(void) {
             }
         }
     }
+
+    if (directions.empty()) {
+        std::cerr << "Failed to read data.txt" << std::endl;
+        return 1;
+    }
+
     VFRendering::Geometry geometry = VFRendering::Geometry::cartesianGeometry({21, 21, 21}, {-20, -20, -20}, {20, 20, 20});
     VFRendering::VectorField vf = VFRendering::VectorField(geometry, directions);
 
