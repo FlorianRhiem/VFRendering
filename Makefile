@@ -1,6 +1,9 @@
 CXXFLAGS += -Wall -Wextra -Werror -std=c++11 -pedantic -fPIC
 
-CXXFLAGS += -s USE_WEBGL2=1 -s DISABLE_DEPRECATED_FIND_EVENT_TARGET_BEHAVIOR=1 -s "EXPORTED_FUNCTIONS=['_display']" -s ASSERTIONS=1 -s DISABLE_EXCEPTION_CATCHING=0 -g
+CXX_IS_EMSCRIPTEN = $(shell $(CXX) -v 2>&1 | grep -q Emscripten && echo "yes")
+ifeq ($(CXX_IS_EMSCRIPTEN),yes)
+CXXFLAGS += -s USE_WEBGL2=0 -s DISABLE_DEPRECATED_FIND_EVENT_TARGET_BEHAVIOR=1 -s "EXPORTED_FUNCTIONS=['_display']" -s ASSERTIONS=1 -s DISABLE_EXCEPTION_CATCHING=0 -g
+endif
 
 CXXFLAGS += -Iinclude
 CXXFLAGS += -Ithirdparty/glad/include
