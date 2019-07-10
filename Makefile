@@ -41,7 +41,7 @@ default: build/libVFRendering.so
 all: demo build/libVFRendering.so
 
 thirdparty/qhull/Makefile:
-	cd thirdparty && git clone https://github.com/qhull/qhull.git
+	cd thirdparty && git clone https://github.com/qhull/qhull.git && cd qhull && git checkout v7.3.1
 
 thirdparty/qhull/lib/libqhullcpp.a: thirdparty/qhull/Makefile
 	make -C thirdparty/qhull/ bin-lib lib/libqhullcpp.a "CXX_OPTS1=-Isrc -O3 -fPIC" "CC=${CC}" "CXX=${CXX}"
