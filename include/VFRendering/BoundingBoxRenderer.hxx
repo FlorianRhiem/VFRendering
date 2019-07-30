@@ -33,6 +33,7 @@ private:
     unsigned int m_vao = 0;
     unsigned int m_vbo = 0;
     unsigned int m_dash_vbo = 0;
+    unsigned int num_vertices = 0;
     std::vector<glm::vec3> m_vertices;
     std::vector<float> m_dashing_values;
 };

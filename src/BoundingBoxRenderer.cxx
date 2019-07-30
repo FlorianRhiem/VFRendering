@@ -112,8 +112,29 @@ void BoundingBoxRenderer::updateVertexData() {
                 cylinder_dashing_values.push_back(m_dashing_values[i + 1]);
                 cylinder_dashing_values.push_back(m_dashing_values[i]);
                 cylinder_dashing_values.push_back(m_dashing_values[i + 1]);
+
+                int first_dash = glm::floor(glm::min(m_dashing_values[i], m_dashing_values[i + 1]));
+                int last_dash = glm::ceil(glm::max(m_dashing_values[i], m_dashing_values[i + 1]));
+                for (int k = first_dash - 1; k < last_dash; k++) {
+                    float d = k + 0.5;
+                    if (glm::mod(glm::floor(d), 2.0f) != 0.0f) {
+                        continue;
+                    }
+                    if (d < glm::min(m_dashing_values[i], m_dashing_values[i + 1]) || d > glm::max(m_dashing_values[i], m_dashing_values[i + 1])) {
+                        continue;
+                    }
+                    float f = (d - m_dashing_values[i]) / (m_dashing_values[i + 1] - m_dashing_values[i]);
+                    cylinder_vertices.push_back(start + direction * f);
+                    cylinder_vertices.push_back(start + direction * f + normal * glm::cos(start_angle) + binormal * glm::sin(start_angle));
+                    cylinder_vertices.push_back(start + direction * f + normal * glm::cos(end_angle) + binormal * glm::sin(end_angle));
+                    cylinder_dashing_values.push_back(d);
+                    cylinder_dashing_values.push_back(d);
+                    cylinder_dashing_values.push_back(d);
+                }
             }
         }
+
+        num_vertices = cylinder_vertices.size();
 
         glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
         glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * cylinder_vertices.size(), cylinder_vertices.data(), GL_STATIC_DRAW);
@@ -172,7 +193,7 @@ void BoundingBoxRenderer::draw(float aspect_ratio) {
         if (level_of_detail < 3) {
             level_of_detail = 3;
         }
-        glDrawArrays(GL_TRIANGLES, 0, m_vertices.size() / 2 * 6 * level_of_detail);
+        glDrawArrays(GL_TRIANGLES, 0, num_vertices);
     }
     glEnable(GL_CULL_FACE);
 }
